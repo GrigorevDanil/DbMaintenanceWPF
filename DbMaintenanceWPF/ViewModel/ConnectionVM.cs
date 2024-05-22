@@ -1,85 +1,103 @@
-﻿using DbMaintenanceWPF.Items;
-using DbMaintenanceWPF.Model;
-using DbMaintenanceWPF.Utilities;
-using MySqlConnector;
+﻿
+using DbMaintenanceWPF.Infrastructure.Commands;
+using DbMaintenanceWPF.Infrastructure.Commands.Interface;
+using DbMaintenanceWPF.Models;
+using DbMaintenanceWPF.ViewModel.Base;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Xml.Linq;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
 
 namespace DbMaintenanceWPF.ViewModel
 {
-    class ConnectionVM : Utilities.ViewModelBase
+    class ConnectionVM(ConnectionM model, Database database, ICommandFactory commandFactory) : ViewModelBase
     {
-        private Connection currentConnection;
-        public Connection CurrentConnection
-        {
-            get { return currentConnection; }
-            set { currentConnection = value; OnPropertyChanged(nameof(CurrentConnection)); }
-        }
-        public ObservableCollection<string> Users { get; set; }
-        private RelayCommand editCommand, resetCommand;
-        
+        #region Свойства
 
-        public ConnectionVM()
-        {
-            //Установка текущей модели
-            CurrentConnection = new Connection
-            {
-                Server = App.db.stringConnection.Server,
-                Port = App.db.stringConnection.Port.ToString(),
-                DbName = App.db.stringConnection.Database,
-                User = App.db.stringConnection.UserID.ToString(),
-                Password = App.db.stringConnection.Password
-            };
-            Users = new ObservableCollection<string>();
+        public event EventHandler<EventArgs<bool>> Complete;
+        private readonly Dictionary<string, object> _Values = new();
 
+        readonly ConnectionM Model = model;
+        readonly Database Database = database;
+        readonly ICommandFactory CommandFactory = commandFactory;
+
+        public string TextServer { get => GetValue(Database.stringConnection.Server); set => SetValue(value); }
+
+        public string TextPort { get => GetValue(Database.stringConnection.Port.ToString()); set => SetValue(value); }
+
+        public string TextDB { get => GetValue(Database.stringConnection.Database); set => SetValue(value); }
+
+        public string TextUser { get => GetValue(Database.stringConnection.UserID); set => SetValue(value); }
+
+        public string TextPassword { get => GetValue(Database.stringConnection.Password); set => SetValue(value); }
+
+        #endregion
+
+        #region Команды
+
+
+        #region CommitCommand - Принять изменения
+
+        private ICommand _CommitCommand;
+
+        public ICommand CommitCommand => _CommitCommand
+            ??= new RelayCommand(OnCommitCommandExecuted, CanCommitCommandExecute);
+
+        private bool CanCommitCommandExecute(object p) => true;
+        private void OnCommitCommandExecuted(object p)
+        {
+            Model.SaveNewConnection(TextServer, TextPort, TextDB, TextUser, TextPassword);
+            CommandFactory.CreateRestartApplicationCommand().Execute(null); 
+            Complete?.Invoke(this, true);
         }
 
-        void UpdateUsers()
+        #endregion
+
+        #region ResetCommand - Команда сброса соединение на по умолчанию
+
+        private ICommand resetCommand;
+        public ICommand ResetCommand => resetCommand ??= new RelayCommand(OnResetCommandExecuted, CanResetCommandExecute);
+        private static bool CanResetCommandExecute(object p) => true;
+
+        private void OnResetCommandExecuted(object p)
         {
-            Users.Clear();
-            //Взятие всех пользователей на сервере
-            using (MySqlCommand command = new MySqlCommand("SELECT User FROM mysql.user", App.serviceDb.getConnection()))
-            {
-                using (MySqlDataReader reader = command.ExecuteReader()) while (reader.Read()) Users.Add(reader.GetString(0));
-            }
+            Model.ResetConnectionToDefault();
+            CommandFactory.CreateRestartApplicationCommand().Execute(null); ;
         }
 
-        // команда редактирования
-        public RelayCommand EditCommand
+        #endregion
+
+        #region CancelCommand - Отменить изменения
+
+        private ICommand _CancelCommand;
+
+        public ICommand CancelCommand => _CancelCommand
+            ??= new RelayCommand(OnCancelCommandExecuted, CanCancelCommandExecute);
+
+        private bool CanCancelCommandExecute(object p) => true;
+
+        private void OnCancelCommandExecuted(object p)
         {
-            get
-            {
-                return editCommand ??
-                  (editCommand = new RelayCommand((o) =>
-                  {
-                      App.manager.WritePrivateString("main", "StringConnection", $"Server={CurrentConnection.Server};Port={CurrentConnection.Port};User ID={CurrentConnection.User};{(CurrentConnection.Password.Length != 0 ? $"Password= {CurrentConnection.Password}; " : " ")}Database={CurrentConnection.DbName};Allow Zero DateTime=True");
-                      ProcessStartInfo startInfo = new ProcessStartInfo(Process.GetCurrentProcess().MainModule.FileName);
-                      Process.Start(startInfo);
-                      Application.Current.Shutdown();
-                  }));
-            }
+            CommandFactory.CreateCloseApplicationCommand().Execute(null); ;
         }
-        // команда сброса
-        public RelayCommand ResetCommand
+
+        #endregion
+
+        protected virtual bool SetValue(object value, [CallerMemberName] string Property = null)
         {
-            get
-            {
-                return resetCommand ??
-                  (resetCommand = new RelayCommand((o) =>
-                  {
-                      App.manager.WritePrivateString("main", "StringConnection", $"Server=127.0.0.1;Port=3306;User ID=root;Database=dbhrtime;Allow Zero DateTime=True");
-                      ProcessStartInfo startInfo = new ProcessStartInfo(Process.GetCurrentProcess().MainModule.FileName);
-                      Process.Start(startInfo);
-                      Application.Current.Shutdown();
-                  }));
-            }
+            if (_Values.TryGetValue(Property!, out var old_value) && Equals(value, old_value))
+                return false;
+            _Values[Property] = value;
+            OnPropertyChanged(Property);
+            return true;
         }
+        protected virtual T GetValue<T>(T Default, [CallerMemberName] string Property = null)
+        {
+            if (_Values.TryGetValue(Property!, out var value))
+                return (T)value;
+            return Default;
+        }
+
+        #endregion
     }
 }

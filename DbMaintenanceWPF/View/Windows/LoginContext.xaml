@@ -1,0 +1,381 @@
+﻿<Window x:Class="DbMaintenanceWPF.View.Windows.LoginContext"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        DataContext="{Binding LoginModel, Source={StaticResource Locator}}"
+        xmlns:res="clr-namespace:DbMaintenanceWPF.Resources"
+        xmlns:cmd="clr-namespace:DbMaintenanceWPF.Infrastructure.Commands"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        Style="{StaticResource SpringAnimation}"
+        x:Name="CurrentWindow"
+        Title="Авторизация"
+        Icon="/Resources/Pictures/IconFormUser.png"
+        Height="400"
+        Width="700"
+        WindowStartupLocation="CenterScreen" 
+        AllowsTransparency="True"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        Background="Transparent">
+    <WindowChrome.WindowChrome>
+        <WindowChrome/>
+    </WindowChrome.WindowChrome>
+
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="Closed">
+            <b:InvokeCommandAction>
+                <b:InvokeCommandAction.Command>
+                    <cmd:CloseApplicationCommand/>
+                </b:InvokeCommandAction.Command>
+            </b:InvokeCommandAction>
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
+
+
+    <Grid>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition 
+                Width="317*"/>
+            <ColumnDefinition
+                Width="383*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Border
+            Background="AliceBlue"
+            Grid.ColumnSpan="2"
+            CornerRadius="15"/>
+        
+        <Border
+            Grid.Column ="0"
+            CornerRadius="15">
+            <Border.Background>
+                <ImageBrush
+                    ImageSource="/Resources/Pictures/Background.png" />
+            </Border.Background>
+        </Border>
+        
+        <Grid 
+            Grid.Column="1">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition
+                    Height="49*"/>
+                <RowDefinition 
+                    Height="39*"/>
+                <RowDefinition
+                    Height="70*"/>
+                <RowDefinition 
+                    Height="51*"/>
+                <RowDefinition
+                    Height="51*"/>
+                <RowDefinition 
+                    Height="109*"/>
+                <RowDefinition
+                    Height="29*"/>
+            </Grid.RowDefinitions>
+            
+            <Border 
+                Background="#093A5C"  
+                CornerRadius="10" 
+                Margin="5,5,60,0" 
+                VerticalAlignment="Top"
+                Height="10"/>
+            
+            <Button 
+                Width="35" 
+                BorderThickness="0"
+                Background="Transparent"
+                HorizontalAlignment="Left"
+                Margin="333,7,0,7"
+                IsCancel="True">
+                <Image
+                    RenderOptions.BitmapScalingMode="HighQuality" 
+                    Source="/Resources/Pictures/cross.png" 
+                    Width="35"
+                    Height="35"/>
+            </Button>
+
+            <TextBlock 
+                Grid.Row="1" 
+                Text="Авторизация"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Left"
+                FontSize="26" 
+                Height="44"
+                Width="166" 
+                Margin="14,0,0,0"
+                FontFamily="Nautilus Pompilius"/>
+
+            <WrapPanel Orientation="Horizontal" Grid.Row="2">
+                <CheckBox 
+                    Style="{StaticResource chkBullet}"
+                    IsChecked="{Binding FlagServer}"
+                    Background="#DB4B4B" 
+                    Content="Выкл"
+                    Tag="Вкл" 
+                    FontSize="15" 
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    FontFamily="Nautilus Pompilius"
+                    Margin="15,0,0,0"
+                    Click="CheckBox_Click"/>
+
+                <TextBlock 
+                    Text="Вход по серверу"
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center"
+                    FontSize="16" 
+                    FontFamily="Nautilus Pompilius"
+                    Margin="5,0,0,0"/>
+            </WrapPanel>
+
+            <Image 
+                x:Name="imgEmp"
+                Grid.Row="3" 
+                Source="/Resources/Pictures/ImageEmployee.png"
+                Width="30"
+                Height="30" 
+                HorizontalAlignment="Left"
+                Margin="17,0,0,5" 
+                VerticalAlignment="Top"/>
+
+            <TextBox 
+                x:Name="textBoxLog"
+                Style="{StaticResource HintTextBox}"
+                Text="{Binding CurrentLogin, UpdateSourceTrigger=PropertyChanged}"
+                Tag="Логин" 
+                Grid.Row="3"
+                TextAlignment="Left" 
+                FontSize="20" 
+                FontFamily="Times New Roman" 
+                HorizontalAlignment="Left"
+                Width="306" 
+                Margin="62,0,0,0" 
+                VerticalAlignment="Top"
+                Height="31"/>
+
+            <Image 
+                x:Name="imgHost"
+                Grid.Row="3" 
+                Source="/Resources/Pictures/IconHost.png"
+                Width="30" 
+                Height="30"
+                Visibility="Hidden"
+                Opacity="0.0" 
+                HorizontalAlignment="Left" 
+                Margin="192,0,0,0" 
+                VerticalAlignment="Top"/>
+
+            <ComboBox 
+                x:Name="comboBoxLogin"
+                ItemsSource="{Binding UserServers}"
+                DisplayMemberPath="Login"
+                Style="{StaticResource ComboboxStyle}"
+                SelectedIndex="{Binding SelectedIndex, UpdateSourceTrigger=PropertyChanged}"
+                IsReadOnly="True" 
+                Grid.Row="3"
+                Visibility="Hidden"
+                Opacity="0.0" 
+                FontSize="20" 
+                FontFamily="Times New Roman"
+                HorizontalAlignment="Left"
+                Margin="62,0,0,0" 
+                Width="118"
+                VerticalAlignment="Top"
+                Height="31">
+
+                <b:Interaction.Triggers>
+                    <b:EventTrigger
+                            EventName="SelectionChanged">
+                        <b:InvokeCommandAction
+                            Command="{Binding SelectionChangedUserCommand}"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+
+            </ComboBox>
+
+            <TextBox
+                x:Name="textBoxHost"
+                Style="{StaticResource HintTextBox}"
+                Text="{Binding SelectedHost, UpdateSourceTrigger=PropertyChanged}"
+                Tag="Хост" 
+                Grid.Row="3" 
+                TextAlignment="Left"
+                Visibility="Hidden"
+                Opacity="0.0" 
+                FontSize="20"
+                FontFamily="Times New Roman" 
+                HorizontalAlignment="Left" 
+                Margin="233,0,0,0" 
+                Width="135" 
+                Height="31" 
+                VerticalAlignment="Top"/>
+
+
+            <Grid Grid.Row="4">
+
+                <Image
+                    Source="/Resources/Pictures/IconLock.png"
+                    Width="35" 
+                    Height="35" 
+                    HorizontalAlignment="Left"
+                    Margin="15,0,0,0" 
+                    VerticalAlignment="Center"/>
+
+                <PasswordBox 
+                    x:Name="passwordBox"
+                    Style="{StaticResource RoundedPasswordBoxStyle}"
+                    res:PasswordHelper.Attach="True" 
+                    res:PasswordHelper.Password="{Binding CurrentPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    FontSize="20"
+                    FontFamily="Times New Roman"
+                    Margin="0,10,0,10" 
+                    HorizontalAlignment="Center"
+                    Width="260" LostFocus="passwordBox_LostFocus"/>
+
+                <TextBox 
+                    x:Name="textBoxPass"
+                    Style="{StaticResource HintTextBox}"
+                    Text="{Binding CurrentPassword, UpdateSourceTrigger=PropertyChanged}"
+                    Tag="Пароль" 
+                    TextAlignment="Left"
+                    FontSize="20" 
+                    FontFamily="Times New Roman"
+                    Width="260" 
+                    Margin="0,10,0,10"
+                    HorizontalAlignment="Center" 
+                    GotFocus="textBoxPass_GotFocus"/>
+
+                <ToggleButton
+                    x:Name="buttonEye" 
+                    Grid.Row="4"
+                    Background="Transparent" 
+                    BorderThickness="0" 
+                    HorizontalAlignment="Right"
+                    Height="35"
+                    Margin="0,0,15,0" 
+                    Width="40" 
+                    Click="buttonEye_Click">
+
+                    <ToggleButton.Style>
+                        <Style 
+                            TargetType="ToggleButton">
+                            
+                            <Setter 
+                                Property="Content">
+                                <Setter.Value>
+                                    <Image
+                                        Width="35"
+                                        Height="35"
+                                        HorizontalAlignment="Left"
+                                        Source="/Resources/Pictures/inVisible.png"/>
+                                </Setter.Value>
+                            </Setter>
+                            
+                            <Style.Triggers>
+                                <DataTrigger                                     
+                                    Binding="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                                    Value="True">
+                                    <Setter
+                                        Property="Content">
+                                        <Setter.Value>
+                                            <Image
+                                                Width="35"
+                                                Height="35" 
+                                                HorizontalAlignment="Left"
+                                                Source="/Resources/Pictures/Visible.png"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
+            </Grid>
+
+            <TextBlock
+                Text="{Binding TextError, UpdateSourceTrigger=PropertyChanged}"
+                Visibility="{Binding VisEror, UpdateSourceTrigger=PropertyChanged}"
+                FontFamily="Nautilus Pompilius" 
+                FontSize="16"
+                Grid.Row="5"
+                VerticalAlignment="Center" 
+                HorizontalAlignment="Center" Margin="0,15,0,0"
+                Foreground="Red"/>
+
+            <Button
+                Style="{StaticResource RoundCorner}"
+                Grid.Row="5"
+                Foreground="#D9D9D9"
+                FontSize="16"
+                FontFamily="Nautilus Pompilius" 
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Left" 
+                Width="150" 
+                Height="28"
+                Margin="25,0,0,0">
+
+                <Button.Command>
+                    <cmd:HelpCommand/>
+                </Button.Command>
+                
+                <StackPanel 
+                    Orientation="Horizontal">
+                    <Image 
+                        Source="/Resources/Pictures/IconHelp.png"
+                        Width="20" 
+                        Height="20" 
+                        HorizontalAlignment="Left"
+                        Margin="0,2,25,0"/>
+                    <TextBlock 
+                        Text="Справка" 
+                        VerticalAlignment="Center"
+                        Margin="0,0,25,0"
+                        FontSize="18"/>
+                </StackPanel>
+            </Button>
+
+            <Button 
+                Style="{StaticResource RoundCorner}"
+                Grid.Row="5"
+                Foreground="#D9D9D9"
+                FontSize="16"
+                FontFamily="Nautilus Pompilius"
+                VerticalAlignment="Bottom"
+                Margin="0,0,25,0"
+                HorizontalAlignment="Right"
+                Width="150"
+                Height="28"
+                Command="{Binding AuthenticationCommand}"
+                CommandParameter="{Binding ElementName=CurrentWindow}">
+
+                <StackPanel 
+                    Orientation="Horizontal">
+                    <Image 
+                        Source="/Resources/Pictures/exit1.png"
+                        Width="20"
+                        Height="20"
+                        HorizontalAlignment="Left"
+                        Margin="0,2,25,0"/>
+                    <TextBlock 
+                        Text="Войти"
+                        VerticalAlignment="Center"
+                        Margin="0,0,25,0" 
+                        FontSize="18"/>
+                </StackPanel>
+            </Button>
+
+        </Grid>
+
+    </Grid>
+</Window>

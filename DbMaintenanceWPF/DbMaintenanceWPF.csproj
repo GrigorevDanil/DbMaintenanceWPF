@@ -40,9 +40,93 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>DbMaintenanceWPF.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=7.0.0.1, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.7.0.1\lib\net462\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.8.0.0\lib\net462\Microsoft.Extensions.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Binder, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Binder.8.0.0\lib\net462\Microsoft.Extensions.Configuration.Binder.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.CommandLine, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.CommandLine.8.0.0\lib\net462\Microsoft.Extensions.Configuration.CommandLine.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.EnvironmentVariables, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.EnvironmentVariables.8.0.0\lib\net462\Microsoft.Extensions.Configuration.EnvironmentVariables.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.FileExtensions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.FileExtensions.8.0.0\lib\net462\Microsoft.Extensions.Configuration.FileExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.Json.8.0.0\lib\net462\Microsoft.Extensions.Configuration.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.UserSecrets, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Configuration.UserSecrets.8.0.0\lib\net462\Microsoft.Extensions.Configuration.UserSecrets.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.8.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Diagnostics, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Diagnostics.8.0.0\lib\net462\Microsoft.Extensions.Diagnostics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Diagnostics.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Diagnostics.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.Diagnostics.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.FileProviders.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.FileProviders.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.FileProviders.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.FileProviders.Physical, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.FileProviders.Physical.8.0.0\lib\net462\Microsoft.Extensions.FileProviders.Physical.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.FileSystemGlobbing, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.FileSystemGlobbing.8.0.0\lib\net462\Microsoft.Extensions.FileSystemGlobbing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Hosting, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Hosting.8.0.0\lib\net462\Microsoft.Extensions.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Hosting.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Hosting.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.Hosting.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.8.0.0\lib\net462\Microsoft.Extensions.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.8.0.0\lib\net462\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Configuration, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Configuration.8.0.0\lib\net462\Microsoft.Extensions.Logging.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Console, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Console.8.0.0\lib\net462\Microsoft.Extensions.Logging.Console.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Debug, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Debug.8.0.0\lib\net462\Microsoft.Extensions.Logging.Debug.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.EventLog, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.EventLog.8.0.0\lib\net462\Microsoft.Extensions.Logging.EventLog.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.EventSource, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.EventSource.8.0.0\lib\net462\Microsoft.Extensions.Logging.EventSource.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.8.0.0\lib\net462\Microsoft.Extensions.Options.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options.ConfigurationExtensions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.ConfigurationExtensions.8.0.0\lib\net462\Microsoft.Extensions.Options.ConfigurationExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.8.0.0\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.77\lib\net462\Microsoft.Xaml.Behaviors.dll</HintPath>
@@ -54,9 +138,11 @@
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Diagnostics.DiagnosticSource, Version=7.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.7.0.2\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.8.0.0\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
@@ -65,13 +151,23 @@
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime" />
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.8.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.8.0.0\lib\net462\System.Text.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -94,36 +190,195 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\MessageWindow.cs" />
-    <Compile Include="Model\User.cs" />
-    <Compile Include="Model\Connection.cs" />
-    <Compile Include="Utilities\Database.cs" />
-    <Compile Include="Utilities\DatabaseService.cs" />
-    <Compile Include="Utilities\INIManager.cs" />
-    <Compile Include="Utilities\NumericUpDown.cs" />
-    <Compile Include="Utilities\PasswordHelper.cs" />
-    <Compile Include="Utilities\RelayCommand.cs" />
-    <Compile Include="Utilities\RoundProgressPathConverter.cs" />
-    <Compile Include="Utilities\StaticImage.cs" />
-    <Compile Include="Utilities\ViewModelBase.cs" />
+    <Compile Include="EventArgs.cs" />
+    <Compile Include="Infrastructure\Commands\Base\Command.cs" />
+    <Compile Include="Infrastructure\Commands\CloseDialogCommand.cs" />
+    <Compile Include="Infrastructure\Commands\Factories\CommandFactory.cs" />
+    <Compile Include="Infrastructure\Commands\HelpCommand.cs" />
+    <Compile Include="Infrastructure\Commands\Interface\ICommandFactory.cs" />
+    <Compile Include="Infrastructure\Commands\LoginContextCommand.cs" />
+    <Compile Include="Infrastructure\Commands\MainFormCommand.cs" />
+    <Compile Include="Infrastructure\Commands\CloseApplicationCommand.cs" />
+    <Compile Include="Infrastructure\Commands\CloseWindowCommand.cs" />
+    <Compile Include="Infrastructure\Commands\MinimizeWindowCommand.cs" />
+    <Compile Include="Infrastructure\Commands\RestartApplicationCommand.cs" />
+    <Compile Include="Infrastructure\Converter\InstanceEqualsConverter.cs" />
+    <Compile Include="Infrastructure\Extensions\DependencyObjectExtensions.cs" />
+    <Compile Include="Models\Database.cs" />
+    <Compile Include="Models\Items\Brand.cs" />
+    <Compile Include="Models\Items\Category.cs" />
+    <Compile Include="Models\Items\Department.cs" />
+    <Compile Include="Models\Items\Employee.cs" />
+    <Compile Include="Models\Items\Give.cs" />
+    <Compile Include="Models\Items\GiveDetail.cs" />
+    <Compile Include="Models\Items\Interfaces\IEntity.cs" />
+    <Compile Include="Models\Items\Post.cs" />
+    <Compile Include="Models\Items\Provider.cs" />
+    <Compile Include="Models\Items\Purchase.cs" />
+    <Compile Include="Models\Items\Unit.cs" />
+    <Compile Include="Models\CopyM.cs" />
+    <Compile Include="Models\Registrator.cs" />
+    <Compile Include="Models\UserM.cs" />
+    <Compile Include="Models\BrandM.cs" />
+    <Compile Include="Models\CategoryM.cs" />
+    <Compile Include="Models\DepartmentM.cs" />
+    <Compile Include="Models\EmployeeM.cs" />
+    <Compile Include="Models\GiveDetailM.cs" />
+    <Compile Include="Models\GiveM.cs" />
+    <Compile Include="Models\LoginM.cs" />
+    <Compile Include="Models\Items\Product.cs" />
+    <Compile Include="Models\Items\User.cs" />
+    <Compile Include="Models\ConnectionM.cs" />
+    <Compile Include="Models\PostM.cs" />
+    <Compile Include="Models\ProductM.cs" />
+    <Compile Include="Models\ProviderM.cs" />
+    <Compile Include="Models\PurchaseM.cs" />
+    <Compile Include="Models\UnitM.cs" />
+    <Compile Include="Models\Items\UserServer.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Service\AuthenticationService.cs" />
+    <Compile Include="Service\Base\RepositoryInMemory.cs" />
+    <Compile Include="Service\DatabaseBackupManager.cs" />
+    <Compile Include="Service\DatabaseConnection.cs" />
+    <Compile Include="Service\DatabaseErrorHandler.cs" />
+    <Compile Include="Service\DatabaseReader.cs" />
+    <Compile Include="Service\Factories\DatabaseErrorHandlerFactory.cs" />
+    <Compile Include="Service\Handlers\AccessDeniedErrorHandler.cs" />
+    <Compile Include="Service\Handlers\DatabaseNotFoundErrorHandler.cs" />
+    <Compile Include="Service\Handlers\UnableToConnectToHostErrorHandler.cs" />
+    <Compile Include="Service\Handlers\UnknownErrorHandler.cs" />
+    <Compile Include="Service\Interface\Factories\IDatabaseErrorHandlerFactory.cs" />
+    <Compile Include="Service\Interface\IAuthentication.cs" />
+    <Compile Include="Service\Interface\IBackupManagerDatabase.cs" />
+    <Compile Include="Service\Interface\IErrorHandlerDatabase.cs" />
+    <Compile Include="Service\Interface\IHandlerDatabase.cs" />
+    <Compile Include="Service\Interface\IImageHelper.cs" />
+    <Compile Include="Service\Interface\IINIManager.cs" />
+    <Compile Include="Service\Interface\ILoginAttemp.cs" />
+    <Compile Include="Service\Interface\ISHA256Helper.cs" />
+    <Compile Include="Service\Interface\IXAMPPHelper.cs" />
+    <Compile Include="Service\LoginAttempService.cs" />
+    <Compile Include="Service\ManageDatabase\BrandRepository.cs" />
+    <Compile Include="Service\ManageDatabase\CategoryRepository.cs" />
+    <Compile Include="Service\ManageDatabase\CreatersLists.cs" />
+    <Compile Include="Service\Interface\IConnectionDatabase.cs" />
+    <Compile Include="Service\Interface\ICreaterListItems.cs" />
+    <Compile Include="Service\Interface\IEditorDatabase.cs" />
+    <Compile Include="Service\Interface\IReaderDatabase.cs" />
+    <Compile Include="Service\Interface\IRepository.cs" />
+    <Compile Include="Service\Interface\IUserDialogService.cs" />
+    <Compile Include="Service\ManageDatabase\DepartmentRepository.cs" />
+    <Compile Include="Service\ManageDatabase\EmployeeRepository.cs" />
+    <Compile Include="Service\ManageDatabase\GiveDetailRepository.cs" />
+    <Compile Include="Service\ManageDatabase\GiveRepository.cs" />
+    <Compile Include="Service\ManageDatabase\PostRepository.cs" />
+    <Compile Include="Service\ManageDatabase\ProductRepository.cs" />
+    <Compile Include="Service\ManageDatabase\ProviderRepository.cs" />
+    <Compile Include="Service\ManageDatabase\PurchaseRepository.cs" />
+    <Compile Include="Service\ManageDatabase\UnitRepository.cs" />
+    <Compile Include="Service\ManageDatabase\UserRepository.cs" />
+    <Compile Include="Service\Registrator.cs" />
+    <Compile Include="Service\UserDialogService.cs" />
+    <Compile Include="Resources\Btn.cs" />
+    <Compile Include="Service\DatabaseEditor.cs" />
+    <Compile Include="Service\CommandParameterExtractor.cs" />
+    <Compile Include="Service\ImageSourceHelper.cs" />
+    <Compile Include="Service\INIManager.cs" />
+    <Compile Include="Resources\NumericUpDown.cs" />
+    <Compile Include="Resources\PasswordHelper.cs" />
+    <Compile Include="Infrastructure\Commands\RelayCommand.cs" />
+    <Compile Include="Infrastructure\Converter\RoundProgressPathConverter.cs" />
+    <Compile Include="Service\SHA256Helper.cs" />
+    <Compile Include="Service\XAMPPHelper.cs" />
+    <Compile Include="ViewModel\Base\ViewModelBase.cs" />
+    <Compile Include="ViewModel\CopyVM.cs" />
+    <Compile Include="ViewModel\DialogViewModel\BrandContextVM.cs" />
+    <Compile Include="ViewModel\DialogViewModel\CategoryContextVM.cs" />
+    <Compile Include="ViewModel\DialogViewModel\DepartmentContextVM.cs" />
+    <Compile Include="ViewModel\DialogViewModel\EmployeeContextVM.cs" />
+    <Compile Include="ViewModel\Registrator.cs" />
+    <Compile Include="ViewModel\UserVM.cs" />
+    <Compile Include="ViewModel\BrandVM.cs" />
+    <Compile Include="ViewModel\CategoryVM.cs" />
     <Compile Include="ViewModel\ConnectionVM.cs" />
+    <Compile Include="ViewModel\DepartmentVM.cs" />
+    <Compile Include="ViewModel\EmployeeVM.cs" />
+    <Compile Include="ViewModel\GiveDetailVM.cs" />
+    <Compile Include="ViewModel\GiveVM.cs" />
     <Compile Include="ViewModel\LoginVM.cs" />
     <Compile Include="ViewModel\MainVM.cs" />
-    <Compile Include="ViewModel\MessageWindowVM.cs" />
-    <Compile Include="View\ContextConnection.xaml.cs">
+    <Compile Include="ViewModel\PostVM.cs" />
+    <Compile Include="ViewModel\ProductVM.cs" />
+    <Compile Include="ViewModel\ProviderVM.cs" />
+    <Compile Include="ViewModel\PurchaseVM.cs" />
+    <Compile Include="ViewModel\SplashScreenVM.cs" />
+    <Compile Include="ViewModel\UnitVM.cs" />
+    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\Windows\DialogWindows\BrandContext.xaml.cs">
+      <DependentUpon>BrandContext.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\DialogWindows\CategoryContext.xaml.cs">
+      <DependentUpon>CategoryContext.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Copy.xaml.cs">
+      <DependentUpon>Copy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\User.xaml.cs">
+      <DependentUpon>User.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Brand.xaml.cs">
+      <DependentUpon>Brand.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Category.xaml.cs">
+      <DependentUpon>Category.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\DialogWindows\ContextConnection.xaml.cs">
       <DependentUpon>ContextConnection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\LoginContext.xaml.cs">
+    <Compile Include="View\Department.xaml.cs">
+      <DependentUpon>Department.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Employee.xaml.cs">
+      <DependentUpon>Employee.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Give.xaml.cs">
+      <DependentUpon>Give.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GiveDetail.xaml.cs">
+      <DependentUpon>GiveDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\DialogWindows\DepartmentContext.xaml.cs">
+      <DependentUpon>DepartmentContext.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\DialogWindows\EmployeeContext.xaml.cs">
+      <DependentUpon>EmployeeContext.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\LoginContext.xaml.cs">
       <DependentUpon>LoginContext.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MainForm.xaml.cs">
+    <Compile Include="View\Windows\MainForm.xaml.cs">
       <DependentUpon>MainForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MessageWindow.xaml.cs">
-      <DependentUpon>MessageWindow.xaml</DependentUpon>
+    <Compile Include="View\Post.xaml.cs">
+      <DependentUpon>Post.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\SplashScreen.xaml.cs">
+    <Compile Include="View\Product.xaml.cs">
+      <DependentUpon>Product.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Provider.xaml.cs">
+      <DependentUpon>Provider.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Purchase.xaml.cs">
+      <DependentUpon>Purchase.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Unit.xaml.cs">
+      <DependentUpon>Unit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\DialogWindows\UserMessageWindow.xaml.cs">
+      <DependentUpon>UserMessageWindow.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -154,119 +409,277 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Styles\Button.xaml">
+    <Page Include="Resources\Styles\Button.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\CheckBox.xaml">
+    <Page Include="Resources\Styles\CheckBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\ComboBox.xaml">
+    <Page Include="Resources\Styles\ComboBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\ContextMenu.xaml">
+    <Page Include="Resources\Styles\ContextMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\DataGrid.xaml">
+    <Page Include="Resources\Styles\DataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\DateTimePicker.xaml">
+    <Page Include="Resources\Styles\DateTimePicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\MenuItem.xaml">
+    <Page Include="Resources\Styles\MenuItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\NumericUpDown.xaml">
+    <Page Include="Resources\Styles\NumericUpDown.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\Page.xaml">
+    <Page Include="Resources\Styles\Page.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\ProgressBar.xaml">
+    <Page Include="Resources\Styles\ProgressBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\ScrollBar.xaml">
+    <Page Include="Resources\Styles\ScrollBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\SpringAnimation.xaml">
+    <Page Include="Resources\Styles\SpringAnimation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\TextBox.xaml">
+    <Page Include="Resources\Styles\TextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Utilities\DataTemplate.xaml">
+    <Page Include="View\Windows\DialogWindows\BrandContext.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ContextConnection.xaml">
+    <Page Include="View\Windows\DialogWindows\CategoryContext.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\LoginContext.xaml">
+    <Page Include="View\Copy.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\MainForm.xaml">
+    <Page Include="View\User.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\MessageWindow.xaml">
+    <Page Include="View\Brand.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\SplashScreen.xaml">
+    <Page Include="View\Category.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\DialogWindows\ContextConnection.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Department.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Employee.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Give.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\GiveDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\DialogWindows\DepartmentContext.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\DialogWindows\EmployeeContext.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\LoginContext.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\MainForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Post.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Product.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Provider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Purchase.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\SplashScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Unit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\DialogWindows\UserMessageWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Pictures\IconFormUser.png" />
+    <Resource Include="Resources\Pictures\IconFormUser.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Pictures\Accept.png" />
-    <Resource Include="Pictures\ArrowDown.png" />
-    <Resource Include="Pictures\ArrowLeft.png" />
-    <Resource Include="Pictures\cross.png" />
-    <Resource Include="Pictures\crossWhite.png" />
-    <Resource Include="Pictures\Default.png" />
-    <Resource Include="Pictures\delete.png" />
-    <Resource Include="Pictures\Edit.png" />
-    <Resource Include="Pictures\exit1.png" />
-    <Resource Include="Pictures\IconFormMessage.png" />
-    <Resource Include="Pictures\IconHelp.png" />
-    <Resource Include="Pictures\IconHost.png" />
-    <Resource Include="Pictures\iconLock.png" />
-    <Resource Include="Pictures\IconMain.png" />
-    <Resource Include="Pictures\IconQuestion.png" />
-    <Resource Include="Pictures\IconWarning.png" />
-    <Resource Include="Pictures\ImageEmployee.png" />
-    <Resource Include="Pictures\inVisible.png" />
-    <Resource Include="Pictures\Visible.png" />
+    <Resource Include="Resources\Pictures\Accept.png" />
+    <Resource Include="Resources\Pictures\ArrowDown.png" />
+    <Resource Include="Resources\Pictures\ArrowLeft.png" />
+    <Resource Include="Resources\Pictures\cross.png" />
+    <Resource Include="Resources\Pictures\crossWhite.png" />
+    <Resource Include="Resources\Pictures\Default.png" />
+    <Resource Include="Resources\Pictures\delete.png" />
+    <Resource Include="Resources\Pictures\Edit.png" />
+    <Resource Include="Resources\Pictures\exit1.png" />
+    <Resource Include="Resources\Pictures\IconFormMessage.png" />
+    <Resource Include="Resources\Pictures\IconHelp.png" />
+    <Resource Include="Resources\Pictures\IconHost.png" />
+    <Resource Include="Resources\Pictures\iconLock.png" />
+    <Resource Include="Resources\Pictures\IconMain.png" />
+    <Resource Include="Resources\Pictures\IconQuestion.png" />
+    <Resource Include="Resources\Pictures\IconWarning.png" />
+    <Resource Include="Resources\Pictures\ImageEmployee.png" />
+    <Resource Include="Resources\Pictures\inVisible.png" />
+    <Resource Include="Resources\Pictures\Visible.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Pictures\Background.png" />
-    <Resource Include="Pictures\IconLogo.png" />
+    <Resource Include="Resources\Pictures\Background.png" />
+    <Resource Include="Resources\Pictures\IconLogo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Pictures\Logo.png" />
+    <Resource Include="Resources\Pictures\Logo.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Pictures\ImageDB.png" />
+    <Resource Include="Resources\Pictures\ImageDB.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Pictures\IconFormDB.png" />
+    <Resource Include="Resources\Pictures\IconFormDB.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageProductMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageProviderMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageEmployeeMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageCopyMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageConnectionMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageAccountMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageAdminMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageExitMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconClose.png" />
+    <Resource Include="Resources\Pictures\IconPlace.png" />
+    <Resource Include="Resources\Pictures\IconTurn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconProgramm.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconPrint.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\AddContextMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\DownArrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageCategoryMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageBrandMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageUnitMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImagePurchaseMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageDepartmentMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImagePostMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageGiveDetailMenu.png" />
+    <Resource Include="Resources\Pictures\ImageGiveMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconCopy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageBrandContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageDBContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\iconUnlock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconBrand.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconCategory.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageCategoryContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconDepartment.png" />
+    <Resource Include="Resources\Pictures\ImageDepartmentContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageEmployeeContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconEmployee.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
