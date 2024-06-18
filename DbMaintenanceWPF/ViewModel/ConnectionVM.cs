@@ -10,26 +10,43 @@ using System.Windows.Input;
 
 namespace DbMaintenanceWPF.ViewModel
 {
-    class ConnectionVM(ConnectionM model, Database database, ICommandFactory commandFactory) : ViewModelBase
+    public class ConnectionVM : ViewModelBase
     {
+        public ConnectionVM(ConnectionM model, Database database, ICommandFactory commandFactory)
+        {
+            Model = model;
+            Database = database;
+            CommandFactory = commandFactory;
+
+            TextServer = Database.stringConnection.Server;
+            TextPort = Database.stringConnection.Port.ToString();
+            TextDB = Database.stringConnection.Database;
+            TextUser = Database.stringConnection.UserID;
+            TextPassword = Database.stringConnection.Password;
+        }
+
         #region Свойства
 
         public event EventHandler<EventArgs<bool>> Complete;
-        private readonly Dictionary<string, object> _Values = new();
 
-        readonly ConnectionM Model = model;
-        readonly Database Database = database;
-        readonly ICommandFactory CommandFactory = commandFactory;
+        readonly ConnectionM Model;
+        readonly Database Database;
+        readonly ICommandFactory CommandFactory;
 
-        public string TextServer { get => GetValue(Database.stringConnection.Server); set => SetValue(value); }
+        string textServer;
+        public string TextServer { get => textServer; set => Set(ref textServer, value); }
 
-        public string TextPort { get => GetValue(Database.stringConnection.Port.ToString()); set => SetValue(value); }
+        string textPort;
+        public string TextPort { get => textPort; set => Set(ref textPort, value); }
 
-        public string TextDB { get => GetValue(Database.stringConnection.Database); set => SetValue(value); }
+        string textDB;
+        public string TextDB { get => textDB; set => Set(ref textDB, value); }
 
-        public string TextUser { get => GetValue(Database.stringConnection.UserID); set => SetValue(value); }
+        string textUser;
+        public string TextUser { get => textUser; set => Set(ref textUser,value); }
 
-        public string TextPassword { get => GetValue(Database.stringConnection.Password); set => SetValue(value); }
+        string textPassword;
+        public string TextPassword { get => textPassword; set => Set(ref textPassword, value); }
 
         #endregion
 
@@ -43,7 +60,11 @@ namespace DbMaintenanceWPF.ViewModel
         public ICommand CommitCommand => _CommitCommand
             ??= new RelayCommand(OnCommitCommandExecuted, CanCommitCommandExecute);
 
-        private bool CanCommitCommandExecute(object p) => true;
+        private bool CanCommitCommandExecute(object p) => 
+            !string.IsNullOrEmpty(TextServer) &&
+            !string.IsNullOrEmpty(TextPort) &&
+            !string.IsNullOrEmpty(TextDB) &&
+            !string.IsNullOrEmpty(TextUser);
         private void OnCommitCommandExecuted(object p)
         {
             Model.SaveNewConnection(TextServer, TextPort, TextDB, TextUser, TextPassword);
@@ -62,6 +83,7 @@ namespace DbMaintenanceWPF.ViewModel
         private void OnResetCommandExecuted(object p)
         {
             Model.ResetConnectionToDefault();
+            Model.ResetDatabaseToDefault();
             CommandFactory.CreateRestartApplicationCommand().Execute(null); ;
         }
 
@@ -76,27 +98,9 @@ namespace DbMaintenanceWPF.ViewModel
 
         private bool CanCancelCommandExecute(object p) => true;
 
-        private void OnCancelCommandExecuted(object p)
-        {
-            CommandFactory.CreateCloseApplicationCommand().Execute(null); ;
-        }
+        private void OnCancelCommandExecuted(object p) => Complete?.Invoke(this, false);
 
         #endregion
-
-        protected virtual bool SetValue(object value, [CallerMemberName] string Property = null)
-        {
-            if (_Values.TryGetValue(Property!, out var old_value) && Equals(value, old_value))
-                return false;
-            _Values[Property] = value;
-            OnPropertyChanged(Property);
-            return true;
-        }
-        protected virtual T GetValue<T>(T Default, [CallerMemberName] string Property = null)
-        {
-            if (_Values.TryGetValue(Property!, out var value))
-                return (T)value;
-            return Default;
-        }
 
         #endregion
     }

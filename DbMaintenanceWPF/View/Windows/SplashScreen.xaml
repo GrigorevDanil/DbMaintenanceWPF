@@ -48,7 +48,8 @@
 
         <Image
             Source="/Resources/Pictures/Logo.png" 
-            Margin="0,0,0,35" Width="150" Height="150"/>
+            Margin="0,0,0,35" Width="150" Height="150"
+            RenderOptions.BitmapScalingMode="HighQuality"/>
         
         <ProgressBar 
             Style="{DynamicResource RoundProgressBarStyle}" 

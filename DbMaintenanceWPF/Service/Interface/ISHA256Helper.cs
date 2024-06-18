@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DbMaintenanceWPF.Service.Interface
 {
-    interface ISHA256Helper
+    public interface ISHA256Helper
     {
         string HashPassword(string password, string salt);
         string CreateSalt();

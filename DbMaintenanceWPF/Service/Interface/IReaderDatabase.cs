@@ -12,6 +12,6 @@ namespace DbMaintenanceWPF.Service.Interface
     {
         T LoadRecord<T>(string query, Func<MySqlDataReader, T> createItem);
         List<T> LoadList<T>(string com, Func<MySqlDataReader, T> createItem);
-        DataTable OperationSelect(string com, string[] values);
+        DataTable OperationSelect(string com, object[] values);
     }
 }

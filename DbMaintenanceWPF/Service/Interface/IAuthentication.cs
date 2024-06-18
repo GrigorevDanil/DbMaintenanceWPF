@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DbMaintenanceWPF.Service.Interface
 {
-    interface IAuthentication
+    public interface IAuthentication
     {
         (bool, string, object) ValidateUserDatabase(string login, string password);
         (bool, string, object) ValidateUserServer(string username, string password, string host);

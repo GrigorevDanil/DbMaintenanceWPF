@@ -1,35 +1,52 @@
 ﻿using DbMaintenanceWPF.Infrastructure.Commands;
 using DbMaintenanceWPF.Models;
+using DbMaintenanceWPF.Models.ItemModels;
 using DbMaintenanceWPF.Models.Items;
 using DbMaintenanceWPF.Service.Interface;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DbMaintenanceWPF.ViewModel
 {
-    class PostVM : Base.ViewModelBase
+    public class PostVM(PostM model, IUserDialogService userDialog, IStorageViewModel storageViewModel) : Base.ViewModelBase
     {
 
         #region Свойства
 
-        readonly PostM Model;
-        readonly IUserDialogService UserDialog;
+        readonly PostM Model = model;
+        readonly IUserDialogService UserDialog = userDialog;
         public IEnumerable<Post> Posts => Model.PublicListPosts;
+
+        public Visibility VisibleComponent
+        {
+            get
+            {
+                var user = (storageViewModel.GetViewModel(nameof(MainVM)) as MainVM)?.CurrentUser as User;
+                return user?.Role == "Пользователь" ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
 
         #endregion
 
         #region Команды
 
+        public void UpdateList() => OnPropertyChanged(nameof(Posts));
+
         #region AddCommand - Добавление должности
 
         private ICommand addCommand;
         public ICommand AddCommand => addCommand ??= new RelayCommand(OnAddCommandExecuted, CanAddCommandExecute);
-        private static bool CanAddCommandExecute(object p) => p is Post;
+        private static bool CanAddCommandExecute(object p) => true;
 
         private void OnAddCommandExecuted(object p)
         {
-            var post = (Post)p;
-            if (!UserDialog.Edit(post, "Добавление должности")) OnPropertyChanged(nameof(Posts));
+            var post = new Post();
+            if (UserDialog.Edit(post, "Добавление должности"))
+            {
+                Model.Create(post);
+                OnPropertyChanged(nameof(Posts));
+            }
         }
 
         #endregion
@@ -43,7 +60,7 @@ namespace DbMaintenanceWPF.ViewModel
         private void OnEditCommandExecuted(object p)
         {
             Post post = (Post)p;
-            if (!UserDialog.Edit(post, "Редактирование должности"))
+            if (UserDialog.Edit(post, "Редактирование должности"))
             {
                 Model.Update(post);
                 OnPropertyChanged(nameof(Posts));
@@ -70,12 +87,22 @@ namespace DbMaintenanceWPF.ViewModel
 
         #endregion
 
-        #endregion
+        #region MultiplyRemoveCommand - Множественное удаление должностей
 
-        public PostVM(PostM model, IUserDialogService userDialog)
+        private ICommand multiplyRemoveCommand;
+        public ICommand MultiplyRemoveCommand => multiplyRemoveCommand ??= new RelayCommand(OnMultiplyRemoveCommandExecuted, CanMultiplyRemoveCommandExecute);
+        private static bool CanMultiplyRemoveCommandExecute(object p) => true;
+
+        private void OnMultiplyRemoveCommandExecuted(object p)
         {
-            Model = model;
-            UserDialog = userDialog;
+            if (UserDialog.ShowConfirm("Удаление должностей", "Удалить выбранные должности?"))
+            {
+                foreach (Post post in Posts) if (post.IsSelected) Model.Remove(post);
+                OnPropertyChanged(nameof(Posts));
+            }
         }
+
+        #endregion
+        #endregion
     }
 }

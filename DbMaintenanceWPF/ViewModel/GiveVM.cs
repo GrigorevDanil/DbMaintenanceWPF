@@ -1,42 +1,53 @@
 ﻿using DbMaintenanceWPF.Infrastructure.Commands;
 using DbMaintenanceWPF.Models;
+using DbMaintenanceWPF.Models.ItemModels;
 using DbMaintenanceWPF.Models.Items;
 using DbMaintenanceWPF.Service.Interface;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DbMaintenanceWPF.ViewModel
 {
-    class GiveVM : Base.ViewModelBase
+    public class GiveVM(GiveM model, IUserDialogService userDialog, IStorageViewModel storageViewModel) : Base.ViewModelBase
     {
 
         #region Свойства
 
-        readonly GiveM Model;
-        readonly IUserDialogService UserDialog;
+        readonly GiveM Model = model;
+        readonly IUserDialogService UserDialog = userDialog;
         public IEnumerable<Give> Gives => Model.PublicListGives;
         public IEnumerable<Employee> Employees => Model.PublicListEmployees;
 
+        public Visibility VisibleComponent
+        {
+            get
+            {
+                var user = (storageViewModel.GetViewModel(nameof(MainVM)) as MainVM)?.CurrentUser as User;
+                return user?.Role == "Пользователь" ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
 
-        bool flagEmployee;
-        public bool FlagEmployee { get => flagEmployee; set { Set(ref flagEmployee, value); SelectedEmployee = null; } }
-
-        Employee selectedEmployee;
-        public Employee SelectedEmployee { get => selectedEmployee; set => Set(ref selectedEmployee, value); }
         #endregion
 
         #region Команды
+
+        public void UpdateList() => OnPropertyChanged(nameof(Gives));
 
         #region AddCommand - Добавление выдачи
 
         private ICommand addCommand;
         public ICommand AddCommand => addCommand ??= new RelayCommand(OnAddCommandExecuted, CanAddCommandExecute);
-        private static bool CanAddCommandExecute(object p) => p is Give;
+        private static bool CanAddCommandExecute(object p) => true;
 
         private void OnAddCommandExecuted(object p)
         {
-            var give = (Give)p;
-            if (!UserDialog.Edit(give, "Добавление выдачи")) OnPropertyChanged(nameof(Gives));
+            var give = new Give();
+            if (UserDialog.Edit(give, "Добавление выдачи"))
+            {
+                Model.Create(give);
+                OnPropertyChanged(nameof(Gives));
+            }
         }
 
         #endregion
@@ -50,7 +61,7 @@ namespace DbMaintenanceWPF.ViewModel
         private void OnEditCommandExecuted(object p)
         {
             Give give = (Give)p;
-            if (!UserDialog.Edit(give, "Редактирование выдачи"))
+            if (UserDialog.Edit(give, "Редактирование выдачи"))
             {
                 Model.Update(give);
                 OnPropertyChanged(nameof(Gives));
@@ -77,12 +88,22 @@ namespace DbMaintenanceWPF.ViewModel
 
         #endregion
 
-        #endregion
+        #region MultiplyRemoveCommand - Множественное удаление выдач
 
-        public GiveVM(GiveM model, IUserDialogService userDialog)
+        private ICommand multiplyRemoveCommand;
+        public ICommand MultiplyRemoveCommand => multiplyRemoveCommand ??= new RelayCommand(OnMultiplyRemoveCommandExecuted, CanMultiplyRemoveCommandExecute);
+        private static bool CanMultiplyRemoveCommandExecute(object p) => true;
+
+        private void OnMultiplyRemoveCommandExecuted(object p)
         {
-            Model = model;
-            UserDialog = userDialog;
+            if (UserDialog.ShowConfirm("Удаление выдач", "Удалить выбранные выдачи?"))
+            {
+                foreach (Give give in Gives) if (give.IsSelected) Model.Remove(give);
+                OnPropertyChanged(nameof(Gives));
+            }
         }
+
+        #endregion
+        #endregion
     }
 }

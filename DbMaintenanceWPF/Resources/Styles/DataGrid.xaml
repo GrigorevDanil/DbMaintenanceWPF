@@ -196,6 +196,7 @@
                             <DataGridCellsPresenter x:Name="dataGridCellsPresenter" 
           Grid.Column="1"
            ItemsPanel="{TemplateBinding ItemsPanel}"
+            
            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                             <DataGridRowHeader x:Name="dataGridRowHeader" 
           SelectiveScrollingGrid.SelectiveScrollingOrientation="Vertical"  

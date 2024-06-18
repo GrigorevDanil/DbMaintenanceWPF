@@ -29,6 +29,7 @@ namespace DbMaintenanceWPF.View
         {
             if (!(e.Item is Models.Items.Department department)) return;
 
+            if (TextFilter == null) return;
             var filter_text = TextFilter.Text;
             if (filter_text.Length == 0) return;
 
@@ -37,13 +38,5 @@ namespace DbMaintenanceWPF.View
             e.Accepted = false;
         }
 
-        private void TextFilter_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var text_box = (TextBox)sender;
-            var collection = (CollectionViewSource)text_box.FindResource("DepartmentsCollection");
-            collection.View.Refresh();
-        }
-
-        
     }
 }

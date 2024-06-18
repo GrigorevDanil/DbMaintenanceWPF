@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DbMaintenanceWPF.Service.Interface
 {
-    interface IErrorHandlerDatabase
+    public interface IErrorHandlerDatabase
     {
         void ProcessError(MySqlException exp);
     }

@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        DataContext="{Binding LoginModel, Source={StaticResource Locator}}"
         xmlns:res="clr-namespace:DbMaintenanceWPF.Resources"
         xmlns:cmd="clr-namespace:DbMaintenanceWPF.Infrastructure.Commands"
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
@@ -19,6 +18,7 @@
         ResizeMode="NoResize"
         WindowStyle="None"
         Background="Transparent">
+    
     <WindowChrome.WindowChrome>
         <WindowChrome/>
     </WindowChrome.WindowChrome>
@@ -117,6 +117,7 @@
                 FontFamily="Nautilus Pompilius"/>
 
             <WrapPanel Orientation="Horizontal" Grid.Row="2">
+                
                 <CheckBox 
                     Style="{StaticResource chkBullet}"
                     IsChecked="{Binding FlagServer}"
@@ -137,12 +138,14 @@
                     FontSize="16" 
                     FontFamily="Nautilus Pompilius"
                     Margin="5,0,0,0"/>
+                
             </WrapPanel>
 
             <Image 
                 x:Name="imgEmp"
                 Grid.Row="3" 
                 Source="/Resources/Pictures/ImageEmployee.png"
+                RenderOptions.BitmapScalingMode="HighQuality"
                 Width="30"
                 Height="30" 
                 HorizontalAlignment="Left"
@@ -167,6 +170,7 @@
             <Image 
                 x:Name="imgHost"
                 Grid.Row="3" 
+                RenderOptions.BitmapScalingMode="HighQuality"
                 Source="/Resources/Pictures/IconHost.png"
                 Width="30" 
                 Height="30"
@@ -226,6 +230,7 @@
 
                 <Image
                     Source="/Resources/Pictures/IconLock.png"
+                    RenderOptions.BitmapScalingMode="HighQuality"
                     Width="35" 
                     Height="35" 
                     HorizontalAlignment="Left"
@@ -262,6 +267,7 @@
                     Background="Transparent" 
                     BorderThickness="0" 
                     HorizontalAlignment="Right"
+                    RenderOptions.BitmapScalingMode="HighQuality"
                     Height="35"
                     Margin="0,0,15,0" 
                     Width="40" 
@@ -278,6 +284,7 @@
                                         Width="35"
                                         Height="35"
                                         HorizontalAlignment="Left"
+                                        RenderOptions.BitmapScalingMode="HighQuality"
                                         Source="/Resources/Pictures/inVisible.png"/>
                                 </Setter.Value>
                             </Setter>
@@ -293,6 +300,7 @@
                                                 Width="35"
                                                 Height="35" 
                                                 HorizontalAlignment="Left"
+                                                RenderOptions.BitmapScalingMode="HighQuality"
                                                 Source="/Resources/Pictures/Visible.png"/>
                                         </Setter.Value>
                                     </Setter>
@@ -301,6 +309,7 @@
                         </Style>
                     </ToggleButton.Style>
                 </ToggleButton>
+                
             </Grid>
 
             <TextBlock
@@ -336,6 +345,7 @@
                         Width="20" 
                         Height="20" 
                         HorizontalAlignment="Left"
+                        RenderOptions.BitmapScalingMode="HighQuality"
                         Margin="0,2,25,0"/>
                     <TextBlock 
                         Text="Справка" 
@@ -366,6 +376,7 @@
                         Width="20"
                         Height="20"
                         HorizontalAlignment="Left"
+                        RenderOptions.BitmapScalingMode="HighQuality"
                         Margin="0,2,25,0"/>
                     <TextBlock 
                         Text="Войти"

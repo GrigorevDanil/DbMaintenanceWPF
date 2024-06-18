@@ -1,0 +1,448 @@
+﻿<Window x:Class="DbMaintenanceWPF.View.Windows.DialogWindows.PrintWindows.PrintMaterialStatementContext"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DbMaintenanceWPF.View.Windows.DialogWindows.PrintWindows"
+        mc:Ignorable="d"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:ext="clr-namespace:DbMaintenanceWPF.Infrastructure.Extensions"
+        xmlns:cmd="clr-namespace:DbMaintenanceWPF.Infrastructure.Commands"
+        Style="{StaticResource SpringAnimation}"
+        Title="Настройки печати" 
+        Icon="/Resources/Pictures/IconFormPrint.png"
+        Height="600"
+        Width="1000" 
+        WindowStartupLocation="CenterScreen" 
+        AllowsTransparency="True" 
+        ResizeMode="NoResize"
+        WindowStyle="None" 
+        Background="Transparent">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome/>
+    </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <CollectionViewSource x:Key="GivesCollection" Source="{Binding Gives}" Filter="GivesCollection_OnFilter"/>
+    </Window.Resources>
+
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="27*"/>
+            <RowDefinition Height="65*"/>
+            <RowDefinition Height="385*"/>
+            <RowDefinition Height="73*"/>
+        </Grid.RowDefinitions>
+
+        <Border 
+Background="#093A5C" 
+CornerRadius="18"
+Grid.RowSpan="4"/>
+
+        <Border
+Background="AliceBlue" 
+CornerRadius="15" 
+Grid.RowSpan="4"
+Margin="5,5,5,5"/>
+
+        <Border 
+Background="#093A5C"
+CornerRadius="10"
+Margin="25,10,25,5"/>
+
+        <StackPanel
+Orientation="Horizontal"
+Grid.Row="1" 
+HorizontalAlignment="Center" 
+VerticalAlignment="Center" Height="45" Width="328" >
+
+            <Image
+    Source="/Resources/Pictures/ImagePrintContext.png" 
+    Margin="0,0,15,0"
+    Width="40" 
+    Height="40"
+    RenderOptions.BitmapScalingMode="HighQuality"/>
+
+            <TextBlock 
+ Text="Настройки печати"
+ FontSize="34"
+ FontFamily="Nautilus Pompilius" VerticalAlignment="Center"/>
+
+        </StackPanel>
+
+        <Grid Grid.Row="2" Margin="15,0,15,0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Border 
+                Background="#093A5C" 
+                CornerRadius="18"
+                Grid.ColumnSpan="2"/>
+
+            <Border
+                Background="AliceBlue" 
+                CornerRadius="15" 
+                Grid.ColumnSpan="2" 
+                Margin="5,5,5,4"/>
+
+
+            <Grid Margin="5">
+
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="239*"/>
+                    <ColumnDefinition Width="408*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition Height="4*"/>
+                    <RowDefinition/>
+
+                </Grid.RowDefinitions>
+
+                <TextBlock 
+Text="Учреждение*:" 
+FontSize="24" 
+FontFamily="Nautilus Pompilius" 
+HorizontalAlignment="Center" 
+VerticalAlignment="Center"/>
+
+                <TextBox
+MaxLength="30" 
+Style="{StaticResource HintTextBox}" 
+Tag="Название учреждения" 
+Text="{Binding TextStructureName,UpdateSourceTrigger=PropertyChanged}" 
+Grid.Column="1" 
+TextAlignment="Left"
+FontSize="24" 
+FontFamily="Times New Roman" VerticalAlignment="Center" Margin="10,5,10,0" />
+
+
+                <TextBlock 
+            Text="Мат-о от-е лицо*:" 
+            FontSize="24" 
+            Grid.Row="1"
+            FontFamily="Nautilus Pompilius" 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center"/>
+
+                <ComboBox
+               Style="{StaticResource ComboboxStyle}" 
+               ItemsSource="{Binding Employees}"
+               DisplayMemberPath="TextEmployee"
+               SelectedItem="{Binding SelectedMaterialPerson}"
+               IsReadOnly="True"
+               Grid.Column="1"
+               FontSize="20" 
+               Grid.Row="1"
+               FontFamily="Nautilus Pompilius"  
+               VerticalAlignment="Center" 
+               Margin="10,0,10,0" />
+
+
+
+                <TextBlock 
+            Text="Стру-е подраз-е*:" 
+            FontSize="24" 
+            FontFamily="Nautilus Pompilius" 
+            HorizontalAlignment="Center" 
+            VerticalAlignment="Center"
+            Grid.Row="2"/>
+
+                <ComboBox
+Style="{StaticResource ComboboxStyle}" 
+ItemsSource="{Binding Departments}"
+DisplayMemberPath="Title"
+SelectedItem="{Binding SelectedDepartment}"
+IsReadOnly="True"
+Grid.Column="1"
+Grid.Row="2"
+FontSize="20" 
+FontFamily="Nautilus Pompilius"  
+VerticalAlignment="Center" 
+Margin="10,0,10,0" Height="28"/>
+
+                <TextBlock 
+             Text="Дата выдачи*:" 
+             FontSize="24" 
+             FontFamily="Nautilus Pompilius" 
+             HorizontalAlignment="Center" 
+             VerticalAlignment="Center"
+             Grid.Row="3"/>
+
+                <DatePicker 
+                    x:Name="datePickerDateProvider"
+             Style="{StaticResource DatePickerStyle}" 
+             SelectedDate="{Binding DateProvide}" 
+             BorderThickness="0.5" 
+             Grid.Column="1" 
+             Grid.Row="3"
+             FontSize="18" 
+             FontFamily="Nautilus Pompilius" 
+             VerticalAlignment="Center" 
+             Margin="10,0,10,0">
+
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectedDateChanged">
+                            <ext:RefreshCollectionViewSourceExtension Source="{StaticResource GivesCollection}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+
+
+                </DatePicker>
+
+                <Grid 
+               Grid.Row="4" 
+               Grid.ColumnSpan="2" >
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock 
+                   Text="Получатели*:" 
+                   FontSize="24" 
+                   FontFamily="Nautilus Pompilius" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center"/>
+
+                    <ComboBox
+                   Style="{StaticResource ComboboxStyle}" 
+                   ItemsSource="{Binding Source={StaticResource GivesCollection}}"
+                   DisplayMemberPath="Employee.TextEmployee"
+                   SelectedItem="{Binding SelectedGive}"
+                   Grid.Column="1" 
+                   IsReadOnly="True"
+                   FontFamily="Nautilus Pompilius" 
+                   FontSize="20" 
+                   VerticalAlignment="Center"
+                   Margin="10,0,10,0"/>
+
+                    <Grid Grid.Column="3">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button
+                         Style="{StaticResource RoundCorner}"
+                         Margin="5,5,5,5"
+                         Command="{Binding AddCommand}" VerticalAlignment="Center">
+
+                            <Image Source="/Resources/Pictures/AddContextMenu.png" Width="25" Height="30"/>
+
+                        </Button>
+
+                        <Button
+                         Style="{StaticResource RoundCorner}"
+                         Margin="5,5,5,5"
+                         Grid.Column="1"
+                         Command="{Binding RemoveCommand}"
+                         CommandParameter="SelectedGive" VerticalAlignment="Center">
+
+                            <Image Source="/Resources/Pictures/Delete.png" Width="25" Height="25" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                        </Button>
+
+                    </Grid>
+
+                </Grid>
+
+                <ListBox 
+                    ItemsSource="{Binding SelectedGives}"
+                    SelectedItem="{Binding SelectedGiveInSelected}"
+                    DisplayMemberPath="TextGive"
+                    Grid.Row="5" 
+                    FontFamily="Nautilus Pompilius" 
+                    Grid.ColumnSpan="2" 
+                    Margin="15,15,0,15"
+                    FontSize="16"/>
+
+                <TextBlock 
+                    Text="Сумма выдачи:" 
+                    FontSize="24" 
+                    FontFamily="Nautilus Pompilius" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center"
+                    Grid.Row="6"/>
+
+                <TextBlock 
+                    Text="{Binding TextSum}" 
+                    FontSize="24" 
+                    FontFamily="Nautilus Pompilius" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Center"
+                    Grid.Row="6"
+                    Grid.Column="1"/>
+
+            </Grid>
+
+            <Grid Grid.Column="1" >
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="41*"/>
+                    <RowDefinition Height="420*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock 
+                    Text="Товары" 
+                    FontSize="24" 
+                    FontFamily="Nautilus Pompilius" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Bottom" />
+
+                <ListBox Grid.Row="1" Margin="15,0,15,15" FontFamily="Nautilus Pompilius" FontSize="16" ItemsSource="{Binding IncomingProducts}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock 
+                 Text="{Binding Product.Title, StringFormat='Товар: {0}'}" 
+                 FontSize="14" 
+                 FontFamily="Nautilus Pompilius" 
+                 HorizontalAlignment="Left" 
+                 VerticalAlignment="Center"/>
+                                <TextBlock 
+                 Text="{Binding Product.Model, StringFormat='Модель: {0}'}" 
+                 FontSize="14" 
+                 FontFamily="Nautilus Pompilius" 
+                 HorizontalAlignment="Left" 
+                 VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock 
+                     Text="{Binding CountProduct, StringFormat='Количество: {0}'}" 
+                     FontSize="14" 
+                     FontFamily="Nautilus Pompilius" 
+                     HorizontalAlignment="Left" 
+                     VerticalAlignment="Center"/>
+                                    <TextBlock 
+                      Text="{Binding Product.Unit.ShortName, StringFormat=' {0}'}"                
+                      FontSize="14" 
+                      FontFamily="Nautilus Pompilius" 
+                      HorizontalAlignment="Left" 
+                      VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <TextBlock 
+                    Text="{Binding Give.Employee.TextEmployee, StringFormat='Получатель: {0}'}" 
+                    FontSize="14" 
+                    FontFamily="Nautilus Pompilius" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+
+
+
+        </Grid>
+
+
+
+        <Border
+Background="#093A5C"  
+CornerRadius="18" 
+Grid.Row="3"
+Margin="10,10,10,10" />
+
+        <Border 
+Background="AliceBlue" 
+CornerRadius="15"
+Grid.Row="3"
+Margin="15,15,15,15" />
+
+        <Grid 
+Grid.Row="3" 
+Margin="15,15,15,15">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button  
+    Style="{StaticResource RoundCorner}"
+    Foreground="#D9D9D9" 
+    FontSize="16"
+    FontFamily="Nautilus Pompilius" 
+    IsDefault="True"
+    Margin="5,5,5,5"
+    Command="{Binding PrintCommand}">
+
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="33*"/>
+                        <ColumnDefinition Width="173*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image
+            Source="/Resources/Pictures/Accept.png"/>
+
+                    <TextBlock 
+            Text="Подтвердить" 
+            VerticalAlignment="Center" 
+            FontSize="14" 
+            FontFamily="Nautilus Pompilius" 
+            HorizontalAlignment="Center"
+            Grid.ColumnSpan="2"/>
+
+                </Grid>
+
+            </Button>
+
+            <Button  
+    Style="{StaticResource RoundCorner}"
+    Foreground="#D9D9D9" 
+    FontSize="16"
+    FontFamily="Nautilus Pompilius" 
+    IsDefault="True"
+    Margin="5,5,5,5"
+    Grid.Column="1"
+    Command="{Binding CloseCommand}"
+    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=local:PrintMaterialStatementContext}}">
+
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="33*"/>
+                        <ColumnDefinition Width="173*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image
+            Source="/Resources/Pictures/CrossWhite.png"/>
+
+                    <TextBlock 
+            Text="Отмена" 
+            VerticalAlignment="Center" 
+            FontSize="14" 
+            FontFamily="Nautilus Pompilius" 
+            HorizontalAlignment="Center"
+            Grid.ColumnSpan="2"/>
+
+                </Grid>
+
+
+            </Button>
+
+
+        </Grid>
+    </Grid>
+</Window>

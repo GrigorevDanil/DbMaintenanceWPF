@@ -4,9 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        xmlns:local="clr-namespace:DbMaintenanceWPF.View.Windows.DialogWindows"
-        xmlns:cmd="clr-namespace:DbMaintenanceWPF.Infrastructure.Commands"
-        DataContext="{Binding BrandContextModel, Source={StaticResource Locator}}" 
+        xmlns:vm="clr-namespace:DbMaintenanceWPF.ViewModel.DialogViewModel"
         Style="{StaticResource SpringAnimation}"
         Title="{Binding TextWindow}" 
         Icon="/Resources/Pictures/IconBrand.png"
@@ -21,6 +19,10 @@
     <WindowChrome.WindowChrome>
         <WindowChrome/>
     </WindowChrome.WindowChrome>
+
+    <Window.DataContext>
+        <vm:BrandContextVM/>
+    </Window.DataContext>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -59,7 +61,8 @@
             Source="/Resources/Pictures/ImageBrandContext.png" 
             Margin="0,0,15,0"
             Width="40" 
-            Height="40"/>
+            Height="40"
+            RenderOptions.BitmapScalingMode="HighQuality"/>
 
             <TextBlock 
          Text="{Binding TextWindow}"
@@ -89,9 +92,9 @@
 
 
             <TextBlock 
-            Text="Бренд:" 
+            Text="Бренд*:" 
             FontSize="24" 
-            FontFamily="Nautilus Pompilius" HorizontalAlignment="Center" VerticalAlignment="Center" Height="32" Width="64"/>
+            FontFamily="Nautilus Pompilius" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
             <TextBox
             MaxLength="30" 
@@ -101,7 +104,7 @@
             Grid.Column="1" 
             TextAlignment="Left"
             FontSize="24" 
-            FontFamily="Times New Roman" VerticalAlignment="Center" Margin="10,0,10,0" Height="30"/>
+            FontFamily="Times New Roman" VerticalAlignment="Center" Margin="10,0,10,0" />
 
         </Grid>
 

@@ -1,23 +1,39 @@
 ﻿using DbMaintenanceWPF.Infrastructure.Commands;
 using DbMaintenanceWPF.Models.Items;
+using DbMaintenanceWPF.Service.Interface;
 using DbMaintenanceWPF.ViewModel.Base;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace DbMaintenanceWPF.ViewModel.DialogViewModel
 {
-    class EmployeeContextVM(EmployeeVM viewModel) : ViewModelBase
+    public class EmployeeContextVM : ViewModelBase
     {
+        public EmployeeContextVM()
+        {
+            Departments = App.Host.Services.GetRequiredService<ICreaterEntity<Department>>().GetList();
+            Posts = App.Host.Services.GetRequiredService<ICreaterEntity<Post>>().GetList();
+
+            SelectedDepartment = Departments.FirstOrDefault();
+            SelectedPost = Posts.FirstOrDefault();
+
+        }
+
         #region Свойства
 
         public event EventHandler<EventArgs<bool>> Complete;
 
-        public IEnumerable<Department> Departments => viewModel.Departments;
-        public IEnumerable<Post> Posts => viewModel.Posts;
+        IEnumerable<Department> departments;
+        public IEnumerable<Department> Departments { get => departments; set => Set(ref departments, value); }
+
+        IEnumerable<Post> posts;
+        public IEnumerable<Post> Posts { get => posts; set => Set(ref posts, value); }
 
         string textWindow;
         public string TextWindow { get => textWindow; set => Set(ref textWindow, value); }
@@ -46,8 +62,27 @@ namespace DbMaintenanceWPF.ViewModel.DialogViewModel
         string textAddress;
         public string TextAddress { get => textAddress; set { Set(ref textAddress, value); CanCommitCommandExecute(null); } }
 
-        #endregion
+        bool flagLastname;
+        public bool FlagLastname { get => flagLastname; 
+            set 
+            { 
+                Set(ref flagLastname, value);
+                CanCommitCommandExecute(null);
+                if (!flagLastname) TextLastname = "";
+            } 
+        }
 
+        bool flagEmail;
+        public bool FlagEmail { get => flagEmail; 
+            set 
+            {
+                Set(ref flagEmail, value);
+                CanCommitCommandExecute(null);
+                if (!flagEmail) TextEmail = "";
+            } 
+        }
+
+        #endregion
 
         #region Команды
 
@@ -58,11 +93,16 @@ namespace DbMaintenanceWPF.ViewModel.DialogViewModel
         public ICommand CommitCommand => _CommitCommand
             ??= new RelayCommand(OnCommitCommandExecuted, CanCommitCommandExecute);
 
-        private bool CanCommitCommandExecute(object p) => true ;
-        private void OnCommitCommandExecuted(object p)
-        {
-            if (CanCancelCommandExecute(p)) Complete?.Invoke(this, true);
-        }
+        private bool CanCommitCommandExecute(object p) =>
+            !string.IsNullOrEmpty(TextSurname) &&
+            !string.IsNullOrEmpty(TextName) &&
+            !string.IsNullOrEmpty(TextNumPhone) &&
+             Regex.IsMatch(TextNumPhone, @"^\+7 \(\d{3}\) \d{3}-\d{4}$") &&
+            !string.IsNullOrEmpty(TextAddress) &&
+            (!FlagLastname || !string.IsNullOrEmpty(TextLastname)) &&
+            (!FlagEmail || !string.IsNullOrEmpty(TextEmail));
+
+        private void OnCommitCommandExecuted(object p) => Complete?.Invoke(this, true);
 
         #endregion
 

@@ -13,6 +13,8 @@ namespace DbMaintenanceWPF
 {
     public partial class App
     {
+
+
         public static bool IsDesignMode { get; private set; } = true;
         public static Window FocusedWindow => Current.Windows.Cast<Window>().FirstOrDefault(w => w.IsFocused);
 

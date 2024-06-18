@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DbMaintenanceWPF.Service.Interface
 {
-    interface ILoginAttemp
+    public interface ILoginAttemp
     {
         void UnlockUser(User user);
         void LockUser(User user);

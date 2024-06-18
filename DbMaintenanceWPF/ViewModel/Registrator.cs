@@ -1,36 +1,37 @@
-﻿using DbMaintenanceWPF.ViewModel.DialogViewModel;
+﻿using DbMaintenanceWPF.Service.Interface;
+using DbMaintenanceWPF.ViewModel.DialogViewModel;
+using DbMaintenanceWPF.ViewModel.PrintViewModel;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace DbMaintenanceWPF.ViewModel
 {
-    internal static class Registrator
+    public static class Registrator
     {
+
         public static IServiceCollection RegisterViewModels(this IServiceCollection services)
         {
-            services.AddTransient<BrandVM>();
-            services.AddTransient<CategoryVM>();
-            services.AddTransient<DepartmentVM>();
-            services.AddTransient<EmployeeVM>();
-            services.AddTransient<GiveDetailVM>();
-            services.AddTransient<GiveVM>();
-            services.AddTransient<PostVM>();
-            services.AddTransient<ProductVM>();
-            services.AddTransient<ProviderVM>();
-            services.AddTransient<PurchaseVM>();
-            services.AddTransient<UnitVM>();
-            services.AddTransient<UserVM>();
-
-            services.AddTransient<BrandContextVM>();
-            services.AddTransient<CategoryContextVM>();
-            services.AddTransient<DepartmentContextVM>();
-
+            services.AddSingleton<BrandVM>();
+            services.AddSingleton<CategoryVM>();
+            services.AddSingleton<DepartmentVM>();
+            services.AddSingleton<EmployeeVM>();
+            services.AddSingleton<GiveDetailVM>();
+            services.AddSingleton<GiveVM>();
+            services.AddSingleton<PostVM>();
+            services.AddSingleton<ProductVM>();
+            services.AddSingleton<ProviderVM>();
+            services.AddSingleton<PurchaseVM>();
+            services.AddSingleton<UnitVM>();
+            services.AddSingleton<UserVM>();
             services.AddTransient<SplashScreenVM>();
             services.AddTransient<LoginVM>();
             services.AddTransient<ConnectionVM>();
             services.AddTransient<MainVM>();
+            services.AddTransient<CopyVM>();
+            services.AddTransient<AccountVM>();
+            services.AddTransient<InfoVM>();
 
-
+            services.AddTransient<MaterialStatementVM>();
 
             return services;
         }

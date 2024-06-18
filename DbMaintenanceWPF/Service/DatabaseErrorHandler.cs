@@ -17,6 +17,7 @@ namespace DbMaintenanceWPF.Service
                 case MySqlErrorCode.UnknownDatabase:
                     {
                         ErrorHandlerFactory.CreateDatabaseNotFoundErrorHandler().ShowError();
+                        ErrorHandlerFactory.CreateUnableToConnectToHostErrorHandler().ShowError();
                     } break;
                     
                 case MySqlErrorCode.AccessDenied:

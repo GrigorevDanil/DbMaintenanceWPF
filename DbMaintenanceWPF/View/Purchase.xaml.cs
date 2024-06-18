@@ -24,5 +24,25 @@ namespace DbMaintenanceWPF.View
         {
             InitializeComponent();
         }
+
+        private void PurchasesCollection_OnFilter(object sender, FilterEventArgs e)
+        {
+            if (!(e.Item is Models.Items.Purchase purchase)) return;
+
+            bool filterPassed = true;
+
+            if (TextFilter == null) return;
+
+            var filter_text = TextFilter.Text;
+
+            if (!string.IsNullOrWhiteSpace(filter_text) && purchase.Price.ToString().IndexOf(filter_text, StringComparison.OrdinalIgnoreCase) == -1) filterPassed = false;
+
+            if (checkBoxProduct.IsChecked == true && comboBoxProduct.SelectedItem is Models.Items.Product selectedProduct) if (purchase.Product.Id != selectedProduct.Id) filterPassed = false;
+
+            if (checkBoxProvider.IsChecked == true && comboBoxProvider.SelectedItem is Models.Items.Provider selectedProvider) if (purchase.Provider.Id != selectedProvider.Id) filterPassed = false;
+
+
+            e.Accepted = filterPassed;
+        }
     }
 }

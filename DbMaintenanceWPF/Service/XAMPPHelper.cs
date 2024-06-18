@@ -5,12 +5,12 @@ using System.IO;
 
 namespace DbMaintenanceWPF.Service
 {
-    class XAMPPHelper : IXAMPPHelper
+    class XAMPPHelper(IINIManager iNIManager, IUserDialogService userDialog) : IXAMPPHelper
     {
         #region Свойства
 
-        readonly IINIManager INIManager;
-        readonly IUserDialogService UserDialog;
+        readonly IINIManager INIManager = iNIManager;
+        readonly IUserDialogService UserDialog = userDialog;
 
         #endregion
 
@@ -80,14 +80,7 @@ namespace DbMaintenanceWPF.Service
             else return true;
         }
 
-
         #endregion
-
-        public XAMPPHelper(IINIManager iNIManager, IUserDialogService userDialog)
-        {
-            INIManager = iNIManager;
-            UserDialog = userDialog;
-        }
 
     }
 }

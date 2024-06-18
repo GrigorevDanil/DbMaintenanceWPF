@@ -10,7 +10,7 @@ using System.Windows.Media;
 
 namespace DbMaintenanceWPF.Models.Items
 {
-    public class User : IEntity
+    public class User : IEntity, IEquatable<User>
     {
         public int Id { get; set; }
         public ImageSource Image { get; set; }
@@ -25,5 +25,7 @@ namespace DbMaintenanceWPF.Models.Items
         public DateTime? DateLock { get; set; }
         public string StringDateLock { get { return DateLock?.ToString("dd.MM.yyyy HH:mm"); } }
         public bool IsSelected { get; set; }
+
+        public bool Equals(User other) => Id == other.Id;
     }
 }

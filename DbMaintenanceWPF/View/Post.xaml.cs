@@ -24,5 +24,20 @@ namespace DbMaintenanceWPF.View
         {
             InitializeComponent();
         }
+
+        private void PostsCollection_OnFilter(object sender, FilterEventArgs e)
+        {
+            if (!(e.Item is Models.Items.Post post)) return;
+
+            if (TextFilter == null) return;
+
+            var filter_text = TextFilter.Text;
+            if (filter_text.Length == 0) return;
+
+            if (post.Title.IndexOf(filter_text, StringComparison.OrdinalIgnoreCase) >= 0) return;
+
+            e.Accepted = false;
+        }
+        
     }
 }

@@ -1,23 +1,35 @@
 ﻿using DbMaintenanceWPF.Infrastructure.Commands;
 using DbMaintenanceWPF.Models;
+using DbMaintenanceWPF.Models.ItemModels;
 using DbMaintenanceWPF.Models.Items;
 using DbMaintenanceWPF.Service.Interface;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DbMaintenanceWPF.ViewModel
 {
-    class CategoryVM : Base.ViewModelBase
+    public class CategoryVM(CategoryM model, IUserDialogService userDialog, IStorageViewModel storageViewModel) : Base.ViewModelBase
     {
         #region Свойства
 
-        readonly CategoryM Model;
-        readonly IUserDialogService UserDialog;
-        public ReadOnlyObservableCollection<Category> Categories => Model.PublicListCategories;
+        readonly CategoryM Model = model;
+        readonly IUserDialogService UserDialog = userDialog;
+        public IEnumerable<Category> Categories => Model.PublicListCategories;
+
+        public Visibility VisibleComponent
+        {
+            get
+            {
+                var user = (storageViewModel.GetViewModel(nameof(MainVM)) as MainVM)?.CurrentUser as User;
+                return user?.Role == "Пользователь" ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
 
         #endregion
 
         #region Команды
+        public void UpdateList() => OnPropertyChanged(nameof(Categories));
 
         #region AddCommand - Добавление категории
 
@@ -73,12 +85,22 @@ namespace DbMaintenanceWPF.ViewModel
 
         #endregion
 
-        #endregion
+        #region MultiplyRemoveCommand - Множественное удаление категорий
 
-        public CategoryVM(CategoryM model, IUserDialogService userDialog)
+        private ICommand multiplyRemoveCommand;
+        public ICommand MultiplyRemoveCommand => multiplyRemoveCommand ??= new RelayCommand(OnMultiplyRemoveCommandExecuted, CanMultiplyRemoveCommandExecute);
+        private static bool CanMultiplyRemoveCommandExecute(object p) => true;
+
+        private void OnMultiplyRemoveCommandExecuted(object p)
         {
-            Model = model;
-            UserDialog = userDialog;
+            if (UserDialog.ShowConfirm("Удаление категорий", "Удалить выбранные категории?"))
+            {
+                foreach (Category category in Categories) if (category.IsSelected) Model.Remove(category);
+                OnPropertyChanged(nameof(Categories));
+            }
         }
+
+        #endregion
+        #endregion
     }
 }

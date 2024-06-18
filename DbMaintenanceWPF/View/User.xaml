@@ -4,12 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              DataContext="{Binding UserModel, Source={StaticResource Locator}}"
+             xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:ext="clr-namespace:DbMaintenanceWPF.Infrastructure.Extensions"
              mc:Ignorable="d" 
              d:DesignHeight="867"
              d:DesignWidth="1120"
              Style="{StaticResource Page_Style}"
              Background="AliceBlue">
 
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="UsersCollection" Source="{Binding Users}" Filter="UsersCollection_OnFilter">
+ 
+        </CollectionViewSource>
+    </UserControl.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -52,8 +60,8 @@ Grid.ColumnSpan="2">
     Grid.ColumnSpan="5"/>
 
             <CheckBox 
+                x:Name="checkBoxRole"
     Style="{StaticResource chkBullet}"
-    IsChecked="{Binding FlagRole, UpdateSourceTrigger=PropertyChanged}"
     Background="#DB4B4B" 
     Content="Выкл"
     Tag="Вкл" 
@@ -62,7 +70,13 @@ Grid.ColumnSpan="2">
     HorizontalAlignment="Center"
     FontFamily="Nautilus Pompilius"
     Height="30" 
-    Width="70"/>
+    Width="70">
+
+                <i:Interaction.Behaviors>
+                    <ext:FilterCheckBoxExtension TargetComboBox="{Binding ElementName=comboBoxRole}" />
+                </i:Interaction.Behaviors>
+
+            </CheckBox>
 
             <TextBlock 
     Text="Роль:"
@@ -73,34 +87,50 @@ Grid.ColumnSpan="2">
     Grid.Column="1"/>
 
             <ComboBox 
-    IsEnabled="{Binding FlagRole,UpdateSourceTrigger=PropertyChanged}"
+                x:Name="comboBoxRole"
+    IsEnabled="{Binding ElementName=checkBoxRole, Path=IsChecked}"
     ItemsSource="{Binding Roles}"
-    SelectedItem ="{Binding SelectedRole}"
     Style="{StaticResource ComboboxStyle}" 
     FontSize="20"
     IsReadOnly="True"
     FontFamily="Nautilus Pompilius" 
     Grid.Column="2"
-    VerticalAlignment="Center" Height="28"/>
+    VerticalAlignment="Center" Height="28">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <ext:RefreshCollectionViewSourceExtension Source="{StaticResource UsersCollection}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </ComboBox>
 
             <!--End Category-->
 
         </Grid>
 
         <TextBox 
+            x:Name="TextFilter"
             Style="{StaticResource HintTextBox}" 
-            Text="{Binding TextFilter, UpdateSourceTrigger=PropertyChanged}"
             Grid.Row="1"
             Tag="Поиск по логину" 
             FontFamily="Times New Roman" 
             FontSize="20" 
             Grid.ColumnSpan="2" 
-            Margin="5,5,5,5"/>
+            Margin="5,5,5,5">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="TextChanged">
+                    <ext:RefreshCollectionViewSourceExtension Source="{StaticResource UsersCollection}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+        </TextBox>
 
         <DataGrid 
         Grid.Row="2"
         Margin="5,5,5,15" 
-        ItemsSource="{Binding Users}"
+        ItemsSource="{Binding Source={StaticResource UsersCollection}}"
         Grid.ColumnSpan="2">
 
             <DataGrid.Columns>
@@ -120,27 +150,23 @@ Grid.ColumnSpan="2">
 
                 <DataGridTemplateColumn 
                 Header="Аватар" 
-                Width="1*">
+                Width="1.2*">
 
                     <DataGridTemplateColumn.CellTemplate>
 
                         <DataTemplate>
-                            <Border 
-                            CornerRadius="15"
-                            Margin="0,0,25,0"
-                            Width="40"
-                            Height="40">
+                            <Image 
+                                Width="40"
+                                Height="40"
+                                   Source="{Binding Image}"
+                                   RenderOptions.BitmapScalingMode="HighQuality"
+                                   SnapsToDevicePixels = "True">
 
-                                <Border.Background>
-
-                                    <ImageBrush 
-                                    Stretch="Fill" 
-                                    ImageSource="{Binding Image}"
-                                    RenderOptions.BitmapScalingMode="HighQuality"/>
-
-                                </Border.Background>
-
-                            </Border>
+                                    <Image.Clip>
+                                        <RectangleGeometry RadiusX="30" RadiusY="30" Rect="0,0,40,40" />
+                                    </Image.Clip>
+                                    
+                                </Image>
                         </DataTemplate>
 
                     </DataGridTemplateColumn.CellTemplate>
@@ -149,33 +175,28 @@ Grid.ColumnSpan="2">
 
                 <DataGridTextColumn 
                 Header="Роль"  
-                Width="1*" 
+                Width="2*" 
                 Binding="{Binding Role}"/>
 
                 <DataGridTextColumn
                 Header="Логин" 
-                Width="1*" 
+                Width="2*" 
                 Binding="{Binding Login}"/>
 
                 <DataGridTextColumn 
                 Header="Фамилия" 
-                Width="1*"
+                Width="2*"
                 Binding="{Binding Surname}"/>
 
                 <DataGridTextColumn 
                 Header="Имя" 
-                Width="1*" 
+                Width="2*" 
                 Binding="{Binding Name}"/>
 
-                <DataGridTemplateColumn
-                Header="Блокировка" 
-                Width="1*">
-
+                <DataGridTemplateColumn Header="Блокировка" Width="2*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <StackPanel
-                                Orientation="Horizontal">
-
+                            <StackPanel Orientation="Horizontal">
                                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
@@ -196,30 +217,52 @@ Grid.ColumnSpan="2">
                                 <Image Width="30" Height="30" HorizontalAlignment="Center" VerticalAlignment="Center">
                                     <Image.Style>
                                         <Style TargetType="Image">
+                                            <Setter Property="Source" Value="/Resources/Pictures/iconUnlock.png"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsLock}" Value="True">
                                                     <Setter Property="Source" Value="/Resources/Pictures/iconLock.png"/>
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding IsLock}" Value="False">
-                                                    <Setter Property="Source" Value="/Resources/Pictures/iconUnlock.png"/>
-                                                </DataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsLock}" Value="True"/>
+                                                        <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=IsMouseOver}" Value="True"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Source" Value="/Resources/Pictures/iconLockWhite.png"/>
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsLock}" Value="True"/>
+                                                        <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=IsSelected}" Value="True"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Source" Value="/Resources/Pictures/iconLockWhite.png"/>
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsLock}" Value="False"/>
+                                                        <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=IsMouseOver}" Value="True"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Source" Value="/Resources/Pictures/iconUnlockWhite.png"/>
+                                                </MultiDataTrigger>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsLock}" Value="False"/>
+                                                        <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGridRow}}, Path=IsSelected}" Value="True"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Source" Value="/Resources/Pictures/iconUnlockWhite.png"/>
+                                                </MultiDataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </Image.Style>
                                 </Image>
-
                             </StackPanel>
-                            
-                            
                         </DataTemplate>
-                        
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
                 <DataGridTextColumn 
                 Header="Дата блокировки"
                 IsReadOnly="True"
-                Width="1*" 
+                Width="2*" 
                 Binding="{Binding StringDateLock}"/>
 
                 <DataGridTemplateColumn
@@ -250,7 +293,7 @@ Grid.ColumnSpan="2">
                                 Margin="5,5,5,5"
                                 Width="48"
                                 Height="48"
-                                Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" 
+                                Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" 
                                 CommandParameter="{Binding}">
 
                                     <Image Source="/Resources/Pictures/Delete.png" Width="30" Height="30"/>
@@ -277,7 +320,7 @@ Grid.ColumnSpan="2">
                         </MenuItem.Icon>
 
                         <MenuItem.Header>
-                            <TextBlock Text="Добавить товар"/>
+                            <TextBlock Text="Добавить пользователя"/>
                         </MenuItem.Header>
 
                     </MenuItem>
@@ -292,13 +335,13 @@ Grid.ColumnSpan="2">
                         </MenuItem.Icon>
 
                         <MenuItem.Header>
-                            <TextBlock Text="Редактировать товар"/>
+                            <TextBlock Text="Редактировать пользователя"/>
                         </MenuItem.Header>
                     </MenuItem>
 
                     <MenuItem
         Style="{StaticResource Sub_MenuItem}" 
-        Command="{Binding Path=PlacementTarget.DataContext.DeleteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+        Command="{Binding Path=PlacementTarget.DataContext.RemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
         CommandParameter="{Binding Path=PlacementTarget.SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}">
 
                         <MenuItem.Icon>
@@ -306,7 +349,7 @@ Grid.ColumnSpan="2">
                         </MenuItem.Icon>
 
                         <MenuItem.Header>
-                            <TextBlock Text="Удалить товар" Foreground="#E53434"/>
+                            <TextBlock Text="Удалить пользователя" Foreground="#E53434"/>
                         </MenuItem.Header>
 
                     </MenuItem>
@@ -338,7 +381,8 @@ Grid.ColumnSpan="2">
     Margin="0,0,25,0"
     FontSize="22"
     VerticalAlignment="Center"
-    FontFamily="Nautilus Pompilius"/>
+    FontFamily="Nautilus Pompilius"
+                RenderOptions.BitmapScalingMode="HighQuality"/>
 
         </StackPanel>
 
@@ -367,14 +411,13 @@ Margin="15,15,15,15">
             </Grid.ColumnDefinitions>
 
             <Button
-    x:Name="butDel"
     Style="{StaticResource RoundCorner}" 
     Foreground="#E53434" 
     FontSize="16"
     FontFamily="Nautilus Pompilius"  
     Margin="5,0,5,0"
     HorizontalAlignment="Left" 
-    Command="{Binding MultiplyDeleteCommand}">
+    Command="{Binding MultiplyRemoveCommand}">
 
                 <StackPanel 
         Orientation="Horizontal">
@@ -394,7 +437,6 @@ Margin="15,15,15,15">
             </Button>
 
             <Button 
-    x:Name="butAdd" 
     Grid.Column="1" 
     Style="{StaticResource RoundCorner}"
     Foreground="#D9D9D9"
@@ -411,7 +453,7 @@ Margin="15,15,15,15">
             Margin="0,2,25,0"/>
 
                     <TextBlock 
-            Text="Добавить поставку"
+            Text="Добавить пользователя"
             Margin="0,0,25,0"
             FontSize="18"
             VerticalAlignment="Center"/>

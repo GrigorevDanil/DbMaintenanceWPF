@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DbMaintenanceWPF.Service.Interface
 {
-    interface IINIManager
+    public interface IINIManager
     {
         string GetPrivateString(string aSection, string aKey);
         void WritePrivateString(string aSection, string aKey, string aValue);

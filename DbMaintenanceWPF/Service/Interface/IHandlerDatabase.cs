@@ -1,7 +1,7 @@
 ﻿
 namespace DbMaintenanceWPF.Service.Interface
 {
-    interface IHandlerDatabase
+    public interface IHandlerDatabase
     {
         void ShowError();
     }

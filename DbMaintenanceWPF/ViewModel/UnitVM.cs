@@ -1,34 +1,53 @@
 ﻿using DbMaintenanceWPF.Infrastructure.Commands;
 using DbMaintenanceWPF.Models;
+using DbMaintenanceWPF.Models.ItemModels;
 using DbMaintenanceWPF.Models.Items;
 using DbMaintenanceWPF.Service.Interface;
+using MoreLinq;
 using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DbMaintenanceWPF.ViewModel
 {
-    class UnitVM : Base.ViewModelBase
+    public class UnitVM(UnitM model, IUserDialogService userDialog, IStorageViewModel storageViewModel) : Base.ViewModelBase
     {
         #region Свойства
 
-        readonly UnitM Model;
-        readonly IUserDialogService UserDialog;
+        readonly UnitM Model = model;
+        readonly IUserDialogService UserDialog = userDialog;
         public IEnumerable<Unit> Units => Model.PublicListUnits;
+
+        public Visibility VisibleComponent
+        {
+            get
+            {
+                var user = (storageViewModel.GetViewModel(nameof(MainVM)) as MainVM)?.CurrentUser as User;
+                return user?.Role == "Пользователь" ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
 
         #endregion
 
         #region Команды
 
+        public void UpdateList() => OnPropertyChanged(nameof(Units));
+
         #region AddCommand - Добавление единицы
 
         private ICommand addCommand;
         public ICommand AddCommand => addCommand ??= new RelayCommand(OnAddCommandExecuted, CanAddCommandExecute);
-        private static bool CanAddCommandExecute(object p) => p is Unit;
+        private static bool CanAddCommandExecute(object p) => true;
 
         private void OnAddCommandExecuted(object p)
         {
-            var unit = (Unit)p;
-            if (!UserDialog.Edit(unit, "Добавление единицы")) OnPropertyChanged(nameof(Units));
+            var unit = new Unit();
+            if (UserDialog.Edit(unit, "Добавление единицы"))
+            {
+                Model.Create(unit);
+                OnPropertyChanged(nameof(Units));
+            }
         }
 
         #endregion
@@ -42,7 +61,7 @@ namespace DbMaintenanceWPF.ViewModel
         private void OnEditCommandExecuted(object p)
         {
             Unit unit = (Unit)p;
-            if (!UserDialog.Edit(unit, "Редактирование единицы"))
+            if (UserDialog.Edit(unit, "Редактирование единицы"))
             {
                 Model.Update(unit);
                 OnPropertyChanged(nameof(Units));
@@ -69,12 +88,22 @@ namespace DbMaintenanceWPF.ViewModel
 
         #endregion
 
-        #endregion
+        #region MultiplyRemoveCommand - Множественное удаление единиц
 
-        public UnitVM(UnitM model, IUserDialogService userDialog)
+        private ICommand multiplyRemoveCommand;
+        public ICommand MultiplyRemoveCommand => multiplyRemoveCommand ??= new RelayCommand(OnMultiplyRemoveCommandExecuted, CanMultiplyRemoveCommandExecute);
+        private static bool CanMultiplyRemoveCommandExecute(object p) => true;
+
+        private void OnMultiplyRemoveCommandExecuted(object p)
         {
-            Model = model;
-            UserDialog = userDialog;
+            if (UserDialog.ShowConfirm("Удаление единиц", "Удалить выбранные единицы?"))
+            {
+                foreach (Unit unit in Units) if (unit.IsSelected) Model.Remove(unit);
+                OnPropertyChanged(nameof(Units));
+            }
         }
+
+        #endregion
+        #endregion
     }
 }

@@ -5,11 +5,10 @@ using System.Collections.ObjectModel;
 
 namespace DbMaintenanceWPF.Models
 {
-    class LoginM(ICreaterListItems<UserServer> createrItems, IAuthentication authenticationService)
+    public class LoginM(ICreaterEntity<UserServer> createrItems, IAuthentication authenticationService)
     {
-        readonly ICreaterListItems<UserServer> CreaterItems = createrItems;
         readonly IAuthentication AuthenticationService = authenticationService;
-        public ReadOnlyObservableCollection<UserServer> PublicListUserServers => new(new ObservableCollection<UserServer>(CreaterItems.GetList()));
+        public ReadOnlyObservableCollection<UserServer> PublicListUserServers => new(new ObservableCollection<UserServer>(createrItems.GetList()));
 
         public (bool, string, object) Authentication(bool isServer,string login, string password, string host)
         {

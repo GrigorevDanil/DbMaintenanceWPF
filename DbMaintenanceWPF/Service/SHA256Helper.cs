@@ -11,13 +11,10 @@ namespace DbMaintenanceWPF.Service
         {
             using (SHA256 sha256 = SHA256.Create())
             {
-                // Конвертируем строку пароля и соль в массив байтов
                 byte[] bytes = Encoding.UTF8.GetBytes(password + salt);
 
-                // Вычисляем хеш
                 byte[] hash = sha256.ComputeHash(bytes);
 
-                // Конвертируем хеш (массив байтов) обратно в строку, чтобы сохранить в базе данных
                 StringBuilder stringBuilder = new StringBuilder();
                 for (int i = 0; i < hash.Length; i++)
                 {

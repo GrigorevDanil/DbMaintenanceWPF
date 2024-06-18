@@ -56,7 +56,6 @@
         <Setter Property="OverridesDefaultStyle" Value="False" />
         <Setter Property="Height" Value="25"/>
         <Setter Property="IsChecked" Value="False"/>
-        <Setter Property="Margin" Value="0,20"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Template">
@@ -75,7 +74,7 @@
                                 <Path SnapsToDevicePixels="False" StrokeThickness="3" Data="M8,17 L20,4" Stroke="White"/>
                             </Grid>
                         </Grid>
-                        <TextBlock Grid.Column="1" Text="{TemplateBinding Content}" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" Margin="14,0,0,0"/>
+                        <TextBlock Grid.Column="1" Text="{TemplateBinding Content}" Margin=" 5 0 0 0" FontSize="{TemplateBinding FontSize}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">

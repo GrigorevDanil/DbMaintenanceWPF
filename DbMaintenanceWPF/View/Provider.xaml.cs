@@ -24,5 +24,21 @@ namespace DbMaintenanceWPF.View
         {
             InitializeComponent();
         }
+
+        private void ProvidersCollection_OnFilter(object sender, FilterEventArgs e)
+        {
+            if (!(e.Item is Models.Items.Provider provider)) return;
+
+            bool filterPassed = true;
+
+            if (TextFilter == null) return;
+
+            var filter_text = TextFilter.Text;
+
+            if (!string.IsNullOrWhiteSpace(filter_text) && provider.TextProvider.ToString().IndexOf(filter_text, StringComparison.OrdinalIgnoreCase) == -1) filterPassed = false;
+
+
+            e.Accepted = filterPassed;
+        }
     }
 }

@@ -3,9 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DbMaintenanceWPF.View.Windows.DialogWindows"
-        xmlns:cmd="clr-namespace:DbMaintenanceWPF.Infrastructure.Commands"
-        DataContext="{Binding DepartmentContextModel, Source={StaticResource Locator}}" 
+        xmlns:vm="clr-namespace:DbMaintenanceWPF.ViewModel.DialogViewModel"
         Style="{StaticResource SpringAnimation}"
         Title="{Binding TextWindow}" 
         Height="400"
@@ -20,6 +18,10 @@
     <WindowChrome.WindowChrome>
         <WindowChrome/>
     </WindowChrome.WindowChrome>
+
+    <Window.DataContext>
+        <vm:DepartmentContextVM/>
+    </Window.DataContext>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -58,7 +60,8 @@
         Source="/Resources/Pictures/ImageDepartmentContext.png" 
         Margin="0,0,15,0"
         Width="40" 
-        Height="40"/>
+        Height="40"
+        RenderOptions.BitmapScalingMode="HighQuality"/>
 
             <TextBlock 
      Text="{Binding TextWindow}"
@@ -88,7 +91,7 @@
 
 
             <TextBlock 
-        Text="Отдел:" 
+        Text="Отдел*:" 
         FontSize="24" 
         FontFamily="Nautilus Pompilius" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,10"/>
 

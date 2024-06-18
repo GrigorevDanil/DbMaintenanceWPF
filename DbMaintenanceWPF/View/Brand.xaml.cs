@@ -17,6 +17,8 @@ namespace DbMaintenanceWPF.View
         {
             if (!(e.Item is Models.Items.Brand brand)) return;
 
+            if (TextFilter == null) return;
+
             var filter_text = TextFilter.Text;
             if (filter_text.Length == 0) return;
 
@@ -25,11 +27,5 @@ namespace DbMaintenanceWPF.View
             e.Accepted = false;
         }
 
-        private void OnBrandTextFilterChanged(object sender, TextChangedEventArgs e)
-        {
-            var text_box = (TextBox)sender;
-            var collection = (CollectionViewSource)text_box.FindResource("BrandsCollection");
-            collection.View.Refresh();
-        }
     }
 }

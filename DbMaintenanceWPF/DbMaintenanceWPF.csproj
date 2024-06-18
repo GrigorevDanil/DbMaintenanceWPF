@@ -44,6 +44,21 @@
     <StartupObject>DbMaintenanceWPF.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ClosedXML, Version=0.102.2.0, Culture=neutral, PublicKeyToken=fd1eb21b62ae805b, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.0.102.2\lib\netstandard2.0\ClosedXML.dll</HintPath>
+    </Reference>
+    <Reference Include="ClosedXML.Report, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b5435ca1fa2ab9d6, processorArchitecture=MSIL">
+      <HintPath>..\packages\ClosedXML.Report.0.2.10\lib\netstandard2.0\ClosedXML.Report.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.16.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.16.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="ExcelNumberFormat, Version=1.1.0.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
+      <HintPath>..\packages\ExcelNumberFormat.1.1.0\lib\net20\ExcelNumberFormat.dll</HintPath>
+    </Reference>
+    <Reference Include="Irony, Version=1.0.11.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
+      <HintPath>..\packages\Irony.NetCore.1.0.11\lib\net461\Irony.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -128,38 +143,104 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.8.0.0\lib\net462\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.3.0.0\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.77\lib\net462\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
+    <Reference Include="MoreLinq, Version=4.1.0.0, Culture=neutral, PublicKeyToken=384d532d7e88985d, processorArchitecture=MSIL">
+      <HintPath>..\packages\morelinq.4.1.0\lib\netstandard2.0\MoreLinq.dll</HintPath>
+    </Reference>
     <Reference Include="MySqlConnector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d33d3e53aa5f8c92, processorArchitecture=MSIL">
       <HintPath>..\packages\MySqlConnector.2.3.7\lib\net48\MySqlConnector.dll</HintPath>
+    </Reference>
+    <Reference Include="SixLabors.Fonts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d998eea7b14cab13, processorArchitecture=MSIL">
+      <HintPath>..\packages\SixLabors.Fonts.1.0.0\lib\netstandard2.0\SixLabors.Fonts.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.8.0.0\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.6.0.0\lib\net461\System.IO.Packaging.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Linq.Dynamic.Core, Version=1.3.8.0, Culture=neutral, PublicKeyToken=0f07ec44de6ac832, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Linq.Dynamic.Core.1.3.8\lib\net46\System.Linq.Dynamic.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
     </Reference>
-    <Reference Include="System.Runtime" />
+    <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.Cryptography.Algorithms, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net463\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Pkcs, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Pkcs.8.0.0\lib\net462\System.Security.Cryptography.Pkcs.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.8.0.0\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.Encodings.Web, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encodings.Web.8.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
     <Reference Include="System.Text.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Json.8.0.0\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.RegularExpressions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.RegularExpressions.4.3.1\lib\net463\System.Text.RegularExpressions.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
@@ -168,18 +249,21 @@
     <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="XLParser, Version=1.5.2.0, Culture=neutral, PublicKeyToken=63397e1e46bb91b4, processorArchitecture=MSIL">
+      <HintPath>..\packages\XLParser.1.5.2\lib\net461\XLParser.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -191,19 +275,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="EventArgs.cs" />
+    <Compile Include="Infrastructure\Behaviors\TextBoxOnlyIntBehavior.cs" />
     <Compile Include="Infrastructure\Commands\Base\Command.cs" />
-    <Compile Include="Infrastructure\Commands\CloseDialogCommand.cs" />
     <Compile Include="Infrastructure\Commands\Factories\CommandFactory.cs" />
     <Compile Include="Infrastructure\Commands\HelpCommand.cs" />
     <Compile Include="Infrastructure\Commands\Interface\ICommandFactory.cs" />
-    <Compile Include="Infrastructure\Commands\LoginContextCommand.cs" />
-    <Compile Include="Infrastructure\Commands\MainFormCommand.cs" />
     <Compile Include="Infrastructure\Commands\CloseApplicationCommand.cs" />
     <Compile Include="Infrastructure\Commands\CloseWindowCommand.cs" />
     <Compile Include="Infrastructure\Commands\MinimizeWindowCommand.cs" />
     <Compile Include="Infrastructure\Commands\RestartApplicationCommand.cs" />
-    <Compile Include="Infrastructure\Converter\InstanceEqualsConverter.cs" />
     <Compile Include="Infrastructure\Extensions\DependencyObjectExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\FilterCheckBoxExtension.cs" />
+    <Compile Include="Infrastructure\Extensions\RefreshCollectionViewSourceExtension.cs" />
     <Compile Include="Models\Database.cs" />
     <Compile Include="Models\Items\Brand.cs" />
     <Compile Include="Models\Items\Category.cs" />
@@ -217,37 +300,46 @@
     <Compile Include="Models\Items\Purchase.cs" />
     <Compile Include="Models\Items\Unit.cs" />
     <Compile Include="Models\CopyM.cs" />
+    <Compile Include="Models\PrintModels\MaterialStatementM.cs" />
     <Compile Include="Models\Registrator.cs" />
-    <Compile Include="Models\UserM.cs" />
-    <Compile Include="Models\BrandM.cs" />
-    <Compile Include="Models\CategoryM.cs" />
-    <Compile Include="Models\DepartmentM.cs" />
-    <Compile Include="Models\EmployeeM.cs" />
-    <Compile Include="Models\GiveDetailM.cs" />
-    <Compile Include="Models\GiveM.cs" />
+    <Compile Include="Models\ItemModels\UserM.cs" />
+    <Compile Include="Models\ItemModels\BrandM.cs" />
+    <Compile Include="Models\ItemModels\CategoryM.cs" />
+    <Compile Include="Models\ItemModels\DepartmentM.cs" />
+    <Compile Include="Models\ItemModels\EmployeeM.cs" />
+    <Compile Include="Models\ItemModels\GiveDetailM.cs" />
+    <Compile Include="Models\ItemModels\GiveM.cs" />
     <Compile Include="Models\LoginM.cs" />
     <Compile Include="Models\Items\Product.cs" />
     <Compile Include="Models\Items\User.cs" />
     <Compile Include="Models\ConnectionM.cs" />
-    <Compile Include="Models\PostM.cs" />
-    <Compile Include="Models\ProductM.cs" />
-    <Compile Include="Models\ProviderM.cs" />
-    <Compile Include="Models\PurchaseM.cs" />
-    <Compile Include="Models\UnitM.cs" />
+    <Compile Include="Models\ItemModels\PostM.cs" />
+    <Compile Include="Models\ItemModels\ProductM.cs" />
+    <Compile Include="Models\ItemModels\ProviderM.cs" />
+    <Compile Include="Models\ItemModels\PurchaseM.cs" />
+    <Compile Include="Models\ItemModels\UnitM.cs" />
     <Compile Include="Models\Items\UserServer.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Resources\CustomControls\CustomRadioBut.cs" />
+    <Compile Include="Infrastructure\Behaviors\TextBoxInputMaskBehavior.cs" />
+    <Compile Include="Resources\DataGridHelper.cs" />
+    <Compile Include="Resources\RadioButtonHellper.cs" />
     <Compile Include="Service\AuthenticationService.cs" />
     <Compile Include="Service\Base\RepositoryInMemory.cs" />
     <Compile Include="Service\DatabaseBackupManager.cs" />
     <Compile Include="Service\DatabaseConnection.cs" />
     <Compile Include="Service\DatabaseErrorHandler.cs" />
     <Compile Include="Service\DatabaseReader.cs" />
+    <Compile Include="Service\Factories\CreaterFactory.cs" />
     <Compile Include="Service\Factories\DatabaseErrorHandlerFactory.cs" />
+    <Compile Include="Service\Factories\RepositoryFactory.cs" />
     <Compile Include="Service\Handlers\AccessDeniedErrorHandler.cs" />
     <Compile Include="Service\Handlers\DatabaseNotFoundErrorHandler.cs" />
     <Compile Include="Service\Handlers\UnableToConnectToHostErrorHandler.cs" />
     <Compile Include="Service\Handlers\UnknownErrorHandler.cs" />
+    <Compile Include="Service\Interface\Factories\ICreaterFactory.cs" />
     <Compile Include="Service\Interface\Factories\IDatabaseErrorHandlerFactory.cs" />
+    <Compile Include="Service\Interface\Factories\IRepositoryFactory.cs" />
     <Compile Include="Service\Interface\IAuthentication.cs" />
     <Compile Include="Service\Interface\IBackupManagerDatabase.cs" />
     <Compile Include="Service\Interface\IErrorHandlerDatabase.cs" />
@@ -255,31 +347,35 @@
     <Compile Include="Service\Interface\IImageHelper.cs" />
     <Compile Include="Service\Interface\IINIManager.cs" />
     <Compile Include="Service\Interface\ILoginAttemp.cs" />
+    <Compile Include="Service\Interface\IPrint.cs" />
     <Compile Include="Service\Interface\ISHA256Helper.cs" />
+    <Compile Include="Service\Interface\IStorageViewModel.cs" />
+    <Compile Include="Service\Interface\IWatcherDatabase.cs" />
     <Compile Include="Service\Interface\IXAMPPHelper.cs" />
     <Compile Include="Service\LoginAttempService.cs" />
-    <Compile Include="Service\ManageDatabase\BrandRepository.cs" />
-    <Compile Include="Service\ManageDatabase\CategoryRepository.cs" />
-    <Compile Include="Service\ManageDatabase\CreatersLists.cs" />
+    <Compile Include="Service\Repositories\BrandRepository.cs" />
+    <Compile Include="Service\Repositories\CategoryRepository.cs" />
+    <Compile Include="Service\Repositories\CreatersEntity.cs" />
     <Compile Include="Service\Interface\IConnectionDatabase.cs" />
-    <Compile Include="Service\Interface\ICreaterListItems.cs" />
+    <Compile Include="Service\Interface\ICreaterEntity.cs" />
     <Compile Include="Service\Interface\IEditorDatabase.cs" />
     <Compile Include="Service\Interface\IReaderDatabase.cs" />
     <Compile Include="Service\Interface\IRepository.cs" />
     <Compile Include="Service\Interface\IUserDialogService.cs" />
-    <Compile Include="Service\ManageDatabase\DepartmentRepository.cs" />
-    <Compile Include="Service\ManageDatabase\EmployeeRepository.cs" />
-    <Compile Include="Service\ManageDatabase\GiveDetailRepository.cs" />
-    <Compile Include="Service\ManageDatabase\GiveRepository.cs" />
-    <Compile Include="Service\ManageDatabase\PostRepository.cs" />
-    <Compile Include="Service\ManageDatabase\ProductRepository.cs" />
-    <Compile Include="Service\ManageDatabase\ProviderRepository.cs" />
-    <Compile Include="Service\ManageDatabase\PurchaseRepository.cs" />
-    <Compile Include="Service\ManageDatabase\UnitRepository.cs" />
-    <Compile Include="Service\ManageDatabase\UserRepository.cs" />
+    <Compile Include="Service\Repositories\DepartmentRepository.cs" />
+    <Compile Include="Service\Repositories\EmployeeRepository.cs" />
+    <Compile Include="Service\Repositories\GiveDetailRepository.cs" />
+    <Compile Include="Service\Repositories\GiveRepository.cs" />
+    <Compile Include="Service\Repositories\PostRepository.cs" />
+    <Compile Include="Service\Repositories\ProductRepository.cs" />
+    <Compile Include="Service\Repositories\ProviderRepository.cs" />
+    <Compile Include="Service\Repositories\PurchaseRepository.cs" />
+    <Compile Include="Service\Repositories\UnitRepository.cs" />
+    <Compile Include="Service\Repositories\UserRepository.cs" />
+    <Compile Include="Service\PrintService.cs" />
     <Compile Include="Service\Registrator.cs" />
+    <Compile Include="Service\StorageViewModel.cs" />
     <Compile Include="Service\UserDialogService.cs" />
-    <Compile Include="Resources\Btn.cs" />
     <Compile Include="Service\DatabaseEditor.cs" />
     <Compile Include="Service\CommandParameterExtractor.cs" />
     <Compile Include="Service\ImageSourceHelper.cs" />
@@ -289,13 +385,29 @@
     <Compile Include="Infrastructure\Commands\RelayCommand.cs" />
     <Compile Include="Infrastructure\Converter\RoundProgressPathConverter.cs" />
     <Compile Include="Service\SHA256Helper.cs" />
+    <Compile Include="Service\WatcherDatabaseService.cs" />
     <Compile Include="Service\XAMPPHelper.cs" />
+    <Compile Include="ViewModel\AccountVM.cs" />
     <Compile Include="ViewModel\Base\ViewModelBase.cs" />
     <Compile Include="ViewModel\CopyVM.cs" />
     <Compile Include="ViewModel\DialogViewModel\BrandContextVM.cs" />
     <Compile Include="ViewModel\DialogViewModel\CategoryContextVM.cs" />
+    <Compile Include="ViewModel\DialogViewModel\ChangeKeyContextVM.cs" />
     <Compile Include="ViewModel\DialogViewModel\DepartmentContextVM.cs" />
     <Compile Include="ViewModel\DialogViewModel\EmployeeContextVM.cs" />
+    <Compile Include="ViewModel\DialogViewModel\GiveContextVM.cs" />
+    <Compile Include="ViewModel\DialogViewModel\GiveDetailContextVM.cs" />
+    <Compile Include="ViewModel\DialogViewModel\InputMessageWindowVM.cs" />
+    <Compile Include="ViewModel\DialogViewModel\PostContextVM.cs" />
+    <Compile Include="ViewModel\DialogViewModel\ProductContextVM.cs" />
+    <Compile Include="ViewModel\DialogViewModel\ProviderContextVM.cs" />
+    <Compile Include="ViewModel\DialogViewModel\PurchaseContextVM.cs" />
+    <Compile Include="ViewModel\DialogViewModel\ResetKeyContextVM.cs" />
+    <Compile Include="ViewModel\DialogViewModel\UnitContextVM.cs" />
+    <Compile Include="ViewModel\DialogViewModel\UserContextVM.cs" />
+    <Compile Include="ViewModel\DialogViewModel\UserMessageWindowVM.cs" />
+    <Compile Include="ViewModel\InfoVM.cs" />
+    <Compile Include="ViewModel\PrintViewModel\MaterialStatementVM.cs" />
     <Compile Include="ViewModel\Registrator.cs" />
     <Compile Include="ViewModel\UserVM.cs" />
     <Compile Include="ViewModel\BrandVM.cs" />
@@ -314,6 +426,12 @@
     <Compile Include="ViewModel\SplashScreenVM.cs" />
     <Compile Include="ViewModel\UnitVM.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\Account.xaml.cs">
+      <DependentUpon>Account.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Info.xaml.cs">
+      <DependentUpon>Info.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Windows\DialogWindows\BrandContext.xaml.cs">
       <DependentUpon>BrandContext.xaml</DependentUpon>
     </Compile>
@@ -352,6 +470,39 @@
     </Compile>
     <Compile Include="View\Windows\DialogWindows\EmployeeContext.xaml.cs">
       <DependentUpon>EmployeeContext.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\DialogWindows\GiveContext.xaml.cs">
+      <DependentUpon>GiveContext.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\DialogWindows\GiveDetailContext.xaml.cs">
+      <DependentUpon>GiveDetailContext.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\DialogWindows\InputMessageWindow.xaml.cs">
+      <DependentUpon>InputMessageWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\DialogWindows\KeyContext.xaml.cs">
+      <DependentUpon>KeyContext.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\DialogWindows\PostContext.xaml.cs">
+      <DependentUpon>PostContext.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\DialogWindows\PrintWindows\PrintMaterialStatementContext.xaml.cs">
+      <DependentUpon>PrintMaterialStatementContext.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\DialogWindows\ProductContext.xaml.cs">
+      <DependentUpon>ProductContext.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\DialogWindows\ProviderContext.xaml.cs">
+      <DependentUpon>ProviderContext.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\DialogWindows\PurchaseContext.xaml.cs">
+      <DependentUpon>PurchaseContext.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\DialogWindows\UnitContext.xaml.cs">
+      <DependentUpon>UnitContext.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\DialogWindows\UserContext.xaml.cs">
+      <DependentUpon>UserContext.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Windows\LoginContext.xaml.cs">
       <DependentUpon>LoginContext.xaml</DependentUpon>
@@ -409,6 +560,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Resources\CustomControls\CustomRadioBut.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Resources\Styles\Button.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -430,6 +585,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Styles\DateTimePicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles\ListBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -458,6 +617,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Resources\Styles\TextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewModel\DataTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Account.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Info.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -510,6 +685,50 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Windows\DialogWindows\EmployeeContext.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\DialogWindows\GiveContext.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\DialogWindows\GiveDetailContext.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\DialogWindows\InputMessageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\DialogWindows\KeyContext.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\DialogWindows\PostContext.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\DialogWindows\PrintWindows\PrintMaterialStatementContext.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\DialogWindows\ProductContext.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\DialogWindows\ProviderContext.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\DialogWindows\PurchaseContext.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\DialogWindows\UnitContext.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\DialogWindows\UserContext.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -680,6 +899,87 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Pictures\IconEmployee.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageGiveDetailContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconGiveDetail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconGive.png" />
+    <Resource Include="Resources\Pictures\ImageGiveContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconPost.png" />
+    <Resource Include="Resources\Pictures\ImagePostContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconProduct.png" />
+    <Resource Include="Resources\Pictures\ImageProductContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconProvider.png" />
+    <Resource Include="Resources\Pictures\ImageProviderContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconPurchase.png" />
+    <Resource Include="Resources\Pictures\ImagePurchaseContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconUnit.png" />
+    <Resource Include="Resources\Pictures\ImageUnitContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconAdmin.png" />
+    <Resource Include="Resources\Pictures\ImageAdminContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconPalitra.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconKey.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageKeyContext.png" />
+    <Resource Include="Resources\Pictures\ImageKeyMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\Find.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\iconLockWhite.png" />
+    <Resource Include="Resources\Pictures\iconUnlockWhite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\BackupCreate.png" />
+    <Resource Include="Resources\Pictures\BackupDelete.png" />
+    <Resource Include="Resources\Pictures\BackupSet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageAccountContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImagePrintContext.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconFormPrint.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageInfoContext.png" />
+    <Resource Include="Resources\Pictures\ImageInfoMenu.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\ImageInfo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\IconLink.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\Grafic.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

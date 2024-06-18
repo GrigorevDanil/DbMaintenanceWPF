@@ -5,6 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              DataContext="{Binding DepartmentModel, Source={StaticResource Locator}}"
              xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:ext="clr-namespace:DbMaintenanceWPF.Infrastructure.Extensions"
+             xmlns:res="clr-namespace:DbMaintenanceWPF.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="867"
              d:DesignWidth="1120"
@@ -13,9 +16,7 @@
 
     <UserControl.Resources>
         <CollectionViewSource x:Key="DepartmentCollection" Source="{Binding Departments}" Filter="DepartmentsCollection_OnFilter">
-            <CollectionViewSource.SortDescriptions>
-                <cm:SortDescription PropertyName="Title" Direction="Ascending"/>
-            </CollectionViewSource.SortDescriptions>
+
         </CollectionViewSource>
     </UserControl.Resources>
 
@@ -40,14 +41,24 @@ Tag="Поиск по названию"
 FontFamily="Times New Roman" 
 FontSize="20" 
 Grid.ColumnSpan="2" 
-Margin="5,5,5,5"
-            TextChanged="TextFilter_TextChanged"/>
+Margin="5,5,5,5">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="TextChanged">
+                    <ext:RefreshCollectionViewSourceExtension Source="{StaticResource DepartmentCollection}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+        </TextBox>
 
         <DataGrid 
 Grid.Row="1"
 Margin="5,5,5,15" 
 ItemsSource="{Binding Source={StaticResource DepartmentCollection}}"
-Grid.ColumnSpan="2">
+Grid.ColumnSpan="2"
+res:DataGridHelper.HidableColumnIndices="0,2" 
+res:DataGridHelper.ColumnVisibility="{Binding VisibleComponent}"
+RowHeight="70">
 
             <DataGrid.Columns>
 
@@ -76,7 +87,6 @@ Grid.ColumnSpan="2">
         Width="1*"/>
 
                 <DataGridTemplateColumn
-        x:Name="ColOp"
         Header="Операции"
         Width="150"
         CanUserResize="False">
@@ -118,7 +128,7 @@ Grid.ColumnSpan="2">
 
             <DataGrid.ContextMenu>
                 <ContextMenu 
-x:Name="menu"
+Visibility="{Binding VisibleComponent}"
 FontSize="14">
 
                     <MenuItem 
@@ -181,6 +191,7 @@ Grid.ColumnSpan="2">
     Source="/Resources/Pictures/DownArrow.png" 
     Width="59" 
     Height="53" 
+    Visibility="{Binding VisibleComponent}"
     VerticalAlignment="Top" 
     Margin="25,0,0,0"
     HorizontalAlignment="Left" 
@@ -191,7 +202,9 @@ Grid.ColumnSpan="2">
     Margin="0,0,25,0"
     FontSize="22"
     VerticalAlignment="Center"
-    FontFamily="Nautilus Pompilius"/>
+                Visibility="{Binding VisibleComponent}"
+    FontFamily="Nautilus Pompilius"
+                RenderOptions.BitmapScalingMode="HighQuality"/>
 
         </StackPanel>
 
@@ -200,6 +213,7 @@ Background="#093A5C"
 CornerRadius="18"
 Margin="5,5,5,5"
 Grid.Column="1"
+            Visibility="{Binding VisibleComponent}"
 Grid.Row="2"/>
 
         <Border 
@@ -226,8 +240,9 @@ Margin="15,15,15,15">
     FontSize="16"
     FontFamily="Nautilus Pompilius"  
     Margin="5,0,5,0"
+                Visibility="{Binding VisibleComponent}"
     HorizontalAlignment="Left" 
-    Command="{Binding MultiplyDeleteCommand}">
+    Command="{Binding MultiplyRemoveCommand}">
 
                 <StackPanel 
         Orientation="Horizontal">
@@ -255,6 +270,7 @@ Margin="15,15,15,15">
     FontFamily="Nautilus Pompilius"
     Margin="5,0,5,0" 
     HorizontalAlignment="Right"
+                Visibility="{Binding VisibleComponent}"
     Command="{Binding AddCommand}">
 
                 <StackPanel 
@@ -264,7 +280,7 @@ Margin="15,15,15,15">
             Margin="0,2,25,0"/>
 
                     <TextBlock 
-            Text="Добавить поставку"
+            Text="Добавить отдел"
             Margin="0,0,25,0"
             FontSize="18"
             VerticalAlignment="Center"/>

@@ -1,26 +1,40 @@
 ﻿using DbMaintenanceWPF.Infrastructure.Commands;
 using DbMaintenanceWPF.Models;
+using DbMaintenanceWPF.Models.ItemModels;
 using DbMaintenanceWPF.Models.Items;
 using DbMaintenanceWPF.Service.Interface;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DbMaintenanceWPF.ViewModel
 {
-    class EmployeeVM : Base.ViewModelBase
+    public class EmployeeVM(EmployeeM model, IUserDialogService userDialog, IStorageViewModel storageViewModel) : Base.ViewModelBase
     {
 
         #region Свойства
 
-        readonly EmployeeM Model;
-        readonly IUserDialogService UserDialog;
+        readonly EmployeeM Model = model;
+        readonly IUserDialogService UserDialog = userDialog;
         public IEnumerable<Employee> Employees => Model.PublicListEmployees;
         public IEnumerable<Department> Departments => Model.PublicListDepartments;
         public IEnumerable<Post> Posts => Model.PublicListPosts;
 
+        public Visibility VisibleComponent
+        {
+            get
+            {
+                var user = (storageViewModel.GetViewModel(nameof(MainVM)) as MainVM)?.CurrentUser as User;
+                return user?.Role == "Пользователь" ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+
         #endregion
 
         #region Команды
+
+        public void UpdateList() => OnPropertyChanged(nameof(Employees));
 
         #region AddCommand - Добавление сотрудника
 
@@ -31,7 +45,11 @@ namespace DbMaintenanceWPF.ViewModel
         private void OnAddCommandExecuted(object p)
         {
             var employee = new Employee();
-            if (!UserDialog.Edit(employee, "Добавление сотрудника", this)) OnPropertyChanged(nameof(Employees));
+            if (UserDialog.Edit(employee, "Добавление сотрудника"))
+            {
+                Model.Create(employee);
+                OnPropertyChanged(nameof(Employees));
+            }
         }
 
         #endregion
@@ -45,7 +63,7 @@ namespace DbMaintenanceWPF.ViewModel
         private void OnEditCommandExecuted(object p)
         {
             Employee employee = (Employee)p;
-            if (!UserDialog.Edit(employee, "Редактирование сотрудника", this))
+            if (UserDialog.Edit(employee, "Редактирование сотрудника"))
             {
                 Model.Update(employee);
                 OnPropertyChanged(nameof(Employees));
@@ -72,12 +90,22 @@ namespace DbMaintenanceWPF.ViewModel
 
         #endregion
 
-        #endregion
+        #region MultiplyRemoveCommand - Множественное удаление сотрудников
 
-        public EmployeeVM(EmployeeM model, IUserDialogService userDialog)
+        private ICommand multiplyRemoveCommand;
+        public ICommand MultiplyRemoveCommand => multiplyRemoveCommand ??= new RelayCommand(OnMultiplyRemoveCommandExecuted, CanMultiplyRemoveCommandExecute);
+        private static bool CanMultiplyRemoveCommandExecute(object p) => true;
+
+        private void OnMultiplyRemoveCommandExecuted(object p)
         {
-            Model = model;
-            UserDialog = userDialog;
+            if (UserDialog.ShowConfirm("Удаление сотрудников", "Удалить выбранных сотрудников?"))
+            {
+                foreach (Employee employee in Employees) if (employee.IsSelected) Model.Remove(employee);
+                OnPropertyChanged(nameof(Employees));
+            }
         }
+
+        #endregion
+        #endregion
     }
 }

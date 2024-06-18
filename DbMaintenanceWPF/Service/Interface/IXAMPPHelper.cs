@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DbMaintenanceWPF.Service.Interface
 {
-    interface IXAMPPHelper
+    public interface IXAMPPHelper
     {
         string FindXamppMysqlBin();
         bool CheckExistXAMPP(string pathXampp);

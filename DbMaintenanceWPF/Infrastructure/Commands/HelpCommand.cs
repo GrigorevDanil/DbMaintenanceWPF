@@ -12,6 +12,6 @@ namespace DbMaintenanceWPF.Infrastructure.Commands
     {
         public override bool CanExecute(object parameter) => true;
 
-        public override void Execute(object parameter) => Process.Start(Directory.GetCurrentDirectory() + "/Help/help5.chm");
+        public override void Execute(object parameter) => Process.Start(Directory.GetCurrentDirectory() + "\\MainHelp.chm");
     }
 }

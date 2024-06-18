@@ -5,6 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              DataContext="{Binding CategoryModel, Source={StaticResource Locator}}"
              xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:ext="clr-namespace:DbMaintenanceWPF.Infrastructure.Extensions"
+             xmlns:res="clr-namespace:DbMaintenanceWPF.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="867"
              d:DesignWidth="1120"
@@ -13,9 +16,7 @@
 
     <UserControl.Resources>
         <CollectionViewSource x:Key="CategoriesCollection" Source="{Binding Categories}" Filter="CategoriesCollection_OnFilter">
-            <CollectionViewSource.SortDescriptions>
-                <cm:SortDescription PropertyName="Title" Direction="Ascending"/>
-            </CollectionViewSource.SortDescriptions>
+
         </CollectionViewSource>
     </UserControl.Resources>
 
@@ -41,14 +42,24 @@
             FontFamily="Times New Roman" 
             FontSize="20" 
             Grid.ColumnSpan="2" 
-            Margin="5,5,5,5"
-            TextChanged="TextFilter_TextChanged"/>
+            Margin="5,5,5,5">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="TextChanged">
+                    <ext:RefreshCollectionViewSourceExtension Source="{StaticResource CategoriesCollection}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+        </TextBox>
 
         <DataGrid 
     Grid.Row="1"
     Margin="5,5,5,15" 
     ItemsSource="{Binding Source={StaticResource CategoriesCollection}}"
-    Grid.ColumnSpan="2">
+    Grid.ColumnSpan="2"
+    res:DataGridHelper.HidableColumnIndices="0,2" 
+    res:DataGridHelper.ColumnVisibility="{Binding VisibleComponent}"
+    RowHeight="70">
 
             <DataGrid.Columns>
 
@@ -77,7 +88,6 @@
             Width="1*"/>
 
                 <DataGridTemplateColumn
-            x:Name="ColOp"
             Header="Операции"
             Width="150"
             CanUserResize="False">
@@ -119,7 +129,7 @@
 
             <DataGrid.ContextMenu>
                 <ContextMenu 
-    x:Name="menu"
+    Visibility="{Binding VisibleComponent}"
     FontSize="14">
 
                     <MenuItem 
@@ -183,6 +193,7 @@
         Width="59" 
         Height="53" 
         VerticalAlignment="Top" 
+                Visibility="{Binding VisibleComponent}"
         Margin="25,0,0,0"
         HorizontalAlignment="Left" 
         RenderTransformOrigin="0.5,0.5"/>
@@ -191,14 +202,17 @@
         Text="С отмеченными:" 
         Margin="0,0,25,0"
         FontSize="22"
+                Visibility="{Binding VisibleComponent}"
         VerticalAlignment="Center"
-        FontFamily="Nautilus Pompilius"/>
+        FontFamily="Nautilus Pompilius"
+                RenderOptions.BitmapScalingMode="HighQuality"/>
 
         </StackPanel>
 
         <Border 
     Background="#093A5C"
     CornerRadius="18"
+            Visibility="{Binding VisibleComponent}"
     Margin="5,5,5,5"
     Grid.Column="1"
     Grid.Row="2"/>
@@ -225,10 +239,11 @@
         Style="{StaticResource RoundCorner}" 
         Foreground="#E53434" 
         FontSize="16"
+                Visibility="{Binding VisibleComponent}"
         FontFamily="Nautilus Pompilius"  
         Margin="5,0,5,0"
         HorizontalAlignment="Left" 
-        Command="{Binding MultiplyDeleteCommand}">
+        Command="{Binding MultiplyRemoveCommand}">
 
                 <StackPanel 
             Orientation="Horizontal">
@@ -239,6 +254,7 @@
 
                     <TextBlock 
                 Text="Удалить" 
+                        
                 Margin="0,0,25,0"
                 FontSize="18"
                 VerticalAlignment="Center"/>
@@ -251,6 +267,7 @@
                 Grid.Column="1" 
                 Style="{StaticResource RoundCorner}"
                 Foreground="#D9D9D9"
+                Visibility="{Binding VisibleComponent}"
                 FontSize="16"
                 FontFamily="Nautilus Pompilius"
                 Margin="178,0,0,0" 

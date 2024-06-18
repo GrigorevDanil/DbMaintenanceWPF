@@ -14,6 +14,18 @@ namespace DbMaintenanceWPF.Service
 {
     public class ImageSourceHelper : IImageHelper
     {
+        public ImageSourceHelper()
+        {
+            BitmapImage bitmap;
+            bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.UriSource = new Uri("ImageEmployee.png", UriKind.Relative);
+            bitmap.EndInit();
+            DefaultImageUser = bitmap;
+        }
+        public ImageSource DefaultImageUser { get; set; }
+
         public byte[] ImageSourceToBytes(BitmapEncoder encoder, ImageSource imageSource)
         {
             byte[] bytes = null;
@@ -51,29 +63,58 @@ namespace DbMaintenanceWPF.Service
                     return image;
                 }
             }
-            else return new BitmapImage(new Uri("ImageEmployee.png", UriKind.Relative));
+            else return DefaultImageUser;
         }
 
-        public ImageSource BytesToImageSource(DataRow row, string columnName)
+        public BitmapImage ReduceBitmapImageSize(BitmapImage originalImage)
         {
-            if (!row.IsNull(columnName))
-            {
-                byte[] buffer = (byte[])row[columnName];
+            const long targetSizeKilobytes = 16777;
+            const long targetSize = targetSizeKilobytes * 1024;
 
-                using (MemoryStream memoryStream = new MemoryStream(buffer))
+
+            MemoryStream memoryStream = new MemoryStream();
+            BitmapImage resizedImage = new BitmapImage();
+
+            // Сначала попробуем изменить размер изображения
+            for (double scale = 1.0; scale > 0.1; scale -= 0.1)
+            {
+                memoryStream.SetLength(0); // Сбросить memoryStream
+
+                // Масштабируем изображение
+                TransformedBitmap scaledBitmap = new TransformedBitmap(
+                    originalImage,
+                    new ScaleTransform(scale, scale)
+                );
+
+                // Проверяем, требуется ли нам сохранять в формате PNG
+                if (originalImage.Format == PixelFormats.Bgra32 ||
+                    originalImage.Format == PixelFormats.Pbgra32 ||
+                    originalImage.Format == PixelFormats.Bgr32)
                 {
-                    var image = new BitmapImage();
-                    memoryStream.Position = 0;
-                    image.BeginInit();
-                    image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-                    image.CacheOption = BitmapCacheOption.OnLoad;
-                    image.StreamSource = memoryStream;
-                    image.EndInit();
-                    image.Freeze();
-                    return image;
+                    PngBitmapEncoder pngEncoder = new PngBitmapEncoder();
+                    pngEncoder.Frames.Add(BitmapFrame.Create(scaledBitmap));
+                    pngEncoder.Save(memoryStream);
+                }
+                else // Иначе используем JPEG
+                {
+                    JpegBitmapEncoder jpegEncoder = new JpegBitmapEncoder { QualityLevel = 50 }; // Выбираем среднее значение качества
+                    jpegEncoder.Frames.Add(BitmapFrame.Create(scaledBitmap));
+                    jpegEncoder.Save(memoryStream);
+                }
+
+                // Если размер файла удовлетворяет требованиям, загружаем его как BitmapImage
+                if (memoryStream.Length <= targetSize)
+                {
+                    resizedImage.BeginInit();
+                    resizedImage.StreamSource = new MemoryStream(memoryStream.ToArray()); // Делаем копию потока
+                    resizedImage.CacheOption = BitmapCacheOption.OnLoad;
+                    resizedImage.EndInit();
+                    resizedImage.Freeze(); // Замораживаем для использования в других потоках
+                    return resizedImage;
                 }
             }
-            else return new BitmapImage(new Uri("ImageEmployee.png", UriKind.Relative));
+
+            throw new InvalidOperationException("Невозможно уменьшить размер изображения до желаемого размера.");
         }
 
     }

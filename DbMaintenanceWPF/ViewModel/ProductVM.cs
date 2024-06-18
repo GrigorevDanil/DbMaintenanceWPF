@@ -1,58 +1,55 @@
 ﻿using DbMaintenanceWPF.Infrastructure.Commands;
 using DbMaintenanceWPF.Models;
+using DbMaintenanceWPF.Models.ItemModels;
 using DbMaintenanceWPF.Models.Items;
 using DbMaintenanceWPF.Service.Interface;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DbMaintenanceWPF.ViewModel
 {
-    class ProductVM : Base.ViewModelBase
+    public class ProductVM(ProductM model, IUserDialogService userDialog, IStorageViewModel storageViewModel) : Base.ViewModelBase
     {
 
         #region Свойства
 
-        readonly ProductM Model;
-        readonly IUserDialogService UserDialog;
+        readonly ProductM Model = model;
+        readonly IUserDialogService UserDialog = userDialog;
         public IEnumerable<Product> Products => Model.PublicListProducts;
         public IEnumerable<Category> Categories => Model.PublicListCategories;
         public IEnumerable<Brand> Brands => Model.PublicListBrands;
         public IEnumerable<Unit> Units => Model.PublicListUnits;
 
-
-
-        bool flagCategory;
-        public bool FlagCategory { get => flagCategory; set { Set(ref flagCategory, value); SelectedCategory = null; } }
-
-        bool flagBrand;
-        public bool FlagBrand { get => flagBrand; set { Set(ref flagBrand, value); SelectedBrand = null; } }
-
-        bool flagUnit;
-        public bool FlagUnit { get => flagUnit; set { Set(ref flagUnit, value); SelectedUnit = null;  } }
-
-        Category selectedCategory;
-        public Category SelectedCategory { get => selectedCategory; set => Set(ref selectedCategory, value); }
-
-        Brand selectedBrand;
-        public Brand SelectedBrand { get => selectedBrand; set => Set(ref selectedBrand, value); }
-
-        Unit selectedUnit;
-        public Unit SelectedUnit { get => selectedUnit; set => Set(ref selectedUnit, value);  }
+        public Visibility VisibleComponent
+        {
+            get
+            {
+                var user = (storageViewModel.GetViewModel(nameof(MainVM)) as MainVM)?.CurrentUser as User;
+                return user?.Role == "Пользователь" ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
 
         #endregion
 
         #region Команды
 
+        public void UpdateList() => OnPropertyChanged(nameof(Products));
+
         #region AddCommand - Добавление товара
 
         private ICommand addCommand;
         public ICommand AddCommand => addCommand ??= new RelayCommand(OnAddCommandExecuted, CanAddCommandExecute);
-        private static bool CanAddCommandExecute(object p) => p is Product;
+        private static bool CanAddCommandExecute(object p) => true;
 
         private void OnAddCommandExecuted(object p)
         {
-            var product = (Product)p;
-            if (!UserDialog.Edit(product, "Добавление товара")) OnPropertyChanged(nameof(Products));
+            var product = new Product();
+            if (UserDialog.Edit(product, "Добавление товара"))
+            {
+                Model.Create(product);
+                OnPropertyChanged(nameof(Products));
+            }
         }
 
         #endregion
@@ -66,7 +63,7 @@ namespace DbMaintenanceWPF.ViewModel
         private void OnEditCommandExecuted(object p)
         {
             Product product = (Product)p;
-            if (!UserDialog.Edit(product, "Редактирование товара"))
+            if (UserDialog.Edit(product, "Редактирование товара"))
             {
                 Model.Update(product);
                 OnPropertyChanged(nameof(Products));
@@ -93,15 +90,24 @@ namespace DbMaintenanceWPF.ViewModel
 
         #endregion
 
+        #region MultiplyRemoveCommand - Множественное удаление товаров
 
-        #endregion
+        private ICommand multiplyRemoveCommand;
+        public ICommand MultiplyRemoveCommand => multiplyRemoveCommand ??= new RelayCommand(OnMultiplyRemoveCommandExecuted, CanMultiplyRemoveCommandExecute);
+        private static bool CanMultiplyRemoveCommandExecute(object p) => true;
 
-        public ProductVM(ProductM model, IUserDialogService userDialog)
+        private void OnMultiplyRemoveCommandExecuted(object p)
         {
-            Model = model;
-            UserDialog = userDialog;
+            if (UserDialog.ShowConfirm("Удаление товаров", "Удалить выбранные товары?"))
+            {
+                foreach (Product product in Products) if (product.IsSelected) Model.Remove(product);
+                OnPropertyChanged(nameof(Products));
+            }
         }
 
-        
+        #endregion
+        #endregion
+
+
     }
 }

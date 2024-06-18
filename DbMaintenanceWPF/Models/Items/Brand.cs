@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace DbMaintenanceWPF.Models.Items
 {
-    public class Brand : IEntity
+    public class Brand : IEntity, IEquatable<Brand>
     {
         public int Id { get; set; }
         public string Title { get; set; }
         public bool IsSelected { get; set; }
+
+        public bool Equals(Brand other) => Id == other.Id;
     }
 }

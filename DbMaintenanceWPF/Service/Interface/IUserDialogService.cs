@@ -3,15 +3,20 @@ using DbMaintenanceWPF.Models;
 
 namespace DbMaintenanceWPF.Service.Interface
 {
-    interface IUserDialogService
+    public interface IUserDialogService
     {
-        bool Edit(object item, string titleWindow, object viewModel = null);
+        bool ShowPrint(string namePrint);
+        bool Edit(object item, string titleWindow);
         void ShowWarning(string title, string text);
         void ShowQuestion(string title, string text);
-        bool ShowConfirm(string title, string text, bool exclamation = false);
-        bool ShowSettingConnection(ConnectionM model, Database database, ICommandFactory commandFactory);
-        bool ShowAuthentication(LoginM model, IUserDialogService dialogService);
+        bool ShowConfirm(string title, string text);
+        bool ShowSettingConnection();
+        bool ShowAuthentication();
         bool ShowMain(object user);
+        string ShowInput(string title);
+        string ShowBrowserCatalog();
+        (string, string) ShowResetKey();
+        string ShowChangeKey(string resultHash, string generatedSalt);
 
     }
 }

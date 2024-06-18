@@ -3,9 +3,11 @@ using System.Windows.Input;
 
 namespace DbMaintenanceWPF.Infrastructure.Commands.Factories
 {
-    internal class CommandFactory : ICommandFactory
+    public class CommandFactory : ICommandFactory
     {
         public ICommand CreateCloseApplicationCommand() => new CloseApplicationCommand();
+
+        public ICommand CreateCloseWindowCommand() => new CloseWindowCommand();
 
         public ICommand CreateRestartApplicationCommand() => new RestartApplicationCommand();
     }

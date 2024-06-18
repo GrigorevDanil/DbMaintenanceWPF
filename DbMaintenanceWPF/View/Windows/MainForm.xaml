@@ -3,12 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:res="clr-namespace:DbMaintenanceWPF.Resources"
         xmlns:cmd="clr-namespace:DbMaintenanceWPF.Infrastructure.Commands"
         xmlns:local="clr-namespace:DbMaintenanceWPF.View.Windows"
-        xmlns:view="clr-namespace:DbMaintenanceWPF.View"
-        xmlns:con="clr-namespace:DbMaintenanceWPF.Infrastructure.Converter"
-        DataContext="{Binding MainModel, Source={StaticResource Locator}}"
+        xmlns:cc="clr-namespace:DbMaintenanceWPF.Resources.CustomControls"
+        xmlns:res="clr-namespace:DbMaintenanceWPF.Resources"
+        xmlns:vm="clr-namespace:DbMaintenanceWPF.ViewModel"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         x:Name="CurrentWindow"
         Style="{StaticResource SpringAnimation}"
@@ -25,44 +25,24 @@
     <WindowChrome.WindowChrome>
         <WindowChrome/>
     </WindowChrome.WindowChrome>
-   
 
-    <Window.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction 
+                Command="{x:Static vm:ViewModelLocator.NavigatorCurrentViewCommand}"  
+                CommandParameter="ProductModel"/>
+        </i:EventTrigger>
+        
+        <i:EventTrigger EventName="Closed">
+            <i:InvokeCommandAction>
+                <i:InvokeCommandAction.Command>
+                    <cmd:CloseApplicationCommand/>
+                </i:InvokeCommandAction.Command>
+            </i:InvokeCommandAction>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
 
-        <con:InstanceEqualsConverter x:Key="InstanceEqualsConverter"/>
 
-        <Storyboard x:Key="EnterSubmenu">
-            <DoubleAnimation
-                Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
-                From="15" To="0" Duration="0:0:0.3"/>
-            <DoubleAnimation
-                Storyboard.TargetProperty="Opacity"
-                From="0" To="1.0" Duration="0:0:0.3"/>
-            <ObjectAnimationUsingKeyFrames
-                Storyboard.TargetProperty="Visibility"
-                Duration="0:0:0.1">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.1" Value="{x:Static Visibility.Visible}"/>
-            </ObjectAnimationUsingKeyFrames>
-        </Storyboard>
-
-        <Storyboard x:Key="LeaveSubmenu">
-            <DoubleAnimation
-                Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
-                From="0" To="15" Duration="0:0:0.2"/>
-            <DoubleAnimation
-                Storyboard.TargetProperty="Opacity"
-                From="1.0" To="0" Duration="0:0:0.2"/>
-            <ObjectAnimationUsingKeyFrames
-                Storyboard.TargetProperty="Visibility"
-                Duration="0:0:0.2">
-                <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{x:Static Visibility.Collapsed}"/>
-            </ObjectAnimationUsingKeyFrames>
-            <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="(ToggleButton.IsChecked)">
-                <DiscreteBooleanKeyFrame KeyTime="0" Value="False" />
-            </BooleanAnimationUsingKeyFrames>
-        </Storyboard>
-
-    </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -75,6 +55,7 @@
             <ColumnDefinition Width="913*"/>
             <ColumnDefinition Width="237*"/>
         </Grid.ColumnDefinitions>
+        
         <Border 
              Background="#093A5C"
              CornerRadius="18"
@@ -121,24 +102,40 @@
 
                 <MenuItem.Icon>
                     <Image  
-                        Source="/Resources/Pictures/IconProgramm.png" />
+                        Source="/Resources/Pictures/IconProgramm.png" 
+                        RenderOptions.BitmapScalingMode="HighQuality"/>
                 </MenuItem.Icon>
 
                 <MenuItem 
                     Style="{StaticResource Sub_MenuItem}" 
-                    Header="Об авторе"
-                    Foreground="#D9D9D9"
-                    FontFamily="Nautilus Pompilius"
-                    FontSize="16" 
-                    Command="{Binding OutputAuthorCommand}"/>
+                    Command="{Binding ShowInfoAuthorCommand}">
+
+                    <MenuItem.Header>
+                        <TextBlock 
+                            Text="Об авторе"
+                            Foreground="#D9D9D9"
+                            FontFamily="Nautilus Pompilius"
+                            FontSize="16" />
+                    </MenuItem.Header>
+                    
+                </MenuItem>
 
                 <MenuItem 
-                    Style="{StaticResource Sub_MenuItem}" 
-                    Header="Справка" 
-                    Foreground="#D9D9D9" 
-                    FontFamily="Nautilus Pompilius"
-                    FontSize="16"
-                    Command="{Binding HelpCommand}"/>
+                    Style="{StaticResource Sub_MenuItem}">
+
+                    <MenuItem.Header>
+                        <TextBlock 
+                            Text="Справка"
+                            Foreground="#D9D9D9"
+                            FontFamily="Nautilus Pompilius"
+                            FontSize="16" />
+                    </MenuItem.Header>
+
+                    <MenuItem.Command>
+                        <cmd:HelpCommand/>
+                    </MenuItem.Command>
+                    
+                </MenuItem>
 
             </MenuItem>
 
@@ -151,26 +148,55 @@
 
                 <MenuItem.Icon>
                     <Image 
-                        Source="/Resources/Pictures/IconPrint.png"  />
+                        Source="/Resources/Pictures/IconPrint.png"
+                        RenderOptions.BitmapScalingMode="HighQuality"/>
                 </MenuItem.Icon>
 
                 <MenuItem 
-                    x:Name="menuItemHtml" 
-                    Style="{StaticResource SubMenuItemStyleWithDropDown}"
-                    Header="HTML"
-                    FontFamily="Nautilus Pompilius"
-                    Foreground="#D9D9D9"
-                    FontSize="16">
+                    Style="{StaticResource SubMenuItemStyleWithDropDown}">
+
+                    <MenuItem.Header>
+                        <TextBlock
+                            Text="Exel"
+                            FontFamily="Nautilus Pompilius"
+                            Foreground="#D9D9D9"
+                            FontSize="16"/>
+                    </MenuItem.Header>
 
                     <MenuItem 
-                        Style="{StaticResource Sub_MenuItem}"
-                        Header="Табель учета рабочего времени"
-                        Foreground="#D9D9D9"
-                        FontFamily="Nautilus Pompilius" 
-                        FontSize="16" 
-                        Command="{Binding PrintHtmlCommand}"/>
+                     Style="{StaticResource Sub_MenuItem}"
+                        Command="{Binding ShowMaterialStatementCommand}">
+
+                        <MenuItem.Header>
+                            <TextBlock
+                                Text="Ведомость выдачи материальный ценностей на нужды учреждения"
+                                FontFamily="Nautilus Pompilius"
+                                Foreground="#D9D9D9"
+                                FontSize="16"/>
+                        </MenuItem.Header>
+
+                    </MenuItem>
 
                 </MenuItem>
+
+            </MenuItem>
+
+            <MenuItem
+     Style="{StaticResource MenuItemStyleWithDropDown}"
+     Header="Настройки подключения"   
+     FontFamily="Nautilus Pompilius"
+     Foreground="#D9D9D9"
+     FontSize="16"
+     Command="{Binding ShowSettingConnectionCommand}">
+
+                <MenuItem.Icon>
+                    <Image 
+             Source="/Resources/Pictures/ImageConnectionMenu.png" 
+                        RenderOptions.BitmapScalingMode="HighQuality"
+                        Margin="0,2,0,2"/>
+                </MenuItem.Icon>
+
+
 
             </MenuItem>
         </Menu>
@@ -256,22 +282,19 @@
                     <ColumnDefinition Width="271*"/>
                 </Grid.ColumnDefinitions>
 
-                <Border 
-                    CornerRadius="15"
+                <Image 
                     Width="50"
-                    Height="50" 
-                    HorizontalAlignment="Center">
+                    Height="50"
+                    Source="{Binding ImageUser}"
+                    RenderOptions.BitmapScalingMode="HighQuality"
+                    SnapsToDevicePixels = "True"
+                    Grid.RowSpan="2">
 
-                    <Border.Background>
+                    <Image.Clip>
+                        <RectangleGeometry RadiusX="30" RadiusY="30" Rect="0,0,50,50" />
+                    </Image.Clip>
 
-                        <ImageBrush 
-                            Stretch="Fill"
-                            RenderOptions.BitmapScalingMode="HighQuality"
-                            ImageSource="{Binding ImageUser}"/>
-
-                    </Border.Background>
-
-                </Border>
+                </Image>
 
                 <TextBlock 
                     Text="{Binding NameUser}"
@@ -289,639 +312,613 @@
     Orientation="Vertical"
     Margin="10,5,10,5">
 
-                <res:Btn 
-        IsChecked="{Binding Path=CurrentView, Converter={StaticResource InstanceEqualsConverter}, ConverterParameter={x:Type view:Product}}"
-        Tag="panelProduct"
-        Style="{StaticResource BtnStyle}"
-        Grid.Row="1" Grid.Column="1"
-        Foreground="#D9D9D9"
-        FontSize="16"
-        FontFamily="Nautilus Pompilius" 
-        VerticalAlignment="Stretch" 
-        HorizontalAlignment="Stretch" 
-        Margin="0,5,0,5"
-        Checked="Btn_Checked"
-        Unchecked="Btn_Unchecked">
 
+                <cc:CustomRadioBut Margin="0 5 0 0" 
+                                   res:RadioButtonHellper.ResetChildIsChecked="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                                   res:RadioButtonHellper.CustomRadioButHideClick="True"
+                                   Command="{x:Static vm:ViewModelLocator.NavigatorCurrentViewCommand}" 
+                                   CommandParameter="ProductModel"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Center"
+                                   IsChecked="True">
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="37*"/>
-                            <ColumnDefinition Width="128*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Image 
-                Source="/Resources/Pictures/ImageProductMenu.png"
-                HorizontalAlignment="Center" 
-                Width="40" 
-                Height="40" 
-                VerticalAlignment="Center"/>
-
-                        <TextBlock
-                Text="Инвентарь" 
-                VerticalAlignment="Center" 
-                FontSize="20" 
-                HorizontalAlignment="Center"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"/>
-
-                    </Grid>
-
-
-
-                </res:Btn>
-
-                <StackPanel
-                    Orientation="Vertical"
-                    x:Name="panelProduct"
-                    Visibility="Collapsed">
-
-                    <res:Btn 
-            Grid.Row="1"
-            Grid.Column="1"
-            IsChecked="{Binding Path=CurrentView, Converter={StaticResource InstanceEqualsConverter}, ConverterParameter={x:Type view:Category}}"
-            Style="{StaticResource DownBtnStyle}"
-            Foreground="#D9D9D9"
-            FontSize="16"
-            FontFamily="Nautilus Pompilius" 
-            VerticalAlignment="Stretch" 
-            HorizontalAlignment="Stretch" 
-            Margin="30,5,0,5">
-
-                        <res:Btn.RenderTransform>
-                            <TranslateTransform X="0" />
-                        </res:Btn.RenderTransform>
-
-                        <Grid>
+                    <cc:CustomRadioBut.Content>
+                        <Grid Margin="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="37*"/>
                                 <ColumnDefinition Width="128*"/>
                             </Grid.ColumnDefinitions>
 
                             <Image 
-                    Source="/Resources/Pictures/ImageCategoryMenu.png"
-                    HorizontalAlignment="Center" 
-                    Width="30" 
-                    Height="30" 
-                    VerticalAlignment="Center"/>
+                            Source="/Resources/Pictures/ImageProductMenu.png"
+                            HorizontalAlignment="Left" 
+                            Width="40" 
+                            Height="40" 
+                            VerticalAlignment="Center"
+                            RenderOptions.BitmapScalingMode="HighQuality"/>
 
                             <TextBlock
-                    Text="Справочник категорий" 
-                    VerticalAlignment="Center" 
-                    FontSize="18" 
-                    HorizontalAlignment="Center"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"/>
+                            Text="Инвентарь" 
+                            Foreground="#D9D9D9"
+                            FontFamily="Nautilus Pompilius" 
+                            VerticalAlignment="Center" 
+                            FontSize="20" 
+                            HorizontalAlignment="Center"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"/>
 
                         </Grid>
+                    </cc:CustomRadioBut.Content>
 
-                    </res:Btn>
+                    <cc:CustomRadioBut.SubPanel>
 
-                    <res:Btn 
-            Style="{StaticResource DownBtnStyle}"
-            IsChecked="{Binding Path=CurrentView, Converter={StaticResource InstanceEqualsConverter}, ConverterParameter={x:Type view:Brand}}"
-            Grid.Row="1"
-            Grid.Column="1"
-            Foreground="#D9D9D9"
-            FontSize="16"
-            FontFamily="Nautilus Pompilius" 
-            VerticalAlignment="Stretch" 
-            HorizontalAlignment="Stretch" 
-            Margin="30,5,0,5">
+                        <StackPanel Orientation="Vertical">
+                            <cc:CustomRadioBut Margin="0 5 0 0" 
+Command="{x:Static vm:ViewModelLocator.NavigatorCurrentViewCommand}" 
+CommandParameter="CategoryModel"
+HorizontalAlignment="Stretch"
+VerticalAlignment="Center">
 
-                        <res:Btn.RenderTransform>
-                            <TranslateTransform X="0" />
-                        </res:Btn.RenderTransform>
+                                <cc:CustomRadioBut.Content>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="37*"/>
+                                            <ColumnDefinition Width="128*"/>
+                                        </Grid.ColumnDefinitions>
 
-                        <Grid>
+                                        <Image 
+             Source="/Resources/Pictures/ImageCategoryMenu.png"
+             HorizontalAlignment="Left" 
+             Width="30" 
+             Height="30" 
+                                            RenderOptions.BitmapScalingMode="HighQuality"
+             VerticalAlignment="Center"/>
+
+                                        <TextBlock
+             Text="Справочник категорий" 
+             Foreground="#D9D9D9"
+             FontFamily="Nautilus Pompilius"         
+             VerticalAlignment="Center" 
+             FontSize="18" 
+             HorizontalAlignment="Center"
+             Grid.Column="0"
+             Grid.ColumnSpan="2"/>
+
+                                    </Grid>
+                                </cc:CustomRadioBut.Content>
+
+                            </cc:CustomRadioBut>
+
+                            <cc:CustomRadioBut  Margin="0 5 0 0" 
+                                                Command="{x:Static vm:ViewModelLocator.NavigatorCurrentViewCommand}" 
+                                                CommandParameter="BrandModel"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Center">
+
+                                <cc:CustomRadioBut.Content>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="37*"/>
+                                            <ColumnDefinition Width="128*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Image 
+                                Source="/Resources/Pictures/ImageBrandMenu.png"
+                                HorizontalAlignment="Left" 
+                                Width="30" 
+                                Height="30" 
+                                            RenderOptions.BitmapScalingMode="HighQuality"
+                                VerticalAlignment="Center"/>
+
+                                        <TextBlock
+                                Text="Справочник брендов" 
+                                Foreground="#D9D9D9"
+                                FontFamily="Nautilus Pompilius" 
+                                VerticalAlignment="Center" 
+                                FontSize="18" 
+                                HorizontalAlignment="Center"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"/>
+
+                                    </Grid>
+                                </cc:CustomRadioBut.Content>
+
+                            </cc:CustomRadioBut>
+
+                            <cc:CustomRadioBut  Margin="0 5 0 0" 
+                    Command="{x:Static vm:ViewModelLocator.NavigatorCurrentViewCommand}" 
+                    CommandParameter="UnitModel"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Center">
+
+                                <cc:CustomRadioBut.Content>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="37*"/>
+                                            <ColumnDefinition Width="128*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Image 
+                                Source="/Resources/Pictures/ImageUnitMenu.png"
+                                HorizontalAlignment="Left" 
+                                Width="30" 
+                                Height="30" 
+                                            RenderOptions.BitmapScalingMode="HighQuality"
+                                VerticalAlignment="Center"/>
+
+                                        <TextBlock
+                                Text="Справочник единиц" 
+                                Foreground="#D9D9D9"
+                                FontFamily="Nautilus Pompilius" 
+                                VerticalAlignment="Center" 
+                                FontSize="18" 
+                                HorizontalAlignment="Center"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"/>
+
+                                    </Grid>
+                                </cc:CustomRadioBut.Content>
+
+                            </cc:CustomRadioBut>
+
+                        </StackPanel>
+
+
+                    </cc:CustomRadioBut.SubPanel>
+
+                </cc:CustomRadioBut>
+
+                <cc:CustomRadioBut Margin="0 5 0 0" 
+                                   res:RadioButtonHellper.ResetChildIsChecked="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                                   res:RadioButtonHellper.CustomRadioButHideClick="True"
+                                   Command="{x:Static vm:ViewModelLocator.NavigatorCurrentViewCommand}" 
+                                   CommandParameter="PurchaseModel"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Center">
+
+                    <cc:CustomRadioBut.Content>
+                        <Grid Margin="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="37*"/>
                                 <ColumnDefinition Width="128*"/>
                             </Grid.ColumnDefinitions>
 
                             <Image 
-                    Source="/Resources/Pictures/ImageBrandMenu.png"
-                    HorizontalAlignment="Center" 
-                    Width="30" 
-                    Height="30" 
-                    VerticalAlignment="Center"/>
+                                Source="/Resources/Pictures/ImagePurchaseMenu.png"
+                                HorizontalAlignment="Left" 
+                                RenderOptions.BitmapScalingMode="HighQuality"
+                                Width="40" 
+                                Height="40" 
+                                VerticalAlignment="Center"/>
 
                             <TextBlock
-                    Text="Справочник брендов" 
-                    VerticalAlignment="Center" 
-                    FontSize="18" 
-                    HorizontalAlignment="Center"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"/>
+                                Text="Поставки" 
+                                Foreground="#D9D9D9"
+                                FontFamily="Nautilus Pompilius" 
+                                VerticalAlignment="Center" 
+                                FontSize="20" 
+                                HorizontalAlignment="Center"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"/>
+
 
                         </Grid>
+                    </cc:CustomRadioBut.Content>
 
-                    </res:Btn>
+                    <cc:CustomRadioBut.SubPanel>
 
-                    <res:Btn 
-            Style="{StaticResource DownBtnStyle}"
-            IsChecked="{Binding Path=CurrentView, Converter={StaticResource InstanceEqualsConverter}, ConverterParameter={x:Type view:Unit}}"
-            Grid.Row="1"
-            Grid.Column="1"
-            Foreground="#D9D9D9"
-            FontSize="16"
-            FontFamily="Nautilus Pompilius" 
-            VerticalAlignment="Stretch" 
-            HorizontalAlignment="Stretch" 
-            Margin="30,5,0,5">
+                        <cc:CustomRadioBut  Margin="0 5 0 0" 
+                                            Command="{x:Static vm:ViewModelLocator.NavigatorCurrentViewCommand}" 
+                                            CommandParameter="ProviderModel"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center">
 
-                        <res:Btn.RenderTransform>
-                            <TranslateTransform X="0" />
-                        </res:Btn.RenderTransform>
+                            <cc:CustomRadioBut.Content>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="37*"/>
+                                        <ColumnDefinition Width="128*"/>
+                                    </Grid.ColumnDefinitions>
 
-                        <Grid>
+                                    <Image 
+                                            Source="/Resources/Pictures/ImageProviderMenu.png"
+                                            HorizontalAlignment="Left" 
+                                            Width="30" 
+                                        RenderOptions.BitmapScalingMode="HighQuality"
+                                            Height="30" 
+                                            VerticalAlignment="Center"/>
+
+                                    <TextBlock
+                                            Text="Поставщики" 
+                                            Foreground="#D9D9D9"
+                                            FontFamily="Nautilus Pompilius" 
+                                            VerticalAlignment="Center" 
+                                            FontSize="18" 
+                                            HorizontalAlignment="Center"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="2"/>
+
+
+                                </Grid>
+                            </cc:CustomRadioBut.Content>
+
+                        </cc:CustomRadioBut>
+
+                    </cc:CustomRadioBut.SubPanel>
+
+                </cc:CustomRadioBut>
+
+                <cc:CustomRadioBut Margin="0 5 0 0" 
+                                   res:RadioButtonHellper.ResetChildIsChecked="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                                   res:RadioButtonHellper.CustomRadioButHideClick="True"
+                                   Command="{x:Static vm:ViewModelLocator.NavigatorCurrentViewCommand}" 
+                                   CommandParameter="EmployeeModel"
+                                   HorizontalAlignment="Stretch"
+                                   VerticalAlignment="Center">
+
+                    <cc:CustomRadioBut.Content>
+                        <Grid Margin="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="37*"/>
                                 <ColumnDefinition Width="128*"/>
                             </Grid.ColumnDefinitions>
 
                             <Image 
-                    Source="/Resources/Pictures/ImageUnitMenu.png"
-                    HorizontalAlignment="Center" 
-                    Width="30" 
-                    Height="30" 
-                    VerticalAlignment="Center"/>
+                                Source="/Resources/Pictures/ImageEmployeeMenu.png"
+                                HorizontalAlignment="Left" 
+                                Width="40" 
+                                Height="40" 
+                                RenderOptions.BitmapScalingMode="HighQuality"
+                                VerticalAlignment="Center"/>
 
                             <TextBlock
-                    Text="Справочник единиц" 
-                    VerticalAlignment="Center" 
-                    FontSize="18" 
-                    HorizontalAlignment="Center"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"/>
+                                Text="Сотрудники" 
+                                Foreground="#D9D9D9"
+                                FontFamily="Nautilus Pompilius" 
+                                VerticalAlignment="Center" 
+                                FontSize="20" 
+                                HorizontalAlignment="Center"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"/>
+
 
                         </Grid>
+                    </cc:CustomRadioBut.Content>
 
-                    </res:Btn>
+                    <cc:CustomRadioBut.SubPanel>
 
-                </StackPanel>
+                        <StackPanel Orientation="Vertical">
+                            <cc:CustomRadioBut Margin="0 5 0 0" 
+                                                Command="{x:Static vm:ViewModelLocator.NavigatorCurrentViewCommand}" 
+                                                CommandParameter="DepartmentModel"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Center">
 
-                <res:Btn 
-        IsChecked="{Binding Path=CurrentView, Converter={StaticResource InstanceEqualsConverter}, ConverterParameter={x:Type view:Purchase}}"
-        Tag="panelPurchase"
-        Style="{StaticResource BtnStyle}"
-        Grid.Row="1" Grid.Column="1"
-        Foreground="#D9D9D9"
-        FontSize="16"
-        FontFamily="Nautilus Pompilius" 
-        VerticalAlignment="Stretch" 
-        HorizontalAlignment="Stretch"
-        Margin="0,5,0,5"
-        Checked="Btn_Checked"
-        Unchecked="Btn_Unchecked">
+                                <cc:CustomRadioBut.Content>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="37*"/>
+                                            <ColumnDefinition Width="128*"/>
+                                        </Grid.ColumnDefinitions>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="37*"/>
-                            <ColumnDefinition Width="128*"/>
-                        </Grid.ColumnDefinitions>
+                                        <Image 
+                                            Source="/Resources/Pictures/ImageDepartmentMenu.png"
+                                            HorizontalAlignment="Left" 
+                                            Width="30" 
+                                            RenderOptions.BitmapScalingMode="HighQuality"
+                                            Height="30" 
+                                            VerticalAlignment="Center"/>
 
-                        <Image 
-                Source="/Resources/Pictures/ImagePurchaseMenu.png"
-                HorizontalAlignment="Center" 
-                Width="40" 
-                Height="40" 
-                VerticalAlignment="Center"/>
+                                        <TextBlock
+                                            Text="Справочник отделов"
+                                            Foreground="#D9D9D9"
+                                            FontFamily="Nautilus Pompilius" 
+                                            VerticalAlignment="Center" 
+                                            FontSize="18" 
+                                            HorizontalAlignment="Center"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="2"/>
 
-                        <TextBlock
-                Text="Поставки" 
-                VerticalAlignment="Center" 
-                FontSize="20" 
-                HorizontalAlignment="Center"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"/>
+                                    </Grid>
+                                </cc:CustomRadioBut.Content>
 
-                    </Grid>
+                            </cc:CustomRadioBut>
 
-                </res:Btn>
+                            <cc:CustomRadioBut  Margin="0 5 0 0" 
+                                                Command="{x:Static vm:ViewModelLocator.NavigatorCurrentViewCommand}" 
+                                                CommandParameter="PostModel"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Center">
 
-                <StackPanel
-        Orientation="Vertical"
-                    x:Name="panelPurchase"
-                    Visibility="Collapsed">
+                                <cc:CustomRadioBut.Content>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="37*"/>
+                                            <ColumnDefinition Width="128*"/>
+                                        </Grid.ColumnDefinitions>
 
-                    <res:Btn 
-            Grid.Row="1"
-            Grid.Column="1"
-            IsChecked="{Binding Path=CurrentView, Converter={StaticResource InstanceEqualsConverter}, ConverterParameter={x:Type view:Provider}}"
-            Style="{StaticResource DownBtnStyle}"
-            Foreground="#D9D9D9"
-            FontSize="16"
-            FontFamily="Nautilus Pompilius" 
-            VerticalAlignment="Stretch" 
-            HorizontalAlignment="Stretch" 
-            Margin="30,5,0,5">
+                                        <Image 
+                                            Source="/Resources/Pictures/ImagePostMenu.png"
+                                            HorizontalAlignment="Left" 
+                                            Width="30" 
+                                            RenderOptions.BitmapScalingMode="HighQuality"
+                                            Height="30" 
+                                            VerticalAlignment="Center"/>
 
-                        <res:Btn.RenderTransform>
-                            <TranslateTransform X="0" />
-                        </res:Btn.RenderTransform>
+                                        <TextBlock
+                                            Text="Справочник должностей" 
+                                            Foreground="#D9D9D9"
+                                            FontFamily="Nautilus Pompilius"
+                                            VerticalAlignment="Center" 
+                                            FontSize="18" 
+                                            HorizontalAlignment="Center"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="2"/>
 
-                        <Grid>
+
+                                    </Grid>
+                                </cc:CustomRadioBut.Content>
+
+                            </cc:CustomRadioBut>
+
+                        </StackPanel>
+
+
+                    </cc:CustomRadioBut.SubPanel>
+
+                </cc:CustomRadioBut>
+
+                <cc:CustomRadioBut Margin="0 5 0 0" 
+                                   res:RadioButtonHellper.CustomRadioButHideClick="True"
+                                   res:RadioButtonHellper.ResetChildIsChecked="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                   Command="{x:Static vm:ViewModelLocator.NavigatorCurrentViewCommand}" 
+                   CommandParameter="GiveDetailModel"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Center">
+
+                    <cc:CustomRadioBut.Content>
+                        <Grid Margin="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="37*"/>
                                 <ColumnDefinition Width="128*"/>
                             </Grid.ColumnDefinitions>
 
                             <Image 
-                    Source="/Resources/Pictures/ImageProviderMenu.png"
-                    HorizontalAlignment="Center" 
-                    Width="30" 
-                    Height="30" 
-                    VerticalAlignment="Center"/>
+                                Source="/Resources/Pictures/ImageGiveMenu.png"
+                                HorizontalAlignment="Left" 
+                                Width="40" 
+                                Height="40" 
+                                RenderOptions.BitmapScalingMode="HighQuality"
+                                VerticalAlignment="Center"/>
 
                             <TextBlock
-                    Text="Поставщики" 
-                    VerticalAlignment="Center" 
-                    FontSize="18" 
-                    HorizontalAlignment="Center"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"/>
+                                Text="Информация о выдачах" 
+                                Foreground="#D9D9D9"
+                                FontFamily="Nautilus Pompilius"
+                                VerticalAlignment="Center" 
+                                FontSize="20" 
+                                HorizontalAlignment="Center"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"/>
+
+
 
                         </Grid>
+                    </cc:CustomRadioBut.Content>
 
-                    </res:Btn>
+                    <cc:CustomRadioBut.SubPanel>
 
-                </StackPanel>
+                        <cc:CustomRadioBut  Margin="0 5 0 0" 
+                            Command="{x:Static vm:ViewModelLocator.NavigatorCurrentViewCommand}" 
+                            CommandParameter="GiveModel"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center">
 
-                <res:Btn 
-        IsChecked="{Binding Path=CurrentView, Converter={StaticResource InstanceEqualsConverter}, ConverterParameter={x:Type view:Employee}}"
-        Tag="employeePanel"
-        Style="{StaticResource BtnStyle}"
-        Grid.Row="1" Grid.Column="1"
-        Foreground="#D9D9D9"
-        FontSize="16"
-        FontFamily="Nautilus Pompilius" 
-        VerticalAlignment="Stretch" 
-        HorizontalAlignment="Stretch" 
-        Margin="0,5,0,5"
-        Checked="Btn_Checked"
-        Unchecked="Btn_Unchecked">
+                            <cc:CustomRadioBut.Content>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="37*"/>
+                                        <ColumnDefinition Width="128*"/>
+                                    </Grid.ColumnDefinitions>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="37*"/>
-                            <ColumnDefinition Width="128*"/>
-                        </Grid.ColumnDefinitions>
+                                    <Image 
+                                        Source="/Resources/Pictures/ImageGiveDetailMenu.png"
+                                        HorizontalAlignment="Left" 
+                                        Width="30" 
+                                        Height="30" 
+                                        RenderOptions.BitmapScalingMode="HighQuality"
+                                        VerticalAlignment="Center"/>
 
-                        <Image 
-                Source="/Resources/Pictures/ImageEmployeeMenu.png"
-                HorizontalAlignment="Center" 
-                Width="40" 
-                Height="40" 
-                VerticalAlignment="Center"/>
+                                    <TextBlock
+                                        Text="Выдачи" 
+                                        Foreground="#D9D9D9"
+                                        FontFamily="Nautilus Pompilius"
+                                        VerticalAlignment="Center" 
+                                        FontSize="18" 
+                                        HorizontalAlignment="Center"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="2"/>
 
-                        <TextBlock
-                Text="Сотрудники" 
-                VerticalAlignment="Center" 
-                FontSize="20" 
-                HorizontalAlignment="Center"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"/>
 
-                    </Grid>
+                                </Grid>
+                            </cc:CustomRadioBut.Content>
 
-                </res:Btn>
+                        </cc:CustomRadioBut>
 
-                <StackPanel
-        Orientation="Vertical"
-                    x:Name="employeePanel"
-                    Visibility="Collapsed">
+                    </cc:CustomRadioBut.SubPanel>
 
-                    <res:Btn 
-            Grid.Row="1"
-            Grid.Column="1"
-            IsChecked="{Binding Path=CurrentView, Converter={StaticResource InstanceEqualsConverter}, ConverterParameter={x:Type view:Department}}"
-            Style="{StaticResource DownBtnStyle}"
-            Foreground="#D9D9D9"
-            FontSize="16"
-            FontFamily="Nautilus Pompilius" 
-            VerticalAlignment="Stretch" 
-            HorizontalAlignment="Stretch" 
-            Margin="30,5,0,5">
+                </cc:CustomRadioBut>
 
-                        <res:Btn.RenderTransform>
-                            <TranslateTransform X="0" />
-                        </res:Btn.RenderTransform>
+                <cc:CustomRadioBut Margin="0 5 0 0"
+                                   res:RadioButtonHellper.ResetChildIsChecked="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                   Command="{x:Static vm:ViewModelLocator.NavigatorCurrentViewCommand}" 
+                   CommandParameter="CopyModel"
+                   HorizontalAlignment="Stretch"
+                                   Visibility="{Binding AdminVisible}"
+                   VerticalAlignment="Center">
 
-                        <Grid>
+                    <cc:CustomRadioBut.Content>
+                        <Grid Margin="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="37*"/>
                                 <ColumnDefinition Width="128*"/>
                             </Grid.ColumnDefinitions>
 
                             <Image 
-                    Source="/Resources/Pictures/ImageDepartmentMenu.png"
-                    HorizontalAlignment="Center" 
-                    Width="30" 
-                    Height="30" 
-                    VerticalAlignment="Center"/>
-
-                            <TextBlock
-                    Text="Справочник отделов" 
-                    VerticalAlignment="Center" 
-                    FontSize="18" 
-                    HorizontalAlignment="Center"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"/>
-
-                        </Grid>
-
-                    </res:Btn>
-
-                    <res:Btn 
-            Grid.Row="1"
-            Grid.Column="1"
-            IsChecked="{Binding Path=CurrentView, Converter={StaticResource InstanceEqualsConverter}, ConverterParameter={x:Type view:Post}}"
-            Style="{StaticResource DownBtnStyle}"
-            Foreground="#D9D9D9"
-            FontSize="16"
-            FontFamily="Nautilus Pompilius" 
-            VerticalAlignment="Stretch" 
-            HorizontalAlignment="Stretch" 
-            Margin="30,5,0,5">
-
-                        <res:Btn.RenderTransform>
-                            <TranslateTransform X="0" />
-                        </res:Btn.RenderTransform>
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="37*"/>
-                                <ColumnDefinition Width="128*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Image 
-                    Source="/Resources/Pictures/ImagePostMenu.png"
-                    HorizontalAlignment="Center" 
-                    Width="30" 
-                    Height="30" 
-                    VerticalAlignment="Center"/>
-
-                            <TextBlock
-                    Text="Справочник должностей" 
-                    VerticalAlignment="Center" 
-                    FontSize="18" 
-                    HorizontalAlignment="Center"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"/>
-
-                        </Grid>
-
-                    </res:Btn>
-
-                </StackPanel>
-
-                <res:Btn
-        x:Name="butGive"
-        IsChecked="{Binding Path=CurrentView, Converter={StaticResource InstanceEqualsConverter}, ConverterParameter={x:Type view:GiveDetail}}"
-        Tag="givePanel"
-        Style="{StaticResource BtnStyle}"
-        Grid.Row="1" Grid.Column="1"
-        Foreground="#D9D9D9"
-        FontSize="16"
-        FontFamily="Nautilus Pompilius" 
-        VerticalAlignment="Stretch" 
-        HorizontalAlignment="Stretch" 
-        Margin="0,5,0,5"
-        Checked="Btn_Checked"
-        Unchecked="Btn_Unchecked">
-
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="37*"/>
-                            <ColumnDefinition Width="128*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Image 
-                Source="/Resources/Pictures/ImageGiveMenu.png"
-                HorizontalAlignment="Center" 
-                Width="40" 
-                Height="40" 
-                VerticalAlignment="Center"/>
-
-                        <TextBlock
-                Text="Информация о выдачах" 
-                VerticalAlignment="Center" 
-                FontSize="20" 
-                HorizontalAlignment="Center"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"/>
-
-                    </Grid>
-
-                </res:Btn>
-
-                <StackPanel
-        Orientation="Vertical"
-                    x:Name="givePanel"
-                    Visibility="Collapsed">
-
-                    <res:Btn 
-            Grid.Row="1"
-            Grid.Column="1"
-            IsChecked="{Binding Path=CurrentView, Converter={StaticResource InstanceEqualsConverter}, ConverterParameter={x:Type view:Give}}"
-            Style="{StaticResource DownBtnStyle}"
-            Foreground="#D9D9D9"
-            FontSize="16"
-            FontFamily="Nautilus Pompilius" 
-            VerticalAlignment="Stretch" 
-            HorizontalAlignment="Stretch" 
-            Margin="30,5,0,5">
-
-                        <res:Btn.RenderTransform>
-                            <TranslateTransform X="0" />
-                        </res:Btn.RenderTransform>
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="37*"/>
-                                <ColumnDefinition Width="128*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Image 
-                    Source="/Resources/Pictures/ImageGiveDetailMenu.png"
-                    HorizontalAlignment="Center" 
-                    Width="30" 
-                    Height="30" 
-                    VerticalAlignment="Center"/>
-
-                            <TextBlock
-                    Text="Выдачи" 
-                    VerticalAlignment="Center" 
-                    FontSize="18" 
-                    HorizontalAlignment="Center"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"/>
-
-                        </Grid>
-
-                    </res:Btn>
-
-                </StackPanel>
-
-                <res:Btn 
-        Tag="0"
-        Style="{StaticResource BtnStyle}"
-        Grid.Row="1" Grid.Column="1"
-        Foreground="#D9D9D9"
-        FontSize="16"
-        FontFamily="Nautilus Pompilius" 
-        VerticalAlignment="Stretch" 
-        HorizontalAlignment="Stretch"
-        Margin="0,5,0,5">
-
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="37*"/>
-                            <ColumnDefinition Width="128*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Image 
                 Source="/Resources/Pictures/ImageCopyMenu.png"
-                HorizontalAlignment="Center" 
+                HorizontalAlignment="Left" 
                 Width="40" 
+                                RenderOptions.BitmapScalingMode="HighQuality"
                 Height="40" 
                 VerticalAlignment="Center"/>
 
-                        <TextBlock
+                            <TextBlock
                 Text="Резервное копирование" 
+                Foreground="#D9D9D9"
+                FontFamily="Nautilus Pompilius" 
                 VerticalAlignment="Center" 
                 FontSize="20" 
                 HorizontalAlignment="Center"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"/>
 
-                    </Grid>
 
-                </res:Btn>
 
-                <res:Btn 
-        Tag="0"
-        Style="{StaticResource BtnStyle}"
-        Grid.Row="1" Grid.Column="1"
-        Foreground="#D9D9D9"
-        FontSize="16"
-        FontFamily="Nautilus Pompilius" 
-        VerticalAlignment="Stretch" 
-        HorizontalAlignment="Stretch" Margin="0,5,0,5">
+                        </Grid>
+                    </cc:CustomRadioBut.Content>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="37*"/>
-                            <ColumnDefinition Width="128*"/>
-                        </Grid.ColumnDefinitions>
+                </cc:CustomRadioBut>
 
-                        <Image 
-                Source="/Resources/Pictures/ImageConnectionMenu.png"
-                HorizontalAlignment="Center" 
-                Width="40" 
-                Height="40" 
-                VerticalAlignment="Center"/>
+                <cc:CustomRadioBut Margin="0 5 0 0" 
+                                   res:RadioButtonHellper.ResetChildIsChecked="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                   Command="{x:Static vm:ViewModelLocator.NavigatorCurrentViewCommand}" 
+                   CommandParameter="AccountModel"
+                   HorizontalAlignment="Stretch"
+                   VerticalAlignment="Center">
 
-                        <TextBlock
-                Text="Настройки подключения" 
-                VerticalAlignment="Center" 
-                FontSize="20" 
-                HorizontalAlignment="Center"
-                Grid.Column="0"
-                Grid.ColumnSpan="2"/>
+                    <cc:CustomRadioBut.Content>
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="37*"/>
+                                <ColumnDefinition Width="128*"/>
+                            </Grid.ColumnDefinitions>
 
-                    </Grid>
-
-                </res:Btn>
-
-                <res:Btn 
-        Tag="0"
-        Style="{StaticResource BtnStyle}"
-        Grid.Row="1" Grid.Column="1"
-        Foreground="#D9D9D9"
-        FontSize="16"
-        FontFamily="Nautilus Pompilius" 
-        VerticalAlignment="Stretch" 
-        HorizontalAlignment="Stretch" Margin="0,5,0,5">
-
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="37*"/>
-                            <ColumnDefinition Width="128*"/>
-                        </Grid.ColumnDefinitions>
-
-                        <Image 
+                            <Image 
                 Source="/Resources/Pictures/ImageAccountMenu.png"
-                HorizontalAlignment="Center" 
+                HorizontalAlignment="Left" 
                 Width="40" 
+                                RenderOptions.BitmapScalingMode="HighQuality"
                 Height="40" 
                 VerticalAlignment="Center"/>
 
-                        <TextBlock
+                            <TextBlock
                 Text="Учетная запись" 
+                Foreground="#D9D9D9"
+                FontFamily="Nautilus Pompilius"
                 VerticalAlignment="Center" 
                 FontSize="20" 
                 HorizontalAlignment="Center"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"/>
 
-                    </Grid>
 
-                </res:Btn>
+                        </Grid>
+                    </cc:CustomRadioBut.Content>
 
-                <res:Btn 
-        Tag="0"
-        Style="{StaticResource BtnStyle}"
-        IsChecked="{Binding Path=CurrentView, Converter={StaticResource InstanceEqualsConverter}, ConverterParameter={x:Type view:User}}"
-        Grid.Row="1" Grid.Column="1"
-        Foreground="#D9D9D9"
-        FontSize="16"
-        FontFamily="Nautilus Pompilius" 
-        VerticalAlignment="Stretch" 
-        HorizontalAlignment="Stretch" 
-        Margin="0,5,0,5">
+                </cc:CustomRadioBut>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="37*"/>
-                            <ColumnDefinition Width="128*"/>
-                        </Grid.ColumnDefinitions>
+                <cc:CustomRadioBut Margin="0 5 0 0" 
+                   res:RadioButtonHellper.ResetChildIsChecked="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+   Command="{x:Static vm:ViewModelLocator.NavigatorCurrentViewCommand}" 
+   CommandParameter="InfoModel"
+   HorizontalAlignment="Stretch"
+   VerticalAlignment="Center">
 
-                        <Image 
+                    <cc:CustomRadioBut.Content>
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="37*"/>
+                                <ColumnDefinition Width="128*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image 
+Source="/Resources/Pictures/ImageInfoMenu.png"
+HorizontalAlignment="Left" 
+Width="40" 
+                RenderOptions.BitmapScalingMode="HighQuality"
+Height="40" 
+VerticalAlignment="Center"/>
+
+                            <TextBlock
+Text="О предприятии" 
+Foreground="#D9D9D9"
+FontFamily="Nautilus Pompilius"
+VerticalAlignment="Center" 
+FontSize="20" 
+HorizontalAlignment="Center"
+Grid.Column="0"
+Grid.ColumnSpan="2"/>
+
+
+                        </Grid>
+                    </cc:CustomRadioBut.Content>
+
+                </cc:CustomRadioBut>
+
+                <cc:CustomRadioBut Margin="0 5 0 0" 
+                                   res:RadioButtonHellper.ResetChildIsChecked="{Binding IsChecked, RelativeSource={RelativeSource Self}}"
+                                   Command="{x:Static vm:ViewModelLocator.NavigatorCurrentViewCommand}" 
+                                   CommandParameter="UserModel"
+                                   HorizontalAlignment="Stretch"
+                                   Visibility="{Binding AdminVisible}"
+                                   VerticalAlignment="Center">
+
+                    <cc:CustomRadioBut.Content>
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="37*"/>
+                                <ColumnDefinition Width="128*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image 
                 Source="/Resources/Pictures/ImageAdminMenu.png"
-                HorizontalAlignment="Center" 
+                HorizontalAlignment="Left" 
                 Width="40" 
                 Height="40" 
+                                RenderOptions.BitmapScalingMode="HighQuality"
                 VerticalAlignment="Center"/>
 
-                        <TextBlock
-                Text="Администрирование" 
+                            <TextBlock
+                Text="Администрирование"
+                Foreground="#D9D9D9"
+                FontFamily="Nautilus Pompilius" 
                 VerticalAlignment="Center" 
                 FontSize="20" 
                 HorizontalAlignment="Center"
                 Grid.Column="0"
                 Grid.ColumnSpan="2"/>
 
-                    </Grid>
 
-                </res:Btn>
 
+                        </Grid>
+                    </cc:CustomRadioBut.Content>
+
+                </cc:CustomRadioBut>
 
             </StackPanel>
 
-            <res:Btn 
-    Tag="0"
-    Style="{StaticResource BtnStyleExit}"
-    Grid.Row="3" 
-    Foreground="#2B2B2B"
-    FontSize="16"
-    FontFamily="Nautilus Pompilius" 
-    VerticalAlignment="Stretch" 
-    HorizontalAlignment="Stretch" 
-    Margin="10,10,10,10"
-    Command="{Binding ChangeUserCommand}"
-    CommandParameter="{Binding ElementName=CurrentWindow}">
+            <RadioButton
+                Tag="0"
+                Style="{StaticResource BtnStyleExit}"
+                Grid.Row="3" 
+                Foreground="#2B2B2B"
+                FontSize="16"
+                FontFamily="Nautilus Pompilius" 
+                VerticalAlignment="Stretch" 
+                HorizontalAlignment="Stretch" 
+                Margin="10,10,10,10"
+                Command="{Binding ChangeUserCommand}"
+                CommandParameter="{Binding ElementName=CurrentWindow}">
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -930,23 +927,24 @@
                     </Grid.ColumnDefinitions>
 
                     <Image 
-            Source="/Resources/Pictures/ImageExitMenu.png"
-            HorizontalAlignment="Center" 
-            Width="40" 
-            Height="40" 
-            VerticalAlignment="Center"/>
+                        Source="/Resources/Pictures/ImageExitMenu.png"
+                        HorizontalAlignment="Center" 
+                        Width="40" 
+                        Height="40" 
+                        RenderOptions.BitmapScalingMode="HighQuality"
+                        VerticalAlignment="Center"/>
 
                     <TextBlock
-    Text="Сменить пользователя" 
-    VerticalAlignment="Center" 
-    FontSize="20" 
-    HorizontalAlignment="Center"
-    Grid.Column="0"
-    Grid.ColumnSpan="2"/>
+                        Text="Сменить пользователя" 
+                        VerticalAlignment="Center" 
+                        FontSize="20" 
+                        HorizontalAlignment="Center"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"/>
 
                 </Grid>
 
-            </res:Btn>
+            </RadioButton>
 
 
         </Grid>
@@ -956,7 +954,7 @@
             Grid.Column="1"
             Grid.ColumnSpan="2"
             Margin="15,15,15,15" 
-            Content="{Binding CurrentView, UpdateSourceTrigger=PropertyChanged}"/>
+            Content="{Binding CurrentView, Source={StaticResource Locator}}"/>
 
     </Grid>
 </Window>

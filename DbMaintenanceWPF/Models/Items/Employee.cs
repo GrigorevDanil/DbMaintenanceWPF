@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DbMaintenanceWPF.Models.Items
 {
-    public class Employee : IEntity
+    public class Employee : IEntity, IEquatable<Employee>
     {
         public int Id { get; set; }
         public Department Department { get; set; }
@@ -21,5 +21,7 @@ namespace DbMaintenanceWPF.Models.Items
         public string TextEmployee { get { return Surname + " " + Name + " " + Lastname; } }
 
         public bool IsSelected { get; set; }
+
+        public bool Equals(Employee other) => Id == other.Id;
     }
 }

@@ -5,6 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              DataContext="{Binding EmployeeModel, Source={StaticResource Locator}}"
              xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:ext="clr-namespace:DbMaintenanceWPF.Infrastructure.Extensions"
+             xmlns:res="clr-namespace:DbMaintenanceWPF.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="867"
              d:DesignWidth="1120"
@@ -13,9 +16,7 @@
 
     <UserControl.Resources>
         <CollectionViewSource x:Key="EmployeesCollection" Source="{Binding Employees}" Filter="EmployeesCollection_OnFilter">
-            <CollectionViewSource.SortDescriptions>
-                <cm:SortDescription PropertyName="TextEmployee" Direction="Ascending"/>
-            </CollectionViewSource.SortDescriptions>
+
         </CollectionViewSource>
     </UserControl.Resources>
 
@@ -72,9 +73,13 @@
                 HorizontalAlignment="Center"
                 FontFamily="Nautilus Pompilius"
                 Height="30" 
-                Width="70"
-                Unchecked="checkBoxDepartment_Unchecked"
-                Checked="checkBoxDepartment_Checked"/>
+                Width="70">
+
+                <i:Interaction.Behaviors>
+                    <ext:FilterCheckBoxExtension TargetComboBox="{Binding ElementName=comboBoxDepartment}" />
+                </i:Interaction.Behaviors>
+
+            </CheckBox>
 
             <TextBlock 
         Text="Отдел:"
@@ -94,8 +99,15 @@
         IsReadOnly="True"
         FontFamily="Nautilus Pompilius" 
         Grid.Column="2"
-        VerticalAlignment="Center" 
-                SelectionChanged="comboBox_SelectionChanged"/>
+        VerticalAlignment="Center">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <ext:RefreshCollectionViewSourceExtension Source="{StaticResource EmployeesCollection}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </ComboBox>
 
             <!--End Category-->
 
@@ -127,10 +139,14 @@
         FontFamily="Nautilus Pompilius"
         Height="30" 
         Width="70"
-        Grid.Row="1"
-                Unchecked="checkBoxPost_Unchecked"
-                Checked="checkBoxPost_Checked"/>
+        Grid.Row="1">
 
+                <i:Interaction.Behaviors>
+                    <ext:FilterCheckBoxExtension TargetComboBox="{Binding ElementName=comboBoxPost}" />
+                </i:Interaction.Behaviors>
+
+            </CheckBox>
+            
             <TextBlock 
         Text="Должность:"
         VerticalAlignment="Center" 
@@ -151,8 +167,15 @@
                 FontFamily="Nautilus Pompilius"  
                 Grid.Column="2"
                 Grid.Row="1"
-                VerticalAlignment="Center"
-                SelectionChanged="comboBox_SelectionChanged"/>
+                VerticalAlignment="Center">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <ext:RefreshCollectionViewSourceExtension Source="{StaticResource EmployeesCollection}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </ComboBox>
 
 
 
@@ -168,14 +191,24 @@
     FontFamily="Times New Roman" 
     FontSize="20" 
     Grid.ColumnSpan="2" 
-    Margin="5,5,5,5"
-            TextChanged="TextFilter_TextChanged"/>
+    Margin="5,5,5,5">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="TextChanged">
+                    <ext:RefreshCollectionViewSourceExtension Source="{StaticResource EmployeesCollection}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+        </TextBox>
 
         <DataGrid 
     Grid.Row="2"
     Margin="5,5,5,15" 
     ItemsSource="{Binding Source={StaticResource EmployeesCollection}}"
-    Grid.ColumnSpan="2">
+    Grid.ColumnSpan="2"
+    res:DataGridHelper.HidableColumnIndices="0,7" 
+    res:DataGridHelper.ColumnVisibility="{Binding VisibleComponent}"
+    RowHeight="70">
 
             <DataGrid.Columns>
 
@@ -234,7 +267,6 @@
             Width="1*"/>
 
                 <DataGridTemplateColumn
-            x:Name="ColOp"
             Header="Операции"
             Width="150"
             CanUserResize="False">
@@ -276,7 +308,7 @@
 
             <DataGrid.ContextMenu>
                 <ContextMenu 
-    x:Name="menu"
+    Visibility="{Binding VisibleComponent}"
     FontSize="14">
 
                     <MenuItem 
@@ -341,20 +373,24 @@
         Height="53" 
         VerticalAlignment="Top" 
         Margin="25,0,0,0"
+                Visibility="{Binding VisibleComponent}"
         HorizontalAlignment="Left" 
         RenderTransformOrigin="0.5,0.5"/>
 
             <TextBlock 
         Text="С отмеченными:" 
         Margin="0,0,25,0"
+                Visibility="{Binding VisibleComponent}"
         FontSize="22"
         VerticalAlignment="Center"
-        FontFamily="Nautilus Pompilius"/>
+        FontFamily="Nautilus Pompilius"
+                RenderOptions.BitmapScalingMode="HighQuality"/>
 
         </StackPanel>
 
         <Border 
     Background="#093A5C"
+            Visibility="{Binding VisibleComponent}"
     CornerRadius="18"
     Margin="5,5,5,5"
     Grid.Column="1"
@@ -378,14 +414,14 @@
             </Grid.ColumnDefinitions>
 
             <Button
-        x:Name="butDel"
+                Visibility="{Binding VisibleComponent}"
         Style="{StaticResource RoundCorner}" 
         Foreground="#E53434" 
         FontSize="16"
         FontFamily="Nautilus Pompilius"  
         Margin="5,0,5,0"
         HorizontalAlignment="Left" 
-        Command="{Binding MultiplyDeleteCommand}">
+        Command="{Binding MultiplyRemoveCommand}">
 
                 <StackPanel 
             Orientation="Horizontal">
@@ -405,8 +441,8 @@
             </Button>
 
             <Button 
-        x:Name="butAdd" 
         Grid.Column="1" 
+                Visibility="{Binding VisibleComponent}"
         Style="{StaticResource RoundCorner}"
         Foreground="#D9D9D9"
         FontSize="16"

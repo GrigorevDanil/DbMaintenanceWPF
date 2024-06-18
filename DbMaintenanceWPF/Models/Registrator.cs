@@ -1,12 +1,14 @@
 ﻿using DbMaintenanceWPF.Infrastructure.Commands.Factories;
 using DbMaintenanceWPF.Infrastructure.Commands.Interface;
+using DbMaintenanceWPF.Models.ItemModels;
+using DbMaintenanceWPF.Models.PrintModels;
 using DbMaintenanceWPF.Service.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using MySqlConnector;
 
 namespace DbMaintenanceWPF.Models
 {
-    internal static class Registrator
+    public static class Registrator
     {
         public static IServiceCollection RegisterModels(this IServiceCollection services)
         {
@@ -32,9 +34,12 @@ namespace DbMaintenanceWPF.Models
             services.AddSingleton<UserM>();
             services.AddSingleton<LoginM>();
             services.AddSingleton<ConnectionM>();
+            services.AddSingleton<CopyM>();
 
 
-            services.AddSingleton<object>();
+            services.AddSingleton<MaterialStatementM>();
+
+
 
             return services;
         }

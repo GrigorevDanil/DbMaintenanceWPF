@@ -1,51 +1,54 @@
 ﻿using DbMaintenanceWPF.Infrastructure.Commands;
 using DbMaintenanceWPF.Models;
+using DbMaintenanceWPF.Models.ItemModels;
 using DbMaintenanceWPF.Models.Items;
 using DbMaintenanceWPF.Service.Interface;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DbMaintenanceWPF.ViewModel
 {
-    class GiveDetailVM : Base.ViewModelBase
+    public class GiveDetailVM(GiveDetailM model, IUserDialogService userDialog, IStorageViewModel storageViewModel) : Base.ViewModelBase
     {
 
         #region Свойства
 
-        readonly GiveDetailM Model;
-        readonly IUserDialogService UserDialog;
+        readonly GiveDetailM Model = model;
+        readonly IUserDialogService UserDialog = userDialog;
         public IEnumerable<GiveDetail> GiveDetails => Model.PublicListGiveDetails;
         public IEnumerable<Give> Gives => Model.PublicListGives;
         public IEnumerable<Product> Products => Model.PublicListProducts;
 
-
-        bool flagGive;
-        public bool FlagGive { get => flagGive; set { Set(ref flagGive, value); SelectedGive = null; } }
-
-        bool flagProduct;
-        public bool FlagProduct { get => flagProduct; set { Set(ref flagProduct, value); SelectedGive = null; } }
-
-        Give selectedGive;
-        public Give SelectedGive { get => selectedGive; set => Set(ref selectedGive, value);  }
-
-        Product selectedProduct;
-        public Product SelectedProduct { get => selectedProduct; set => Set(ref selectedProduct, value); }
+        public Visibility VisibleComponent
+        {
+            get
+            {
+                var user = (storageViewModel.GetViewModel(nameof(MainVM)) as MainVM)?.CurrentUser as User;
+                return user?.Role == "Пользователь" ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
 
         #endregion
 
         #region Команды
 
+        public void UpdateList() => OnPropertyChanged(nameof(GiveDetails));
 
         #region AddCommand - Добавление информации о выдаче
 
         private ICommand addCommand;
         public ICommand AddCommand => addCommand ??= new RelayCommand(OnAddCommandExecuted, CanAddCommandExecute);
-        private static bool CanAddCommandExecute(object p) => p is GiveDetail;
+        private static bool CanAddCommandExecute(object p) => true;
 
         private void OnAddCommandExecuted(object p)
         {
-            var giveDetail = (GiveDetail)p;
-            if (!UserDialog.Edit(giveDetail, "Добавление информации о выдаче")) OnPropertyChanged(nameof(GiveDetails));
+            var giveDetail = new GiveDetail();
+            if (UserDialog.Edit(giveDetail, "Добавление информации о выдаче"))
+            {
+                Model.Create(giveDetail);
+                OnPropertyChanged(nameof(GiveDetails));
+            }
         }
 
         #endregion
@@ -58,8 +61,8 @@ namespace DbMaintenanceWPF.ViewModel
 
         private void OnEditCommandExecuted(object p)
         {
-            GiveDetail giveDetail = (GiveDetail)p;
-            if (!UserDialog.Edit(giveDetail, "Редактирование информации о выдаче"))
+            var giveDetail = (GiveDetail)p;
+            if (UserDialog.Edit(giveDetail, "Редактирование информации о выдаче"))
             {
                 Model.Update(giveDetail);
                 OnPropertyChanged(nameof(GiveDetails));
@@ -76,7 +79,7 @@ namespace DbMaintenanceWPF.ViewModel
 
         private void OnRemoveCommandExecuted(object p)
         {
-            GiveDetail giveDetail = (GiveDetail)p;
+            var giveDetail = (GiveDetail)p;
             if (UserDialog.ShowConfirm("Удаление информации о выдаче", "Удалить выбранную информацию о выдаче?"))
             {
                 Model.Remove(giveDetail);
@@ -86,12 +89,22 @@ namespace DbMaintenanceWPF.ViewModel
 
         #endregion
 
-        #endregion
+        #region MultiplyRemoveCommand - Множественное удаление информаций о выдаче
 
-        public GiveDetailVM(GiveDetailM model, IUserDialogService userDialog)
+        private ICommand multiplyRemoveCommand;
+        public ICommand MultiplyRemoveCommand => multiplyRemoveCommand ??= new RelayCommand(OnMultiplyRemoveCommandExecuted, CanMultiplyRemoveCommandExecute);
+        private static bool CanMultiplyRemoveCommandExecute(object p) => true;
+
+        private void OnMultiplyRemoveCommandExecuted(object p)
         {
-            Model = model;
-            UserDialog = userDialog;
+            if (UserDialog.ShowConfirm("Удаление информаций о выдаче", "Удалить выбранные информации о выдаче?"))
+            {
+                foreach (GiveDetail giveDetail in GiveDetails) if (giveDetail.IsSelected) Model.Remove(giveDetail);
+                OnPropertyChanged(nameof(GiveDetails));
+            }
         }
+
+        #endregion
+        #endregion
     }
 }

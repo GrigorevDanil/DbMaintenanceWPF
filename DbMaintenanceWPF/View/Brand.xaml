@@ -5,6 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              DataContext="{Binding BrandModel, Source={StaticResource Locator}}"
              xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:ext="clr-namespace:DbMaintenanceWPF.Infrastructure.Extensions"
+             xmlns:res="clr-namespace:DbMaintenanceWPF.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="867"
              d:DesignWidth="1120"
@@ -13,9 +16,7 @@
 
     <UserControl.Resources>
         <CollectionViewSource x:Key="BrandsCollection" Source="{Binding Brands}" Filter="BrandCollection_OnFilter">
-            <CollectionViewSource.SortDescriptions>
-                <cm:SortDescription PropertyName="Title" Direction="Ascending"/>
-            </CollectionViewSource.SortDescriptions>
+
         </CollectionViewSource>
     </UserControl.Resources>
 
@@ -37,18 +38,28 @@
         <TextBox 
             Name="TextFilter"
             Style="{StaticResource HintTextBox}" 
-            TextChanged="OnBrandTextFilterChanged"
             Tag="Поиск по названию" 
             FontFamily="Times New Roman" 
             FontSize="20" 
             Grid.ColumnSpan="2" 
-            Margin="5,5,5,5"/>
+            Margin="5,5,5,5">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="TextChanged">
+                    <ext:RefreshCollectionViewSourceExtension Source="{StaticResource BrandsCollection}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+        </TextBox>
 
         <DataGrid 
             Grid.Row="1"
-            Margin="5,5,5,15" 
+            Margin="5,5,5,15"   
             ItemsSource="{Binding Source={StaticResource BrandsCollection}}"
-            Grid.ColumnSpan="2">
+            Grid.ColumnSpan="2"
+            res:DataGridHelper.HidableColumnIndices="0,2" 
+            res:DataGridHelper.ColumnVisibility="{Binding VisibleComponent}"
+            RowHeight="70">
 
 
             <DataGrid.Columns>
@@ -78,7 +89,6 @@
         Width="1*"/>
 
                 <DataGridTemplateColumn
-        x:Name="ColOp"
         Header="Операции"
         Width="150"
         CanUserResize="False">
@@ -120,10 +130,11 @@
 
             <DataGrid.ContextMenu>
                 <ContextMenu 
-x:Name="menu"
+Visibility="{Binding VisibleComponent}"
 FontSize="14">
 
                     <MenuItem 
+                        
     Style="{StaticResource Sub_MenuItem}"
     Command="{Binding Path=PlacementTarget.DataContext.AddCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}">
 
@@ -183,13 +194,16 @@ Grid.ColumnSpan="2">
     Source="/Resources/Pictures/DownArrow.png" 
     Width="59" 
     Height="53" 
+                Visibility="{Binding VisibleComponent}"
     VerticalAlignment="Top" 
     Margin="25,0,0,0"
     HorizontalAlignment="Left" 
-    RenderTransformOrigin="0.5,0.5"/>
+    RenderTransformOrigin="0.5,0.5"
+    RenderOptions.BitmapScalingMode="HighQuality"/>
 
             <TextBlock 
     Text="С отмеченными:" 
+                Visibility="{Binding VisibleComponent}"
     Margin="0,0,25,0"
     FontSize="22"
     VerticalAlignment="Center"
@@ -200,6 +214,7 @@ Grid.ColumnSpan="2">
         <Border 
 Background="#093A5C"
 CornerRadius="18"
+            Visibility="{Binding VisibleComponent}"
 Margin="5,5,5,5"
 Grid.Column="1"
 Grid.Row="2"/>
@@ -222,14 +237,14 @@ Margin="15,15,15,15">
             </Grid.ColumnDefinitions>
 
             <Button
-    x:Name="butDel"
     Style="{StaticResource RoundCorner}" 
+                Visibility="{Binding VisibleComponent}"
     Foreground="#E53434" 
     FontSize="16"
     FontFamily="Nautilus Pompilius"  
     Margin="5,0,5,0"
     HorizontalAlignment="Left" 
-    Command="{Binding MultiplyDeleteCommand}">
+    Command="{Binding MultiplyRemoveCommand}">
 
                 <StackPanel 
         Orientation="Horizontal">
@@ -252,6 +267,7 @@ Margin="15,15,15,15">
     x:Name="butAdd" 
     Grid.Column="1" 
     Style="{StaticResource RoundCorner}"
+                Visibility="{Binding VisibleComponent}"
     Foreground="#D9D9D9"
     FontSize="16"
     FontFamily="Nautilus Pompilius"

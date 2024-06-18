@@ -24,5 +24,22 @@ namespace DbMaintenanceWPF.View
         {
             InitializeComponent();
         }
+
+        private void UsersCollection_OnFilter(object sender, FilterEventArgs e)
+        {
+            if (!(e.Item is Models.Items.User user)) return;
+
+            bool filterPassed = true;
+
+            if (TextFilter == null) return;
+
+            var filter_text = TextFilter.Text;
+
+            if (!string.IsNullOrWhiteSpace(filter_text) && user.Login.ToString().IndexOf(filter_text, StringComparison.OrdinalIgnoreCase) == -1) filterPassed = false;
+
+            if (checkBoxRole.IsChecked == true && comboBoxRole.SelectedItem is string selectedRole) if (user.Role != selectedRole) filterPassed = false;
+
+            e.Accepted = filterPassed;
+        }
     }
 }

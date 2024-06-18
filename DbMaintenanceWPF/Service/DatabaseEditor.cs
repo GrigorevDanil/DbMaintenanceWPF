@@ -11,7 +11,7 @@ namespace DbMaintenanceWPF.Service
         public DatabaseEditor(IConnectionDatabase connectionDatabase) => ConnectionDatabase = connectionDatabase;
        
        
-        public long? OperationOnRecord(string com, string[] values)
+        public long? OperationOnRecord(string com, object[] values)
         {
             string[] parametrs = CommandParameterExtractor.FindParametrsInCommand(com);
             ConnectionDatabase.OpenConnection();

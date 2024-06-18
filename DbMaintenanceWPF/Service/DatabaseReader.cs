@@ -49,7 +49,7 @@ namespace DbMaintenanceWPF.Service
             return list;
         }
 
-        public DataTable OperationSelect(string com, string[] values)
+        public DataTable OperationSelect(string com, object[] values)
         {
             MySqlDataAdapter adapter = new();
             DataTable table = new();

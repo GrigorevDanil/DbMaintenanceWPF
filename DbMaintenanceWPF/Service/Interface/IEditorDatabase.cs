@@ -8,6 +8,6 @@ namespace DbMaintenanceWPF.Service.Interface
 {
     public interface IEditorDatabase
     {
-        long? OperationOnRecord(string com, string[] values);
+        long? OperationOnRecord(string com, object[] values);
     }
 }

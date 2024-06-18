@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        DataContext="{Binding ConnectionModel, Source={StaticResource Locator}}" 
         xmlns:res="clr-namespace:DbMaintenanceWPF.Resources"
         xmlns:cmd="clr-namespace:DbMaintenanceWPF.Infrastructure.Commands"
         xmlns:local="clr-namespace:DbMaintenanceWPF.View.Windows"
@@ -109,7 +108,6 @@
                 FontFamily="Nautilus Pompilius"
                 VerticalAlignment="Center"
                 HorizontalAlignment="Center"
-                Margin="15,0,0,0"
                 Grid.Row="1" Width="66"/>
 
             <TextBlock 

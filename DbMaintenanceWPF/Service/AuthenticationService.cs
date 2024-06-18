@@ -1,7 +1,7 @@
 ﻿using DbMaintenanceWPF.Models;
 using DbMaintenanceWPF.Models.Items;
 using DbMaintenanceWPF.Service.Interface;
-using DbMaintenanceWPF.Service.ManageDatabase;
+using DbMaintenanceWPF.Service.Repositories;
 using MySqlConnector;
 using System;
 using System.Data;

@@ -1,29 +1,44 @@
 ﻿using DbMaintenanceWPF.Infrastructure.Commands;
 using DbMaintenanceWPF.Models;
+using DbMaintenanceWPF.Models.ItemModels;
 using DbMaintenanceWPF.Models.Items;
+using DbMaintenanceWPF.Service;
 using DbMaintenanceWPF.Service.Interface;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 
 namespace DbMaintenanceWPF.ViewModel
 {
-    class BrandVM(BrandM model, IUserDialogService userDialog) : Base.ViewModelBase
-    { 
+    public class BrandVM(BrandM model, IUserDialogService userDialog, IStorageViewModel storageViewModel) : Base.ViewModelBase
+    {
+
+
         #region Свойства
 
         readonly BrandM Model = model;
         readonly IUserDialogService UserDialog = userDialog;
+        public IEnumerable<Brand> Brands => Model.PublicListBrands;
 
-        public ReadOnlyObservableCollection<Brand> Brands => Model.PublicListBrands;
+        public Visibility VisibleComponent
+        {
+            get
+            {   
+                var user = (storageViewModel.GetViewModel(nameof(MainVM)) as MainVM)?.CurrentUser as User;
+                return user?.Role == "Пользователь" ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
 
 
         #endregion
 
         #region Команды
+
+        public void UpdateList() => OnPropertyChanged(nameof(Brands));
 
         #region AddCommand - Добавление бренда
 
@@ -34,7 +49,7 @@ namespace DbMaintenanceWPF.ViewModel
         private void OnAddCommandExecuted(object p)
         {
             var brand = new Brand();
-            if (UserDialog.Edit(brand,"Добавление бренда"))
+            if (UserDialog.Edit(brand, "Добавление бренда"))
             {
                 Model.Create(brand);
                 OnPropertyChanged(nameof(Brands));
@@ -79,7 +94,25 @@ namespace DbMaintenanceWPF.ViewModel
 
         #endregion
 
+        #region MultiplyRemoveCommand - Множественное удаление бренда
+
+        private ICommand multiplyRemoveCommand;
+        public ICommand MultiplyRemoveCommand => multiplyRemoveCommand ??= new RelayCommand(OnMultiplyRemoveCommandExecuted, CanMultiplyRemoveCommandExecute);
+        private static bool CanMultiplyRemoveCommandExecute(object p) => true;
+
+        private void OnMultiplyRemoveCommandExecuted(object p)
+        {
+            if (UserDialog.ShowConfirm("Удаление брендов", "Удалить выбранные бренды?"))
+            {
+                foreach (Brand brand in Brands) if (brand.IsSelected) Model.Remove(brand);
+                OnPropertyChanged(nameof(Brands));
+            }
+        }
+
         #endregion
+
+        #endregion
+
 
     }
 }

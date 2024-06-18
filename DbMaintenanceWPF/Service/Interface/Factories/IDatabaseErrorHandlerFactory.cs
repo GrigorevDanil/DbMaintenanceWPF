@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DbMaintenanceWPF.Service.Interface.Factories
 {
-    interface IDatabaseErrorHandlerFactory
+    public interface IDatabaseErrorHandlerFactory
     {
         IHandlerDatabase CreateDatabaseNotFoundErrorHandler();
         IHandlerDatabase CreateAccessDeniedErrorHandler();

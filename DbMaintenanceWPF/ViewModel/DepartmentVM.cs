@@ -1,24 +1,37 @@
 ﻿using DbMaintenanceWPF.Infrastructure.Commands;
 using DbMaintenanceWPF.Models;
+using DbMaintenanceWPF.Models.ItemModels;
 using DbMaintenanceWPF.Models.Items;
 using DbMaintenanceWPF.Service.Interface;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DbMaintenanceWPF.ViewModel
 {
-    class DepartmentVM : Base.ViewModelBase
+    public class DepartmentVM(DepartmentM model, IUserDialogService userDialog, IStorageViewModel storageViewModel) : Base.ViewModelBase
     {
         #region Свойства
 
-        readonly DepartmentM Model;
-        readonly IUserDialogService UserDialog;
-        public ReadOnlyObservableCollection<Department> Departments => Model.PublicListDepartments;
+        readonly DepartmentM Model = model;
+        readonly IUserDialogService UserDialog = userDialog;
+        public IEnumerable<Department> Departments => Model.PublicListDepartments;
+
+        public Visibility VisibleComponent
+        {
+            get
+            {
+                var user = (storageViewModel.GetViewModel(nameof(MainVM)) as MainVM)?.CurrentUser as User;
+                return user?.Role == "Пользователь" ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
 
         #endregion
 
         #region Команды
+
+        public void UpdateList() => OnPropertyChanged(nameof(Departments));
 
         #region AddCommand - Добавление отдела
 
@@ -74,12 +87,22 @@ namespace DbMaintenanceWPF.ViewModel
 
         #endregion
 
-        #endregion
+        #region MultiplyRemoveCommand - Множественное удаление отделов
 
-        public DepartmentVM(DepartmentM model, IUserDialogService userDialog)
+        private ICommand multiplyRemoveCommand;
+        public ICommand MultiplyRemoveCommand => multiplyRemoveCommand ??= new RelayCommand(OnMultiplyRemoveCommandExecuted, CanMultiplyRemoveCommandExecute);
+        private static bool CanMultiplyRemoveCommandExecute(object p) => true;
+
+        private void OnMultiplyRemoveCommandExecuted(object p)
         {
-            Model = model;
-            UserDialog = userDialog;
+            if (UserDialog.ShowConfirm("Удаление отделов", "Удалить выбранные отделы?"))
+            {
+                foreach (Department department in Departments) if (department.IsSelected) Model.Remove(department);
+                OnPropertyChanged(nameof(Departments));
+            }
         }
+
+        #endregion
+        #endregion
     }
 }

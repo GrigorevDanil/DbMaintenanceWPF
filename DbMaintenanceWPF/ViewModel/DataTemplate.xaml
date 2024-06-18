@@ -1,0 +1,66 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:view="clr-namespace:DbMaintenanceWPF.View"
+                    xmlns:vm="clr-namespace:DbMaintenanceWPF.ViewModel">
+
+    <DataTemplate DataType="{x:Type vm:ProductVM}">
+        <view:Product />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:PurchaseVM}">
+        <view:Purchase />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:EmployeeVM}">
+        <view:Employee />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:GiveDetailVM}">
+        <view:GiveDetail />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:CategoryVM}">
+        <view:Category />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:BrandVM}">
+        <view:Brand />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:UnitVM}">
+        <view:Unit />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:ProviderVM}">
+        <view:Provider />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:DepartmentVM}">
+        <view:Department />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:PostVM}">
+        <view:Post />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:GiveVM}">
+        <view:Give />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:UserVM}">
+        <view:User />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:CopyVM}">
+        <view:Copy />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:AccountVM}">
+        <view:Account />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:InfoVM}">
+        <view:Info />
+    </DataTemplate>
+
+</ResourceDictionary>

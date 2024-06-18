@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DbMaintenanceWPF.Models.Items
 {
-    public class Provider : IEntity
+    public class Provider : IEntity, IEquatable<Provider>
     {
         public int Id { get; set; }
         public string? TitleCompany { get; set; }
@@ -17,5 +17,7 @@ namespace DbMaintenanceWPF.Models.Items
         public string? Email { get; set; }
         public string TextProvider { get { return TitleCompany == null ? ContactName : TitleCompany + " " + ContactName; } }
         public bool IsSelected { get; set; }
+
+        public bool Equals(Provider other) => Id == other.Id;
     }
 }

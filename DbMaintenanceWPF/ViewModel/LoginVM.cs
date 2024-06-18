@@ -8,10 +8,11 @@ using DbMaintenanceWPF.Models.Items;
 using DbMaintenanceWPF.Infrastructure.Commands;
 using System.Windows.Input;
 using System.Linq;
+using System;
 
 namespace DbMaintenanceWPF.ViewModel
 {
-    class LoginVM : Base.ViewModelBase
+    public class LoginVM : Base.ViewModelBase
     {
         #region Свойства
 
@@ -56,9 +57,7 @@ namespace DbMaintenanceWPF.ViewModel
 
         #endregion
 
-        #endregion
-
-        #region AuthenticationCommand - Аутенификация
+        #region AuthenticationCommand - Аутентификация
 
         private ICommand authenticationCommand;
         public ICommand AuthenticationCommand => authenticationCommand ??= new RelayCommand(OnAuthenticationCommandExecuted, CanAuthenticationCommandExecute);
@@ -67,7 +66,10 @@ namespace DbMaintenanceWPF.ViewModel
         private void OnAuthenticationCommandExecuted(object p)
         {
             var (isSuccess, msg, user) = Model.Authentication(FlagServer, FlagServer ? UserServers.ElementAt(SelectedIndex).Login : CurrentLogin, CurrentPassword, SelectedHost);
-            if (isSuccess) DialogService.ShowMain(user);
+            if (isSuccess)
+            {
+                DialogService.ShowMain(user);
+            }
             else ShowEror(msg);
         }
 
@@ -88,6 +90,7 @@ namespace DbMaintenanceWPF.ViewModel
         #endregion
 
 
+        #endregion
 
         public LoginVM(LoginM model, IUserDialogService dialogService)
         {
@@ -97,5 +100,6 @@ namespace DbMaintenanceWPF.ViewModel
             SelectionChangedUserCommand.Execute(null);
         }
 
+        
     }
 }

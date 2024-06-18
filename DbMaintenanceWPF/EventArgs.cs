@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DbMaintenanceWPF
 {
-    internal class EventArgs<T> : EventArgs
+    public class EventArgs<T> : EventArgs
     {
         public T Arg { get; set; }
 

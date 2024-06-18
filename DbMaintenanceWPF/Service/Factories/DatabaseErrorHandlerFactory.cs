@@ -7,17 +7,15 @@ using System.Windows.Input;
 
 namespace DbMaintenanceWPF.Service.Factories
 {
-    class DatabaseErrorHandlerFactory(IUserDialogService userDialog, IBackupManagerDatabase backupManager, ICommandFactory commandFactory,ConnectionM connectionM, Database database) : IDatabaseErrorHandlerFactory
+    class DatabaseErrorHandlerFactory(IUserDialogService userDialog, IBackupManagerDatabase backupManager, ICommandFactory commandFactory) : IDatabaseErrorHandlerFactory
     {
         readonly IUserDialogService UserDialog = userDialog;
         readonly IBackupManagerDatabase BackupManager = backupManager;
         readonly ICommandFactory CommandFactory = commandFactory;
-        readonly ConnectionM ConnectionModel = connectionM;
-        readonly Database Database = database;
 
         public IHandlerDatabase CreateAccessDeniedErrorHandler() => new AccessDeniedErrorHandler(UserDialog);
         public IHandlerDatabase CreateDatabaseNotFoundErrorHandler() => new DatabaseNotFoundErrorHandler(UserDialog,BackupManager, CommandFactory);
-        public IHandlerDatabase CreateUnableToConnectToHostErrorHandler() => new UnableToConnectToHostErrorHandler(UserDialog, ConnectionModel, Database, CommandFactory);
+        public IHandlerDatabase CreateUnableToConnectToHostErrorHandler() => new UnableToConnectToHostErrorHandler(UserDialog, CommandFactory);
         public IHandlerDatabase CreateUnknownErrorHandler(string expMessage) => new UnknownErrorHandler(expMessage);
     }
 }

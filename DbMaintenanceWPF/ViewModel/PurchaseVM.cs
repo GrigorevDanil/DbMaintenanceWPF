@@ -1,49 +1,53 @@
 ﻿using DbMaintenanceWPF.Infrastructure.Commands;
 using DbMaintenanceWPF.Models;
+using DbMaintenanceWPF.Models.ItemModels;
 using DbMaintenanceWPF.Models.Items;
 using DbMaintenanceWPF.Service.Interface;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Input;
 
 namespace DbMaintenanceWPF.ViewModel
 {
-    class PurchaseVM : Base.ViewModelBase
+    public class PurchaseVM(PurchaseM model, IUserDialogService userDialog, IStorageViewModel storageViewModel) : Base.ViewModelBase
     {
         #region Свойства
 
-        readonly PurchaseM Model;
-        readonly IUserDialogService UserDialog;
+        readonly PurchaseM Model = model;
+        readonly IUserDialogService UserDialog = userDialog;
         public IEnumerable<Purchase> Purchases => Model.PublicListPurchases;
         public IEnumerable<Provider> Providers => Model.PublicListProviders;
         public IEnumerable<Product> Products => Model.PublicListProducts;
 
-
-        bool flagProvider;
-        public bool FlagProvider { get => flagProvider; set { Set(ref flagProvider, value); SelectedProvider = null; } }
-
-        bool flagProduct;
-        public bool FlagProduct { get => flagProduct; set { Set(ref flagProduct, value); SelectedProduct = null; } }
-
-        Provider selectedProvider;
-        public Provider SelectedProvider { get => selectedProvider; set => Set(ref selectedProvider, value);   }
-
-        Product selectedProduct;
-        public Product SelectedProduct { get => selectedProduct; set => Set(ref selectedProduct, value); }
+        public Visibility VisibleComponent
+        {
+            get
+            {
+                var user = (storageViewModel.GetViewModel(nameof(MainVM)) as MainVM)?.CurrentUser as User;
+                return user?.Role == "Пользователь" ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
 
         #endregion
 
         #region Команды
 
+        public void UpdateList() => OnPropertyChanged(nameof(Purchases));
+
         #region AddCommand - Добавление поставки
 
         private ICommand addCommand;
         public ICommand AddCommand => addCommand ??= new RelayCommand(OnAddCommandExecuted, CanAddCommandExecute);
-        private static bool CanAddCommandExecute(object p) => p is Purchase;
+        private static bool CanAddCommandExecute(object p) => true;
 
         private void OnAddCommandExecuted(object p)
         {
-            var purchase = (Purchase)p;
-            if (!UserDialog.Edit(purchase, "Добавление поставки")) OnPropertyChanged(nameof(Purchases));
+            var purchase = new Purchase();
+            if (UserDialog.Edit(purchase, "Добавление поставки"))
+            {
+                Model.Create(purchase);
+                OnPropertyChanged(nameof(Purchases));
+            }
         }
 
         #endregion
@@ -57,7 +61,7 @@ namespace DbMaintenanceWPF.ViewModel
         private void OnEditCommandExecuted(object p)
         {
             Purchase purchase = (Purchase)p;
-            if (!UserDialog.Edit(purchase, "Редактирование поставки"))
+            if (UserDialog.Edit(purchase, "Редактирование поставки"))
             {
                 Model.Update(purchase);
                 OnPropertyChanged(nameof(Purchases));
@@ -84,12 +88,22 @@ namespace DbMaintenanceWPF.ViewModel
 
         #endregion
 
-        #endregion
+        #region MultiplyRemoveCommand - Множественное удаление поставок
 
-        public PurchaseVM(PurchaseM model, IUserDialogService userDialog)
+        private ICommand multiplyRemoveCommand;
+        public ICommand MultiplyRemoveCommand => multiplyRemoveCommand ??= new RelayCommand(OnMultiplyRemoveCommandExecuted, CanMultiplyRemoveCommandExecute);
+        private static bool CanMultiplyRemoveCommandExecute(object p) => true;
+
+        private void OnMultiplyRemoveCommandExecuted(object p)
         {
-            Model = model;
-            UserDialog = userDialog;
+            if (UserDialog.ShowConfirm("Удаление поставок", "Удалить выбранные поставки?"))
+            {
+                foreach (Purchase purchase in Purchases) if (purchase.IsSelected) Model.Remove(purchase);
+                OnPropertyChanged(nameof(Purchases));
+            }
         }
+
+        #endregion
+        #endregion
     }
 }

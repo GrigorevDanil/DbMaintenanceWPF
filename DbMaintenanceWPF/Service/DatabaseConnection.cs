@@ -25,6 +25,7 @@ namespace DbMaintenanceWPF.Service
             catch (MySqlException exp)
             {
                 DatabaseErrorHandler.ProcessError(exp);
+                
                 return false;
             }
         }

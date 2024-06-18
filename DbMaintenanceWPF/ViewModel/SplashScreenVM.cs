@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace DbMaintenanceWPF.ViewModel
 {
-    class SplashScreenVM : Base.ViewModelBase
+    public class SplashScreenVM : Base.ViewModelBase
     {
         #region Свойства
 
         readonly IUserDialogService DialogService; 
-        readonly LoginM ModelLogin; 
         readonly IConnectionDatabase DatabaseConnection;  
 
         private int valueProgress;
@@ -23,11 +22,10 @@ namespace DbMaintenanceWPF.ViewModel
 
         #endregion
 
-        public SplashScreenVM(IUserDialogService dialogService, IConnectionDatabase databaseConnection, LoginM modelLogin)
+        public SplashScreenVM(IUserDialogService dialogService, IConnectionDatabase databaseConnection)
         {
             ValueProgress = 0;
             DialogService = dialogService;
-            ModelLogin = modelLogin;
             DatabaseConnection = databaseConnection;
 
             FuncWaitWindow(); 
@@ -43,7 +41,7 @@ namespace DbMaintenanceWPF.ViewModel
                 await Task.Delay(15);
             }
             DatabaseConnection.CheckConnection();
-            DialogService.ShowAuthentication(ModelLogin,DialogService);
+            DialogService.ShowAuthentication();
         }
 
         #endregion

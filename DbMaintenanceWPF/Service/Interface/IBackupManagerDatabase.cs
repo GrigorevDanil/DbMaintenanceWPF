@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace DbMaintenanceWPF.Service.Interface
 {
-    interface IBackupManagerDatabase
+    public interface IBackupManagerDatabase
     {
-        bool SetBackup(string fileName, string pathSave);
-        bool CreateBackup(string fileName, string pathGet);
+
+        bool SetBackup(string fileName, string path);
+        bool CreateBackup(string fileName, string path);
         bool SetDefaultBackup();
     }
 }

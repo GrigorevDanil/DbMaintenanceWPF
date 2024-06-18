@@ -3,7 +3,7 @@ using DbMaintenanceWPF.Service.Interface;
 
 namespace DbMaintenanceWPF.Models
 {
-    class ConnectionM(IBackupManagerDatabase backupManager, IINIManager iNIManager)
+    public class ConnectionM(IBackupManagerDatabase backupManager, IINIManager iNIManager)
     {
         readonly IBackupManagerDatabase BackupManager = backupManager;
         readonly IINIManager INIManager = iNIManager;

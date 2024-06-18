@@ -29,19 +29,14 @@ namespace DbMaintenanceWPF.View
         {
             if (!(e.Item is Models.Items.Category category)) return;
 
+            if (TextFilter == null) return;
+
             var filter_text = TextFilter.Text;
             if (filter_text.Length == 0) return;
 
             if (category.Title.IndexOf(filter_text, StringComparison.OrdinalIgnoreCase) >= 0) return;
 
             e.Accepted = false;
-        }
-
-        private void TextFilter_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var text_box = (TextBox)sender;
-            var collection = (CollectionViewSource)text_box.FindResource("CategoriesCollection");
-            collection.View.Refresh();
         }
     }
 }

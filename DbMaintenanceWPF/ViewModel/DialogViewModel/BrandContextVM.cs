@@ -13,7 +13,7 @@ using DbMaintenanceWPF.Service.Interface;
 
 namespace DbMaintenanceWPF.ViewModel.DialogViewModel
 {
-    class BrandContextVM : ViewModelBase
+    public class BrandContextVM : ViewModelBase
     {
         #region Свойства
 
@@ -36,11 +36,8 @@ namespace DbMaintenanceWPF.ViewModel.DialogViewModel
         public ICommand CommitCommand => _CommitCommand
             ??= new RelayCommand(OnCommitCommandExecuted, CanCommitCommandExecute);
 
-        private bool CanCommitCommandExecute(object p) => TextBrand != "" && TextBrand != null;
-        private void OnCommitCommandExecuted(object p)
-        {
-            if (CanCancelCommandExecute(p))  Complete?.Invoke(this, true);
-        }
+        private bool CanCommitCommandExecute(object p) => !string.IsNullOrEmpty(TextBrand);
+        private void OnCommitCommandExecuted(object p) => Complete?.Invoke(this, true);
 
         #endregion
 

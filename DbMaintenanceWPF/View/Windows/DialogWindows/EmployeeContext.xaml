@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DbMaintenanceWPF.View.Windows.DialogWindows"
-        xmlns:cmd="clr-namespace:DbMaintenanceWPF.Infrastructure.Commands"
-        DataContext="{Binding EmployeeContextModel, Source={StaticResource Locator}}" 
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:b="clr-namespace:DbMaintenanceWPF.Infrastructure.Behaviors"
+        xmlns:vm="clr-namespace:DbMaintenanceWPF.ViewModel.DialogViewModel"
         Style="{StaticResource SpringAnimation}"
         Title="{Binding TextWindow}" 
         Icon="/Resources/Pictures/IconEmployee.png"
@@ -20,6 +20,11 @@
     <WindowChrome.WindowChrome>
         <WindowChrome/>
     </WindowChrome.WindowChrome>
+
+    <Window.DataContext>
+        <vm:EmployeeContextVM/>
+    </Window.DataContext>
+
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -58,7 +63,8 @@
         Source="/Resources/Pictures/ImageEmployeeContext.png" 
         Margin="0,0,15,0"
         Width="40" 
-        Height="40"/>
+        Height="40"
+        RenderOptions.BitmapScalingMode="HighQuality"/>
 
             <TextBlock 
      Text="{Binding TextWindow}"
@@ -68,12 +74,12 @@
         </StackPanel>
 
         <Grid 
-    Grid.Row="2" Margin="15,0,15,0" VerticalAlignment="Center" Height="376">
-
+    Grid.Row="2" Margin="15,0,15,0" VerticalAlignment="Center">
+            
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="67*"/>
-                <ColumnDefinition Width="123*"/>
+                <ColumnDefinition Width="106*"/>
+                <ColumnDefinition Width="179*"/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
@@ -97,16 +103,17 @@
          Background="AliceBlue" 
          CornerRadius="15" 
          Grid.ColumnSpan="2" 
-         Margin="5,5,5,5"
+         Margin="5,5,5,4"
          Grid.RowSpan="8"/>
 
 
             <TextBlock 
-        Text="Отдел:" 
+        Text="Отдел*:" 
         FontSize="24" 
         FontFamily="Nautilus Pompilius" 
                 HorizontalAlignment="Center" 
-                VerticalAlignment="Center" Height="33" Width="72"/>
+                VerticalAlignment="Center"
+                Margin="8"/>
 
             <ComboBox
         Style="{StaticResource ComboboxStyle}" 
@@ -116,18 +123,19 @@
         Grid.Column="1" 
         IsReadOnly="True"
         FontFamily="Nautilus Pompilius" 
-        FontSize="24" 
+        FontSize="20" 
         VerticalAlignment="Center"
         Margin="10,0,10,0"/>
 
 
             <TextBlock 
-                Text="Должность:" 
+                Text="Должность*:" 
                 FontSize="24" 
                 FontFamily="Nautilus Pompilius" 
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center"
-                Grid.Row="1" Height="33" Width="124"/>
+                Grid.Row="1"
+                Margin="8"/>
 
             <ComboBox
                 Style="{StaticResource ComboboxStyle}" 
@@ -137,16 +145,19 @@
                 IsReadOnly="True"
                 Grid.Column="1"
                 Grid.Row="1"
-                FontSize="24" 
-                FontFamily="Nautilus Pompilius"  VerticalAlignment="Center" Margin="10,0,10,0" Height="29"/>
+                FontSize="20" 
+                FontFamily="Nautilus Pompilius"  
+                VerticalAlignment="Center" 
+                Margin="10,0,10,0"/>
 
             <TextBlock 
-     Text="Фамилия:" 
+     Text="Фамилия*:" 
      FontSize="24" 
      FontFamily="Nautilus Pompilius" 
      HorizontalAlignment="Center" 
      VerticalAlignment="Center"
-     Grid.Row="2" Height="33" Width="100"/>
+     Grid.Row="2"
+                Margin="8"/>
 
             <TextBox
      MaxLength="30" 
@@ -157,15 +168,16 @@
      Grid.Row="2"
      TextAlignment="Left"
      FontSize="24" 
-     FontFamily="Times New Roman" VerticalAlignment="Center" Margin="10,0,10,0" Height="29"/>
+     FontFamily="Times New Roman" VerticalAlignment="Center" Margin="10,0,10,0"/>
 
             <TextBlock 
-     Text="Имя:" 
+     Text="Имя*:" 
      FontSize="24" 
      FontFamily="Nautilus Pompilius" 
      HorizontalAlignment="Center" 
      VerticalAlignment="Center"
-     Grid.Row="3" Height="33" Width="52"/>
+     Grid.Row="3"
+                Margin="8"/>
 
             <TextBox
      MaxLength="30" 
@@ -176,18 +188,20 @@
      Grid.Row="3"
      TextAlignment="Left"
      FontSize="24" 
-     FontFamily="Times New Roman" VerticalAlignment="Center" Margin="10,0,10,0" Height="29"/>
+     FontFamily="Times New Roman" VerticalAlignment="Center" Margin="10,0,10,0"/>
 
-            <TextBlock 
-     Text="Отчество:" 
-     FontSize="24" 
-     FontFamily="Nautilus Pompilius" 
-     HorizontalAlignment="Center" 
-     VerticalAlignment="Center"
-     Grid.Row="4" Height="33" Width="104"/>
+            <CheckBox
+                IsChecked="{Binding FlagLastname}"
+                Style="{StaticResource CheckBoxStyle}"
+                Content="Отчество:"
+                FontFamily="Nautilus Pompilius"
+                FontSize="24"
+                Grid.Row="4"
+                Margin="10"/>
 
             <TextBox
      MaxLength="30" 
+     IsEnabled="{Binding FlagLastname}"
      Style="{StaticResource HintTextBox}" 
      Tag="Отчество сотрудника" 
      Text="{Binding TextLastname,UpdateSourceTrigger=PropertyChanged}" 
@@ -195,17 +209,19 @@
      Grid.Row="4"
      TextAlignment="Left"
      FontSize="24" 
-     FontFamily="Times New Roman" VerticalAlignment="Center" Margin="10,0,10,0" Height="29"/>
+     FontFamily="Times New Roman" VerticalAlignment="Center" Margin="10,0,10,0"/>
 
-            <TextBlock 
-     Text="Email:" 
-     FontSize="24" 
-     FontFamily="Nautilus Pompilius" 
-     HorizontalAlignment="Center" 
-     VerticalAlignment="Center"
-     Grid.Row="5" Height="33" Width="60"/>
+            <CheckBox
+    IsChecked="{Binding FlagEmail}"
+    Style="{StaticResource CheckBoxStyle}"
+    Content="Email:"
+    FontFamily="Nautilus Pompilius"
+    FontSize="24"
+    Grid.Row="5"
+                Margin="10"/>
 
             <TextBox
+     IsEnabled="{Binding FlagEmail}"
      MaxLength="30" 
      Style="{StaticResource HintTextBox}" 
      Tag="Название электронного адреса" 
@@ -214,34 +230,41 @@
      Grid.Row="5"
      TextAlignment="Left"
      FontSize="24" 
-     FontFamily="Times New Roman" VerticalAlignment="Center" Margin="10,0,10,0" Height="29"/>
+     FontFamily="Times New Roman" VerticalAlignment="Center" Margin="10,0,10,0" />
 
             <TextBlock 
-     Text="Номер телефона:" 
+     Text="Номер телефона*:" 
      FontSize="24" 
      FontFamily="Nautilus Pompilius" 
      HorizontalAlignment="Center" 
      VerticalAlignment="Center"
-     Grid.Row="6" Height="33" Width="176"/>
+     Grid.Row="6"
+                Margin="8"/>
 
             <TextBox
      MaxLength="30" 
      Style="{StaticResource HintTextBox}" 
-     Tag="Номер телефона сотрудника" 
      Text="{Binding TextNumPhone, UpdateSourceTrigger=PropertyChanged}" 
      Grid.Column="1" 
      Grid.Row="6"
      TextAlignment="Left"
      FontSize="24" 
-     FontFamily="Times New Roman" VerticalAlignment="Center" Margin="10,0,10,0" Height="29"/>
+     FontFamily="Times New Roman" VerticalAlignment="Center" Margin="10,0,10,0">
+
+                <i:Interaction.Behaviors>
+                    <b:TextBoxInputMaskBehavior InputMask="+7 (999) 999-9999" PromptChar="_" />
+                </i:Interaction.Behaviors>
+
+            </TextBox>
 
             <TextBlock 
-     Text="Адрес:" 
+     Text="Адрес*:" 
      FontSize="24" 
      FontFamily="Nautilus Pompilius" 
      HorizontalAlignment="Center" 
      VerticalAlignment="Center"
-     Grid.Row="7" Height="33" Width="64"/>
+     Grid.Row="7" 
+                Margin="8"/>
 
             <TextBox
      MaxLength="30" 
@@ -252,7 +275,7 @@
      Grid.Row="7"
      TextAlignment="Left"
      FontSize="24" 
-     FontFamily="Times New Roman" VerticalAlignment="Center" Margin="10,0,10,0" Height="29"/>
+     FontFamily="Times New Roman" VerticalAlignment="Center" Margin="10,0,10,0"/>
 
 
         </Grid>

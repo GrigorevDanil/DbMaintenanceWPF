@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace DbMaintenanceWPF.ViewModel.DialogViewModel
 {
-    class CategoryContextVM : ViewModelBase
+    public class CategoryContextVM : ViewModelBase
     {
         #region Свойства
 
@@ -34,11 +34,8 @@ namespace DbMaintenanceWPF.ViewModel.DialogViewModel
         public ICommand CommitCommand => _CommitCommand
             ??= new RelayCommand(OnCommitCommandExecuted, CanCommitCommandExecute);
 
-        private bool CanCommitCommandExecute(object p) => TextCategory != "" && TextCategory != null;
-        private void OnCommitCommandExecuted(object p)
-        {
-            if (CanCancelCommandExecute(p)) Complete?.Invoke(this, true);
-        }
+        private bool CanCommitCommandExecute(object p) => !string.IsNullOrEmpty(TextCategory);
+        private void OnCommitCommandExecuted(object p) => Complete?.Invoke(this, true);
 
         #endregion
 

@@ -4,11 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              DataContext="{Binding GiveDetailModel, Source={StaticResource Locator}}"
+             xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:ext="clr-namespace:DbMaintenanceWPF.Infrastructure.Extensions"
+             xmlns:res="clr-namespace:DbMaintenanceWPF.Resources"
              mc:Ignorable="d" 
              d:DesignHeight="867"
              d:DesignWidth="1120"
              Style="{StaticResource Page_Style}"
              Background="AliceBlue">
+
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="GiveDetailsCollection" Source="{Binding GiveDetails}" Filter="GiveDetailsCollection_OnFilter">
+
+        </CollectionViewSource>
+    </UserControl.Resources>
 
 
     <Grid>
@@ -53,6 +63,7 @@
         Grid.ColumnSpan="5"/>
 
             <CheckBox 
+                x:Name="checkBoxGive"
         Style="{StaticResource chkBullet}"
         IsChecked="{Binding FlagGive, UpdateSourceTrigger=PropertyChanged}"
         Background="#DB4B4B" 
@@ -63,7 +74,13 @@
         HorizontalAlignment="Center"
         FontFamily="Nautilus Pompilius"
         Height="30" 
-        Width="70"/>
+        Width="70">
+
+                <i:Interaction.Behaviors>
+                    <ext:FilterCheckBoxExtension TargetComboBox="{Binding ElementName=comboBoxGive}" />
+                </i:Interaction.Behaviors>
+
+            </CheckBox>
 
             <TextBlock 
         Text="Выдача:"
@@ -74,7 +91,8 @@
         Grid.Column="1"/>
 
             <ComboBox 
-        IsEnabled="{Binding FlagGive,UpdateSourceTrigger=PropertyChanged}"
+                x:Name="comboBoxGive"
+        IsEnabled="{Binding ElementName=checkBoxGive, Path=IsChecked}"
         ItemsSource="{Binding Gives}"
         DisplayMemberPath="TextGive"
         SelectedItem="{Binding SelectedGive}"
@@ -83,7 +101,15 @@
         IsReadOnly="True"
         FontFamily="Nautilus Pompilius" 
         Grid.Column="2"
-        VerticalAlignment="Center" Height="28" />
+        VerticalAlignment="Center" Height="28">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <ext:RefreshCollectionViewSourceExtension Source="{StaticResource GiveDetailsCollection}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </ComboBox>
 
             <!--End Category-->
 
@@ -104,6 +130,7 @@
         Grid.Row="1"/>
 
             <CheckBox 
+                x:Name="checkBoxProduct"
         Style="{StaticResource chkBullet}"
         IsChecked="{Binding FlagProduct, UpdateSourceTrigger=PropertyChanged}"
         Background="#DB4B4B" 
@@ -115,7 +142,13 @@
         FontFamily="Nautilus Pompilius"
         Height="30" 
         Width="70"
-        Grid.Row="1"/>
+        Grid.Row="1">
+
+                <i:Interaction.Behaviors>
+                    <ext:FilterCheckBoxExtension TargetComboBox="{Binding ElementName=comboBoxProduct}" />
+                </i:Interaction.Behaviors>
+
+            </CheckBox>
 
             <TextBlock 
         Text="Товар:"
@@ -127,7 +160,8 @@
         Grid.Row="1" Height="38" Width="83"/>
 
             <ComboBox 
-        IsEnabled="{Binding FlagProduct,UpdateSourceTrigger=PropertyChanged}"
+                x:Name="comboBoxProduct"
+        IsEnabled="{Binding ElementName=checkBoxProduct, Path=IsChecked}"
         ItemsSource="{Binding Products}"
         SelectedItem="{Binding SelectedProduct}"
         DisplayMemberPath="TextProduct"
@@ -137,7 +171,16 @@
         FontFamily="Nautilus Pompilius" 
         Grid.Column="2"
         Grid.Row="1"
-        VerticalAlignment="Center" Height="27" />
+        VerticalAlignment="Center" 
+                Height="27">
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <ext:RefreshCollectionViewSourceExtension Source="{StaticResource GiveDetailsCollection}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </ComboBox>
 
 
 
@@ -146,20 +189,31 @@
         </Grid>
 
         <TextBox 
+            x:Name="TextFilter"
     Style="{StaticResource HintTextBox}" 
-    Text="{Binding TextFilter, UpdateSourceTrigger=PropertyChanged}"
     Grid.Row="1"
     Tag="Поиск по количеству" 
     FontFamily="Times New Roman" 
     FontSize="20" 
     Grid.ColumnSpan="2" 
-    Margin="5,5,5,5"/>
+    Margin="5,5,5,5">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="TextChanged">
+                    <ext:RefreshCollectionViewSourceExtension Source="{StaticResource GiveDetailsCollection}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+        </TextBox>
 
         <DataGrid 
     Grid.Row="2"
     Margin="5,5,5,15" 
-    ItemsSource="{Binding GiveDetails}"
-    Grid.ColumnSpan="2">
+    ItemsSource="{Binding Source={StaticResource GiveDetailsCollection}}"
+    Grid.ColumnSpan="2"
+    res:DataGridHelper.HidableColumnIndices="0,4" 
+    res:DataGridHelper.ColumnVisibility="{Binding VisibleComponent}"
+    RowHeight="70">
 
             <DataGrid.Columns>
 
@@ -200,7 +254,6 @@
             Width="1*"/>
 
                 <DataGridTemplateColumn
-            x:Name="ColOp"
             Header="Операции"
             Width="150"
             CanUserResize="False">
@@ -227,7 +280,7 @@
                             Margin="5,5,5,5"
                             Width="48"
                             Height="48"
-                            Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" 
+                            Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" 
                             CommandParameter="{Binding}">
 
                                     <Image Source="/Resources/Pictures/Delete.png" Width="30" Height="30"/>
@@ -242,7 +295,7 @@
 
             <DataGrid.ContextMenu>
                 <ContextMenu 
-    x:Name="menu"
+    Visibility="{Binding VisibleComponent}"
     FontSize="14">
 
                     <MenuItem 
@@ -254,7 +307,7 @@
                         </MenuItem.Icon>
 
                         <MenuItem.Header>
-                            <TextBlock Text="Добавить поставку"/>
+                            <TextBlock Text="Добавить информацию о выдаче"/>
                         </MenuItem.Header>
 
                     </MenuItem>
@@ -269,13 +322,13 @@
                         </MenuItem.Icon>
 
                         <MenuItem.Header>
-                            <TextBlock Text="Редактировать поставку"/>
+                            <TextBlock Text="Редактировать информацию о выдаче"/>
                         </MenuItem.Header>
                     </MenuItem>
 
                     <MenuItem
                     Style="{StaticResource Sub_MenuItem}" 
-                    Command="{Binding Path=PlacementTarget.DataContext.DeleteCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
+                    Command="{Binding Path=PlacementTarget.DataContext.RemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}"
                     CommandParameter="{Binding Path=PlacementTarget.SelectedItem, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}">
 
                         <MenuItem.Icon>
@@ -283,7 +336,7 @@
                         </MenuItem.Icon>
 
                         <MenuItem.Header>
-                            <TextBlock Text="Удалить поставку" Foreground="#E53434"/>
+                            <TextBlock Text="Удалить информацию о выдаче" Foreground="#E53434"/>
                         </MenuItem.Header>
 
                     </MenuItem>
@@ -304,7 +357,8 @@
             <Image
         Source="/Resources/Pictures/DownArrow.png" 
         Width="59" 
-        Height="53" 
+        Height="53"
+                Visibility="{Binding VisibleComponent}"
         VerticalAlignment="Top" 
         Margin="25,0,0,0"
         HorizontalAlignment="Left" 
@@ -312,16 +366,19 @@
 
             <TextBlock 
         Text="С отмеченными:" 
+                Visibility="{Binding VisibleComponent}"
         Margin="0,0,25,0"
         FontSize="22"
         VerticalAlignment="Center"
-        FontFamily="Nautilus Pompilius"/>
+        FontFamily="Nautilus Pompilius"
+                RenderOptions.BitmapScalingMode="HighQuality"/>
 
         </StackPanel>
 
         <Border 
     Background="#093A5C"
     CornerRadius="18"
+            Visibility="{Binding VisibleComponent}"
     Margin="5,5,5,5"
     Grid.Column="1"
     Grid.Row="3"/>
@@ -346,12 +403,13 @@
             <Button
         x:Name="butDel"
         Style="{StaticResource RoundCorner}" 
+                Visibility="{Binding VisibleComponent}"
         Foreground="#E53434" 
         FontSize="16"
         FontFamily="Nautilus Pompilius"  
         Margin="5,0,5,0"
         HorizontalAlignment="Left" 
-        Command="{Binding MultiplyDeleteCommand}">
+        Command="{Binding MultiplyRemoveCommand}">
 
                 <StackPanel 
             Orientation="Horizontal">
@@ -374,6 +432,7 @@
         x:Name="butAdd" 
         Grid.Column="1" 
         Style="{StaticResource RoundCorner}"
+                Visibility="{Binding VisibleComponent}"
         Foreground="#D9D9D9"
         FontSize="16"
         FontFamily="Nautilus Pompilius"
@@ -388,7 +447,7 @@
                 Margin="0,2,25,0"/>
 
                     <TextBlock 
-                Text="Добавить поставку"
+                Text="Добавить информацию о выдаче"
                 Margin="0,0,25,0"
                 FontSize="18"
                 VerticalAlignment="Center"/>
